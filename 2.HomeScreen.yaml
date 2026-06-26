@@ -1,0 +1,801 @@
+Screens:
+  HomeScreen:
+    Properties:
+      BackgroundImage: ='BG 1'
+      Height: =App.Height
+      ImagePosition: =ImagePosition.Fill
+      OnHidden: |-
+        =UpdateContext({IsHomeSelectionOptionsVisible:false,IslanguageOptionSelection: false});
+      OnVisible: |
+        =Reset(TaskDashboard_TaskFilter_Toggle);
+        Set(SelectedMenu,Blank());
+        UpdateContext({IsHomeSelectionOptionsVisible:false,IslanguageOptionSelection: false});
+      Width: =App.Width
+    Children:
+      - Home_Main_Container:
+          Control: GroupContainer@1.5.0
+          Variant: AutoLayout
+          Properties:
+            Height: =Parent.Height
+            LayoutAlignItems: =LayoutAlignItems.Center
+            LayoutDirection: =LayoutDirection.Vertical
+            LayoutOverflowY: =LayoutOverflow.Scroll
+            Width: =Parent.Width
+          Children:
+            - Home_Header_Container:
+                Control: GroupContainer@1.5.0
+                Variant: AutoLayout
+                Properties:
+                  FillPortions: =0
+                  Height: =Parent.Height*0.14
+                  LayoutAlignItems: =LayoutAlignItems.Center
+                  LayoutDirection: =LayoutDirection.Horizontal
+                  LayoutJustifyContent: =LayoutJustifyContent.SpaceBetween
+                  LayoutMinHeight: =16
+                  LayoutMinWidth: =16
+                Children:
+                  - Home_UserDetails_Container:
+                      Control: GroupContainer@1.5.0
+                      Variant: AutoLayout
+                      Properties:
+                        DropShadow: =DropShadow.None
+                        Fill: |
+                          =Color.Transparent
+                        FillPortions: =4
+                        LayoutAlignItems: =LayoutAlignItems.Center
+                        LayoutDirection: =LayoutDirection.Horizontal
+                        LayoutGap: =25
+                        LayoutJustifyContent: =LayoutJustifyContent.SpaceBetween
+                        LayoutMinHeight: =16
+                        LayoutMinWidth: =16
+                        PaddingBottom: =8
+                        PaddingLeft: =30
+                        PaddingRight: =Self.PaddingLeft
+                        PaddingTop: =8
+                        Width: =Parent.Width*0.8
+                      Children:
+                        - Home_UserProfile_Image:
+                            Control: Image@2.2.3
+                            Properties:
+                              AlignInContainer: =AlignInContainer.Center
+                              DisplayMode: =DisplayMode.Disabled
+                              Height: =Self.Width
+                              Image: =User().Image
+                              ImagePosition: =ImagePosition.Fill
+                              LayoutMinHeight: =16
+                              LayoutMinWidth: =16
+                              RadiusBottomLeft: =Self.RadiusTopLeft
+                              RadiusBottomRight: =Self.RadiusTopLeft
+                              RadiusTopLeft: =Self.Width/2
+                              RadiusTopRight: =Self.RadiusTopLeft
+                              TabIndex: =5
+                              Width: =Home_Greeting_Text.Height
+                              Y: =Parent.Height/2
+                        - Home_Greeting_Container:
+                            Control: GroupContainer@1.5.0
+                            Variant: AutoLayout
+                            Properties:
+                              AlignInContainer: =AlignInContainer.SetByContainer
+                              DropShadow: =DropShadow.None
+                              Height: =Parent.Height
+                              LayoutAlignItems: =LayoutAlignItems.Center
+                              LayoutDirection: =LayoutDirection.Vertical
+                              LayoutGap: =10
+                              LayoutJustifyContent: =LayoutJustifyContent.Center
+                              LayoutMinHeight: =16
+                              LayoutMinWidth: =16
+                              PaddingBottom: =8
+                              PaddingLeft: =8
+                              PaddingRight: =8
+                              PaddingTop: =8
+                              Width: =Parent.Width*0.8
+                            Children:
+                              - Home_Greeting_Text:
+                                  Control: Text@0.0.51
+                                  Properties:
+                                    AlignInContainer: =AlignInContainer.Stretch
+                                    AutoHeight: =true
+                                    Font: =Font.Lato
+                                    FontColor: =EliteTheme.Colors.Body_UI.White
+                                    LayoutMinHeight: =16
+                                    LayoutMinWidth: =16
+                                    Size: =LookUp(EliteTheme.FontSizes.Heading, ScreenSize = HomeScreen.Size).FontSize
+                                    Text: |+
+                                      =Coalesce(Text(LookUp(LabelTranslations, Language = UserLanguage).TranslatedLabels.lblHello), "Hello")&", "& Char(10) & User().FullName & " ! "
+                                    Weight: ='TextCanvas.Weight'.Bold
+                                    Wrap: =false
+                        - Home_QuickActionMenu_Container:
+                            Control: GroupContainer@1.5.0
+                            Variant: ManualLayout
+                            Properties:
+                              AlignInContainer: =AlignInContainer.Center
+                              BorderColor: =EliteTheme.Colors.Body_UI.GlassButton_Border
+                              BorderThickness: =HomeScreen.Size+1
+                              Fill: =EliteTheme.Colors.Body_UI.GlassButton_BG
+                              FillPortions: =0
+                              Height: =Self.Width
+                              LayoutMinHeight: =16
+                              LayoutMinWidth: =16
+                              RadiusBottomLeft: =Self.RadiusTopLeft
+                              RadiusBottomRight: =Self.RadiusTopLeft
+                              RadiusTopLeft: =Self.Height*0.25
+                              RadiusTopRight: =Self.RadiusTopLeft
+                              Width: |-
+                                =//If (Home.Size <= ScreenSize.Small , ProfileImage.Height*0.7 ,Home.Size <= ScreenSize.Medium,110,150)
+                                Home_UserProfile_Image.Height*0.75
+                            Children:
+                              - Home_QuickActionMenu_Icon:
+                                  Control: Image@2.2.3
+                                  Properties:
+                                    BorderColor: =RGBA(0, 18, 107, 1)
+                                    Height: =Self.Width
+                                    Image: =BurgerBars
+                                    Width: =Parent.Width*0.5
+                                    X: =(Parent.Width-Self.Width)/2
+                                    Y: =(Parent.Height-Self.Height)/2
+                              - Home_QuickActionMenu_Button:
+                                  Control: Button@0.0.45
+                                  Properties:
+                                    Appearance: ='ButtonCanvas.Appearance'.Transparent
+                                    BorderRadius: =Self.Height*0.2
+                                    Height: =Self.Width
+                                    OnSelect: =UpdateContext({IsHomeSelectionOptionsVisible:true})
+                                    Text: =
+                                    Width: =Parent.Width
+            - Home_Body_Container:
+                Control: GroupContainer@1.5.0
+                Variant: ManualLayout
+                Properties:
+                  Fill: =EliteTheme.Colors.Body_UI.BackgroundLight
+                  Height: |
+                    =Parent.Height*0.9
+                  LayoutMinHeight: =16
+                  LayoutMinWidth: =16
+                  RadiusBottomLeft: =0
+                  RadiusBottomRight: =0
+                  RadiusTopLeft: =40
+                  RadiusTopRight: =40
+                  Width: =
+                Children:
+                  - TempContainerForMenu:
+                      Control: GroupContainer@1.5.0
+                      Variant: AutoLayout
+                      Properties:
+                        BorderColor: =RGBA(160, 64, 8, 1)
+                        DropShadow: =DropShadow.None
+                        Height: |
+                          =90
+                        LayoutAlignItems: =LayoutAlignItems.Center
+                        LayoutDirection: =LayoutDirection.Horizontal
+                        LayoutJustifyContent: =LayoutJustifyContent.Center
+                        Visible: =false
+                        Width: =Parent.Width
+                        Y: =Parent.Height - 200
+                      Children:
+                        - FloatingMenuContainer:
+                            Control: GroupContainer@1.5.0
+                            Variant: AutoLayout
+                            Properties:
+                              BorderColor: =RGBA(224, 86, 6, 1)
+                              DropShadow: =DropShadow.None
+                              Fill: =Theme_OnStart.Colors.PrimaryColor
+                              FillPortions: =0
+                              LayoutAlignItems: =LayoutAlignItems.Center
+                              LayoutDirection: =LayoutDirection.Horizontal
+                              LayoutGap: =20
+                              LayoutJustifyContent: =LayoutJustifyContent.Center
+                              LayoutMinHeight: =16
+                              LayoutMinWidth: =16
+                              PaddingBottom: =8
+                              PaddingLeft: =15
+                              PaddingRight: =15
+                              PaddingTop: =8
+                              RadiusBottomLeft: =400
+                              RadiusBottomRight: =400
+                              RadiusTopLeft: =400
+                              RadiusTopRight: =400
+                              Width: |
+                                =(Parent.Width - 70)/2
+                            Children:
+                              - FloatingMenuBtn1:
+                                  Control: Button@0.0.45
+                                  Properties:
+                                    BasePaletteColor: =RGBA(0, 119, 128, 1)
+                                    BorderRadius: =40
+                                    FontSize: =40
+                                    Height: =70
+                                    Icon: ="Add"
+                                    LayoutMinHeight: =16
+                                    LayoutMinWidth: =16
+                                    Text: =
+                                    Width: =70
+                              - FloatingMenuBtn2:
+                                  Control: Button@0.0.45
+                                  Properties:
+                                    BasePaletteColor: =RGBA(0, 119, 128, 1)
+                                    BorderRadius: =40
+                                    FillPortions: =
+                                    FontSize: =40
+                                    FontWeight: =FontWeight.Normal
+                                    Height: =70
+                                    Icon: ="Add"
+                                    LayoutMinHeight: =16
+                                    LayoutMinWidth: =16
+                                    Text: =
+                                    Width: =70
+                                    X: =20
+                              - FloatingMenuBtn3:
+                                  Control: Button@0.0.45
+                                  Properties:
+                                    Align: =Align.Center
+                                    Appearance: ='ButtonCanvas.Appearance'.Primary
+                                    BasePaletteColor: =RGBA(0, 119, 128, 1)
+                                    BorderRadius: =40
+                                    FontColor: =RGBA(255, 255, 255, 1)
+                                    FontSize: =40
+                                    FontWeight: =FontWeight.Bold
+                                    Height: =70
+                                    Icon: ="Home"
+                                    IconStyle: ='ButtonCanvas.IconStyle'.Outline
+                                    LayoutMinHeight: =16
+                                    LayoutMinWidth: =16
+                                    Text: =
+                                    Width: =70
+                  - LogoContainer:
+                      Control: GroupContainer@1.5.0
+                      Variant: ManualLayout
+                      Properties:
+                        DropShadow: =DropShadow.None
+                        Height: =Parent.Height*0.11
+                        PaddingBottom: =20
+                        PaddingTop: =20
+                        RadiusTopLeft: =Parent.RadiusTopLeft
+                        RadiusTopRight: =Parent.RadiusTopRight
+                        Width: =Parent.Width
+                        Y: =
+                      Children:
+                        - EliteLogo:
+                            Control: Image@2.2.3
+                            Properties:
+                              DisplayMode: =DisplayMode.View
+                              Height: =Parent.Height
+                              Image: =Logo_New
+                              Width: =If (HomeScreen.Size <= ScreenSize.Small , Parent.Width/2   ,HomeScreen.Size <= ScreenSize.Medium,(Parent.Width - 600)/2,(Parent.Width - 600)/2)
+                              X: =(Parent.Width - Self.Width)/2
+                  - Dashboard:
+                      Control: GroupContainer@1.5.0
+                      Variant: AutoLayout
+                      Properties:
+                        Height: =Parent.Height - LogoContainer.Height
+                        LayoutDirection: =LayoutDirection.Horizontal
+                        LayoutJustifyContent: =LayoutJustifyContent.Center
+                        PaddingBottom: =8
+                        PaddingLeft: =8
+                        PaddingRight: =8
+                        PaddingTop: =8
+                        Width: =Parent.Width
+                        Y: =LogoContainer.Height
+                      Children:
+                        - TextCanvas1_5:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              Align: =Align.Center
+                              Font: =Font.Lato
+                              FontWeight: =FontWeight.Semibold
+                              Height: =Parent.Height
+                              LayoutMinHeight: =32
+                              LayoutMinWidth: =96
+                              PaddingBottom: =0
+                              PaddingLeft: =0
+                              PaddingRight: =0
+                              PaddingTop: =0
+                              RadiusBottomLeft: =0
+                              RadiusBottomRight: =0
+                              RadiusTopLeft: =0
+                              RadiusTopRight: =0
+                              Size: =If (HomeScreen.Size <= ScreenSize.Small , 50 ,HomeScreen.Size <= ScreenSize.Medium,75,100)
+                              Text: =NoMenuWarningLabel
+                              Visible: =!MainMenuGallery.Visible
+                              Width: =Parent.Width
+                        - MainMenuGallery:
+                            Control: Gallery@2.15.0
+                            Variant: BrowseLayout_Vertical_TwoTextOneImageVariant_ver5.0
+                            Properties:
+                              BorderStyle: =BorderStyle.None
+                              Height: =Parent.Height
+                              Items: |+
+                                =Filter(MenuFilteredFromPermission,IsVisible)
+                              LayoutMaxWidth: =
+                              LoadingSpinnerColor: =EliteTheme.Colors.Body_UI.Primary
+                              OnSelect: =
+                              ShowScrollbar: =false
+                              TabIndex: =5
+                              TemplatePadding: |+
+                                =0
+                              TemplateSize: =If (HomeScreen.Size <= ScreenSize.Small , Self.Width/2 ,HomeScreen.Size <= ScreenSize.Large,Self.Width/3,Self.Width/4)
+                              Transition: =Transition.Pop
+                              Visible: =Self.AllItemsCount>0
+                              Width: =Parent.Width
+                              WrapCount: =If (HomeScreen.Size <= ScreenSize.Small , 2 ,HomeScreen.Size <= ScreenSize.Large,3,4)
+                              Y: =LogoContainer.Height
+                            Children:
+                              - Container2:
+                                  Control: GroupContainer@1.5.0
+                                  Variant: AutoLayout
+                                  Properties:
+                                    BorderColor: |-
+                                      =ThisItem.BorderColor
+                                      //RGBA(168,216,209,1)
+                                      //LookUp(MenuFilteredFromPermission,menuid = Text(ThisItem.elt_menusid)).BorderColor
+                                    BorderThickness: =2
+                                    DropShadow: =DropShadow.None
+                                    Fill: |-
+                                      =ThisItem.Background
+                                      //RGBA(226,247,244,1)
+                                      //If(IsBlankOrError(LookUp(MenuFilteredFromPermission,menuid = Text(ThisItem.elt_menusid))),RGBA(255,255,255,1),
+                                      //LookUp(MenuFilteredFromPermission,menuid = Text(ThisItem.elt_menusid)).Background)
+                                    Height: =Self.Width
+                                    LayoutAlignItems: =LayoutAlignItems.Center
+                                    LayoutDirection: =LayoutDirection.Vertical
+                                    LayoutGap: =Self.Width*0.05
+                                    LayoutJustifyContent: =LayoutJustifyContent.Center
+                                    RadiusBottomLeft: =20
+                                    RadiusBottomRight: =20
+                                    RadiusTopLeft: =20
+                                    RadiusTopRight: =20
+                                    Width: =MainMenuGallery.TemplateWidth*0.95
+                                    X: =(MainMenuGallery.TemplateWidth-Self.Width)/2
+                                    Y: =Self.X
+                                  Children:
+                                    - Logo:
+                                        Control: GroupContainer@1.5.0
+                                        Variant: ManualLayout
+                                        Properties:
+                                          AlignInContainer: =AlignInContainer.Center
+                                          DropShadow: =DropShadow.None
+                                          Fill: =RGBA(255, 255, 255, 0.7)
+                                          FillPortions: =0
+                                          Height: =Parent.Height/2
+                                          LayoutMinHeight: =150
+                                          LayoutMinWidth: =150
+                                          RadiusBottomLeft: =200
+                                          RadiusBottomRight: =200
+                                          RadiusTopLeft: =200
+                                          RadiusTopRight: =200
+                                          Width: =Parent.Width/2
+                                        Children:
+                                          - Logo SVGs:
+                                              Control: Image@2.2.3
+                                              Properties:
+                                                DisplayMode: =DisplayMode.View
+                                                Fill: =
+                                                Height: =Self.Width
+                                                HoverFill: =RGBA(255,255,255,0.7)
+                                                Image: |-
+                                                  =ThisItem.Image
+                                                  //Site_Task
+
+                                                  //LookUp(MenuFilteredFromPermission,menuid = Text(ThisItem.elt_menusid)).Image
+                                                PressedFill: =RGBA(255,255,255,1)
+                                                Width: =If (HomeScreen.Size <= ScreenSize.Small , Parent.Width*0.50,HomeScreen.Size <= ScreenSize.Medium,Parent.Width*0.65,Parent.Width*0.75)
+                                                X: =(Parent.Width-Self.Width)/2
+                                                Y: =Self.X
+                                    - TextCanvas9:
+                                        Control: Text@0.0.51
+                                        Properties:
+                                          Align: ='TextCanvas.Align'.Center
+                                          AutoHeight: =true
+                                          Font: =Font.Lato
+                                          FontColor: =ThisItem.TextColor
+                                          LayoutMinHeight: =16
+                                          LayoutMinWidth: =16
+                                          Size: =LookUp(EliteTheme.FontSizes.Body, ScreenSize = HomeScreen.Size).FontSize+5
+                                          Text: |-
+                                            =With(
+                                                {
+                                                    labels: LookUp(LabelTranslations, Language = UserLanguage).TranslatedLabels
+                                                },
+                                                Switch(
+                                                    ThisItem.Name,
+                                                    "Housekeeping", Coalesce(Text(labels.lblHousekeeping),ThisItem.Name),
+                                                    "Inspection", Coalesce(Text(labels.lblInspection),ThisItem.Name),
+                                                    "Maintenance Jobs", Coalesce(Text(labels.lblMaintenanceJobs),ThisItem.Name),
+                                                    "Meter Readings", Coalesce(Text(labels.lblMeterReadings),ThisItem.Name),
+                                                    "Safety Tests", Coalesce(Text(labels.lblSafetyTests),ThisItem.Name),
+                                                    "Services", Coalesce(Text(labels.lblServices),ThisItem.Name),
+                                                    "Site Tasks", Coalesce(Text(labels.lblSiteTasks),ThisItem.Name),
+                                                    ThisItem.Name   // already text, so safe
+                                                )
+                                            )
+                                          VerticalAlign: =VerticalAlign.Middle
+                                          Weight: ='TextCanvas.Weight'.Bold
+                                          Width: =Parent.Width
+                              - ButtonCanvas1:
+                                  Control: Button@0.0.45
+                                  Properties:
+                                    Appearance: ='ButtonCanvas.Appearance'.Transparent
+                                    Height: =Self.Width
+                                    OnSelect: |+
+                                      =Set(SelectedMenu,ThisItem);
+                                      Navigate(TaskDashboardScreen, ScreenTransition.Fade);
+                                      /*Switch(
+                                          SelectedMenu.Name,
+                                          "Site Tasks",
+                                          Navigate(TaskDashboardScreen_SiteTask, ScreenTransition.Fade),
+                                          "Safety Tests",
+                                          Navigate(TaskDashboardScreen_SafetyTestsDetail, ScreenTransition.Fade),
+                                          "Maintenance Jobs",
+                                          Navigate(TaskDashboardScreen, ScreenTransition.Fade),
+                                          "Services",
+                                          Navigate(TaskDashboardScreen, ScreenTransition.Fade),
+                                          "Housekeeping",
+                                          Navigate(TaskDashboardScreen, ScreenTransition.Fade),
+                                          "Meter Readings",
+                                          Navigate(TaskDashboardScreen, ScreenTransition.Fade),
+                                          "Inspection",
+                                          Navigate(TaskDashboardScreen, ScreenTransition.Fade)
+                                      )*/
+                                    Text: =
+                                    Width: =Container2.Width
+                                    X: =Container2.X
+                                    Y: =Container2.Y
+      - Home_ActionMenu_Container:
+          Control: GroupContainer@1.5.0
+          Variant: ManualLayout
+          Properties:
+            DropShadow: =DropShadow.None
+            Height: =If(IsHomeSelectionOptionsVisible||true, Parent.Height,0)
+            Visible: =IsHomeSelectionOptionsVisible
+            Width: =Parent.Width
+          Children:
+            - Home_Selection_Close_Button:
+                Control: Button@0.0.45
+                Properties:
+                  Appearance: ='ButtonCanvas.Appearance'.Transparent
+                  Height: =Parent.Height
+                  OnSelect: =UpdateContext({IsHomeSelectionOptionsVisible:false,IslanguageOptionSelection:false})
+                  Text: =
+                  Width: =Parent.Width
+            - Home_ActionMenu_Body_Container:
+                Control: GroupContainer@1.5.0
+                Variant: AutoLayout
+                Properties:
+                  DropShadow: =DropShadow.Bold
+                  Fill: =RGBA(255, 255, 255, 1)
+                  Height: =Home_ActionMenu_Home_Container.Height*4
+                  LayoutAlignItems: =LayoutAlignItems.Center
+                  LayoutDirection: =LayoutDirection.Vertical
+                  LayoutJustifyContent: =LayoutJustifyContent.Center
+                  RadiusBottomLeft: =Self.RadiusTopLeft
+                  RadiusBottomRight: =Self.RadiusTopLeft
+                  RadiusTopLeft: =Self.Height*0.1
+                  RadiusTopRight: =Self.RadiusTopLeft
+                  Width: =Home_ActionMenu_Home_Text.Width*1.75
+                  X: =(Home_QuickActionMenu_Container.X + Home_QuickActionMenu_Container.Width) - Self.Width
+                  Y: =(Home_QuickActionMenu_Container.Y + (1.25*Home_QuickActionMenu_Container.Height))
+                Children:
+                  - Home_ActionMenu_Home_FluidContainer:
+                      Control: GroupContainer@1.5.0
+                      Variant: ManualLayout
+                      Properties:
+                        LayoutMinHeight: =16
+                        LayoutMinWidth: =16
+                      Children:
+                        - Home_ActionMenu_Home_Container:
+                            Control: GroupContainer@1.5.0
+                            Variant: AutoLayout
+                            Properties:
+                              DropShadow: =DropShadow.None
+                              Height: =Home_ActionMenu_Home_Text.Height*2
+                              LayoutAlignItems: =LayoutAlignItems.Center
+                              LayoutDirection: =LayoutDirection.Horizontal
+                              LayoutJustifyContent: =LayoutJustifyContent.SpaceBetween
+                              PaddingBottom: =8
+                              PaddingLeft: =Self.Width*0.07
+                              PaddingRight: =Self.PaddingLeft
+                              PaddingTop: =8
+                              Width: =Parent.Width
+                            Children:
+                              - Home_ActionMenu_Home_Text:
+                                  Control: Text@0.0.51
+                                  Properties:
+                                    Font: =Font.Lato
+                                    Height: =Self.Size*1.5
+                                    LayoutMinHeight: =16
+                                    LayoutMinWidth: =16
+                                    Size: |-
+                                      =//If (HomeScreen.Size <= ScreenSize.Small , 30 ,HomeScreen.Size <= ScreenSize.Medium,45,60)
+                                      LookUp(EliteTheme.FontSizes.Body, ScreenSize = HomeScreen.Size).FontSize+5
+                                    Text: =Coalesce(Text(LookUp(LabelTranslations, Language = UserLanguage).TranslatedLabels.lblHome), "Home")
+                                    Weight: ='TextCanvas.Weight'.Regular
+                                    Width: =Self.Size*8
+                              - Home_ActionMenu_Home_Icon:
+                                  Control: Image@2.2.3
+                                  Properties:
+                                    BorderColor: =RGBA(0, 18, 107, 1)
+                                    Height: =Home_ActionMenu_Home_Text.Height
+                                    Image: =Home_1
+                                    LayoutMinHeight: =16
+                                    LayoutMinWidth: =16
+                                    Width: =Self.Height
+                        - Home_ActionMenu_Home_Button:
+                            Control: Button@0.0.45
+                            Properties:
+                              Appearance: ='ButtonCanvas.Appearance'.Transparent
+                              FontWeight: =FontWeight.Semibold
+                              Height: =Parent.Height
+                              Text: =
+                              Width: =Parent.Width
+                  - Home_ActionMenu_Sync_FluidContainer:
+                      Control: GroupContainer@1.5.0
+                      Variant: ManualLayout
+                      Properties:
+                        LayoutMinHeight: =16
+                        LayoutMinWidth: =16
+                      Children:
+                        - Home_ActionMenu_Sync_Container:
+                            Control: GroupContainer@1.5.0
+                            Variant: AutoLayout
+                            Properties:
+                              Height: =Home_ActionMenu_Home_Container.Height
+                              LayoutAlignItems: =LayoutAlignItems.Center
+                              LayoutDirection: =LayoutDirection.Horizontal
+                              LayoutJustifyContent: =LayoutJustifyContent.SpaceBetween
+                              PaddingBottom: =8
+                              PaddingLeft: =Home_ActionMenu_Home_Container.PaddingLeft
+                              PaddingRight: =Self.PaddingLeft
+                              PaddingTop: =8
+                              Width: =Home_ActionMenu_Home_Container.Width
+                            Children:
+                              - Home_ActionMenu_Sync_Text:
+                                  Control: Text@0.0.51
+                                  Properties:
+                                    Font: =Font.Lato
+                                    Height: =Self.Size*1.5
+                                    LayoutMinHeight: =16
+                                    LayoutMinWidth: =16
+                                    Size: =Home_ActionMenu_Home_Text.Size
+                                    Text: =Coalesce(Text(LookUp(LabelTranslations, Language = UserLanguage).TranslatedLabels.lblSync), "Sync")
+                                    Weight: ='TextCanvas.Weight'.Regular
+                                    Width: =Home_ActionMenu_Home_Text.Width
+                              - Home_ActionMenu_Sync_Icon:
+                                  Control: Image@2.2.3
+                                  Properties:
+                                    BorderColor: =RGBA(0, 18, 107, 1)
+                                    Height: =Home_ActionMenu_Home_Icon.Height
+                                    Image: =Sync
+                                    ImagePosition: =ImagePosition.Fill
+                                    LayoutMinHeight: =16
+                                    LayoutMinWidth: =16
+                                    Width: =Self.Height
+                        - Home_ActionMenu_Sync_Button:
+                            Control: Button@0.0.45
+                            Properties:
+                              Appearance: ='ButtonCanvas.Appearance'.Transparent
+                              Height: =Parent.Height
+                              OnSelect: =ShowHostInfo(HostInfo.OfflineSync)
+                              Text: =
+                              Width: =Parent.Width
+                  - Home_ActionMenu_Request_FluidContainer:
+                      Control: GroupContainer@1.5.0
+                      Variant: ManualLayout
+                      Properties:
+                        LayoutMinHeight: =16
+                        LayoutMinWidth: =16
+                      Children:
+                        - Home_ActionMenu_Request_Container:
+                            Control: GroupContainer@1.5.0
+                            Variant: AutoLayout
+                            Properties:
+                              Height: =Home_ActionMenu_Home_Container.Height
+                              LayoutAlignItems: =LayoutAlignItems.Center
+                              LayoutDirection: =LayoutDirection.Horizontal
+                              LayoutJustifyContent: =LayoutJustifyContent.SpaceBetween
+                              PaddingBottom: =8
+                              PaddingLeft: =Home_ActionMenu_Home_Container.PaddingLeft
+                              PaddingRight: =Self.PaddingLeft
+                              PaddingTop: =8
+                              Width: =Home_ActionMenu_Body_Container.Width
+                            Children:
+                              - Home_ActionMenu_Requests_Text:
+                                  Control: Text@0.0.51
+                                  Properties:
+                                    Font: =Font.Lato
+                                    Height: =Self.Size*1.5
+                                    LayoutMinHeight: =16
+                                    LayoutMinWidth: =16
+                                    Size: =Home_ActionMenu_Home_Text.Size
+                                    Text: =Coalesce(Text(LookUp(LabelTranslations, Language = UserLanguage).TranslatedLabels.lblRequests), "Requests")
+                                    Weight: ='TextCanvas.Weight'.Regular
+                                    Width: =Home_ActionMenu_Home_Text.Width
+                              - Home_ActionMenu_Requests_Icon:
+                                  Control: Image@2.2.3
+                                  Properties:
+                                    BorderColor: =RGBA(0, 18, 107, 1)
+                                    Height: =Home_ActionMenu_Home_Icon.Height
+                                    Image: =Comment_Black_icon
+                                    LayoutMinHeight: =16
+                                    LayoutMinWidth: =16
+                                    PaddingBottom: =2
+                                    PaddingLeft: =2
+                                    PaddingRight: =2
+                                    PaddingTop: =2
+                                    Width: =Self.Height
+                        - Home_ActionMenu_Request_Button:
+                            Control: Button@0.0.45
+                            Properties:
+                              Appearance: ='ButtonCanvas.Appearance'.Transparent
+                              FontWeight: =FontWeight.Normal
+                              Height: =Parent.Height
+                              OnSelect: |-
+                                =Navigate('Requests Screen', ScreenTransition.Fade,{RecordofRequests : Blank()})
+                              Text: =
+                              Width: =Parent.Width
+                  - Home_ActionMenu_Language_FluidContainer:
+                      Control: GroupContainer@1.5.0
+                      Variant: ManualLayout
+                      Properties:
+                        LayoutMinHeight: =16
+                        LayoutMinWidth: =16
+                      Children:
+                        - Home_ActionMenu_Language_Container:
+                            Control: GroupContainer@1.5.0
+                            Variant: AutoLayout
+                            Properties:
+                              Height: =Home_ActionMenu_Home_Container.Height
+                              LayoutAlignItems: =LayoutAlignItems.Center
+                              LayoutDirection: =LayoutDirection.Horizontal
+                              LayoutJustifyContent: =LayoutJustifyContent.SpaceBetween
+                              PaddingBottom: =8
+                              PaddingLeft: =Home_ActionMenu_Home_Container.PaddingLeft
+                              PaddingRight: =Self.PaddingLeft
+                              PaddingTop: =8
+                              Width: =Home_ActionMenu_Home_Container.Width
+                            Children:
+                              - Home_ActionMenu_Language_Text:
+                                  Control: Text@0.0.51
+                                  Properties:
+                                    Font: =Font.Lato
+                                    Height: =Self.Size*1.5
+                                    LayoutMinHeight: =16
+                                    LayoutMinWidth: =16
+                                    Size: =Home_ActionMenu_Home_Text.Size
+                                    Text: =Coalesce(Text(LookUp(LabelTranslations, Language = UserLanguage).TranslatedLabels.lblLanguage), "Language")
+                                    Weight: ='TextCanvas.Weight'.Regular
+                                    Width: =Home_ActionMenu_Home_Text.Width
+                              - Home_ActionMenu_Language_Icon:
+                                  Control: Image@2.2.3
+                                  Properties:
+                                    BorderColor: =RGBA(0, 18, 107, 1)
+                                    Height: =Home_ActionMenu_Home_Icon.Height
+                                    Image: ="data:image/svg+xml;utf8, "&EncodeUrl("<svg width='800px' height='800px' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'><path d='M8 15H3.5A2.502 2.502 0 0 1 1 12.5v-9A2.502 2.502 0 0 1 3.5 1h9A2.502 2.502 0 0 1 15 3.5V8h-1V3.5A1.502 1.502 0 0 0 12.5 2h-9A1.502 1.502 0 0 0 2 3.5v9A1.502 1.502 0 0 0 3.5 14H8zm-.038-4.811a9.77 9.77 0 0 1-3.766 1.796l-.242-.97a8.816 8.816 0 0 0 3.282-1.532A9.264 9.264 0 0 1 4.888 5H4V4h3.279l-.544-.544.707-.707L8.692 4H12v1h-.914A9.836 9.836 0 0 1 9.78 8.152a3.853 3.853 0 0 0-1.82 2.037zm.032-1.383A8.167 8.167 0 0 0 10.058 5H5.922a8.18 8.18 0 0 0 2.072 3.806zM23 20.447v-8.894A2.525 2.525 0 0 0 20.484 9h-8.931A2.556 2.556 0 0 0 9 11.553v8.894A2.556 2.556 0 0 0 11.553 23h8.894A2.556 2.556 0 0 0 23 20.447zM20.484 10A1.517 1.517 0 0 1 22 11.516v8.968A1.517 1.517 0 0 1 20.484 22h-8.968A1.517 1.517 0 0 1 10 20.484v-8.968A1.517 1.517 0 0 1 11.516 10zm-2.086 8h-4.796l-1.159 2.23-.886-.46L16 11.215l4.443 8.555-.886.46zm-.52-1L16 13.385 14.122 17z'/><path fill='none' d='M0 0h24v24H0z'/></svg>")
+                                    LayoutMinHeight: =16
+                                    LayoutMinWidth: =16
+                                    PaddingBottom: =1
+                                    PaddingLeft: =1
+                                    PaddingRight: =1
+                                    PaddingTop: =1
+                                    Width: =Self.Height
+                        - Home_ActionMenu_Language_Button:
+                            Control: Button@0.0.45
+                            Properties:
+                              Appearance: ='ButtonCanvas.Appearance'.Transparent
+                              Height: =Parent.Height
+                              OnSelect: |-
+                                =UpdateContext({IslanguageOptionSelection: true})
+                              Text: =
+                              Width: =Parent.Width
+      - Container3:
+          Control: GroupContainer@1.5.0
+          Variant: ManualLayout
+          Properties:
+            Height: =Parent.Height
+            Visible: =IslanguageOptionSelection
+            Width: =Parent.Width
+            Y: |+
+              =0
+          Children:
+            - Home_Language_Container_Close_Button:
+                Control: Button@0.0.45
+                Properties:
+                  Appearance: ='ButtonCanvas.Appearance'.Transparent
+                  Height: =Parent.Height
+                  OnSelect: |-
+                    =UpdateContext({IslanguageOptionSelection: false})
+                  Text: =
+                  Width: =Parent.Width
+            - Home_Languages_Option_Body_Container:
+                Control: GroupContainer@1.5.0
+                Variant: AutoLayout
+                Properties:
+                  DropShadow: =DropShadow.ExtraBold
+                  Fill: =RGBA(255, 255, 255, 1)
+                  Height: =Min(Language_English_Label_Container_1.Height*Gallery2.AllItemsCount,400)
+                  LayoutAlignItems: =LayoutAlignItems.Center
+                  LayoutDirection: =LayoutDirection.Vertical
+                  LayoutJustifyContent: =LayoutJustifyContent.Center
+                  RadiusBottomLeft: =Self.RadiusTopLeft
+                  RadiusBottomRight: =Self.RadiusTopLeft
+                  RadiusTopLeft: =Self.Height*0.1
+                  RadiusTopRight: =Self.RadiusTopLeft
+                  Width: =Home_ActionMenu_Body_Container.Width*0.9
+                  X: =Home_ActionMenu_Body_Container.X+Home_ActionMenu_Body_Container.Width -Self.Width-15
+                  Y: =Home_ActionMenu_Body_Container.Y+Home_ActionMenu_Body_Container.Height -15
+                Children:
+                  - Gallery2:
+                      Control: Gallery@2.15.0
+                      Variant: BrowseLayout_Vertical_TwoTextOneImageVariant_ver5.0
+                      Properties:
+                        BorderColor: =RGBA(0, 18, 107, 1)
+                        Items: =Filter(Languages, Status = 'Status (Languages)'.Active)
+                        LayoutMinHeight: =16
+                        LayoutMinWidth: =16
+                        ShowScrollbar: =false
+                        TemplateSize: =Language_English_Container_1.Height
+                      Children:
+                        - Language_English_Container_1:
+                            Control: GroupContainer@1.5.0
+                            Variant: ManualLayout
+                            Properties:
+                              Height: =Language_English_Label_Container_1.Height
+                              Width: =Parent.Width
+                            Children:
+                              - Language_English_Label_Container_1:
+                                  Control: GroupContainer@1.5.0
+                                  Variant: AutoLayout
+                                  Properties:
+                                    DropShadow: =DropShadow.None
+                                    Height: =Language_English_Label_Text_1.Height*1.5
+                                    LayoutAlignItems: =LayoutAlignItems.Center
+                                    LayoutDirection: =LayoutDirection.Horizontal
+                                    LayoutJustifyContent: =LayoutJustifyContent.End
+                                    PaddingBottom: =8
+                                    PaddingLeft: =Self.Width*0.07
+                                    PaddingRight: =Self.PaddingLeft
+                                    PaddingTop: =8
+                                    Width: =Parent.Width
+                                  Children:
+                                    - Language_English_Label_Text_1:
+                                        Control: Text@0.0.51
+                                        Properties:
+                                          Align: ='TextCanvas.Align'.End
+                                          Font: =Font.Lato
+                                          Height: =Self.Size*1.5
+                                          LayoutMinHeight: =16
+                                          LayoutMinWidth: =16
+                                          Size: |-
+                                            =//If (HomeScreen.Size <= ScreenSize.Small , 30 ,HomeScreen.Size <= ScreenSize.Medium,45,60)
+                                            LookUp(EliteTheme.FontSizes.Body, ScreenSize = HomeScreen.Size).FontSize+5
+                                          Text: =Coalesce(ThisItem.Translation,ThisItem.Name)
+                                          Weight: =If(UserLanguage = ThisItem.Name,'TextCanvas.Weight'.Bold,'TextCanvas.Weight'.Medium)
+                                          Width: =Self.Size*Len(Self.Text)*0.75
+                              - Language_English_Button_1:
+                                  Control: Button@0.0.45
+                                  Properties:
+                                    Appearance: ='ButtonCanvas.Appearance'.Transparent
+                                    FontWeight: =FontWeight.Semibold
+                                    Height: =Parent.Height
+                                    OnSelect: |-
+                                      =Set(UserLanguage, ThisItem.Name);
+                                      UpdateContext({IslanguageOptionSelection: false,IsHomeSelectionOptionsVisible:false});
+                                    Text: =
+                                    Width: =Parent.Width
+      - Comment_Loader_Container_4:
+          Control: GroupContainer@1.5.0
+          Variant: ManualLayout
+          Properties:
+            Fill: =RGBA(0, 0, 0, 0.7)
+            Height: =Parent.Height
+            Visible: =IsHomeScreenLoaderVisible
+            Width: =Parent.Width
+          Children:
+            - Spinner1_9:
+                Control: Spinner@1.4.6
+                Properties:
+                  FontColor: =RGBA(255, 255, 255, 1)
+                  FontSize: =If (HomeScreen.Size <= ScreenSize.Small , 50 ,HomeScreen.Size <= ScreenSize.Medium,65,80)
+                  Height: =Parent.Height
+                  Label: =    Coalesce(Text(LookUp(LabelTranslations, Language = UserLanguage).TranslatedLabels.lblPleaseWait), "Please Wait...")
+                  LabelPosition: ='Spinner.LabelPosition'.Below
+                  SpinnerSize: ='Spinner.SpinnerSize'.Huge
+                  Width: =Parent.Width

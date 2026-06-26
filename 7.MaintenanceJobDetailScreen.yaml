@@ -1,0 +1,2570 @@
+Screens:
+  MaintenanceJobDetailScreen:
+    Properties:
+      Fill: =RGBA(246, 252, 255, 1)
+      LoadingSpinnerColor: =RGBA(56, 96, 178, 1)
+      OnVisible: |-
+        =UpdateContext(
+            {
+                IsSelectionOptionsVisible: false,
+                IsVisibleUpdateStatusPopupForm: false,
+                IsVisibleMoreInformationPopupForm: false,
+                IsVisibleConfirmPopupForm: false,
+                IsTimerStart: false
+            }
+        );
+        UpdateContext(
+            {
+                CurrentMaintanenceRecord: LookUp(
+                    'Maintenance Jobs',
+                    'Maintenance Job' = CurrentRecord         )
+            }
+        );
+
+
+
+        Reset(Timer1);
+
+        ClearCollect(MaintenanceJobTimeEntries , Filter('Time Entries','Maintenance Job'.'Maintenance Job' = CurrentMaintanenceRecord.'Maintenance Job'));
+
+        UpdateContext(
+            {
+                TimerDefaultValue: Sum(
+                    MaintenanceJobTimeEntries,
+                    With(
+                        {
+                            _duration: If(
+                                IsBlank('End Time'),
+                                DateDiff(
+                                    'Start Time',
+                                    Now(),
+                                    TimeUnit.Milliseconds
+                                ),
+                                DateDiff(
+                                    'Start Time',
+                                    'End Time',
+                                    TimeUnit.Milliseconds
+                                )-1000
+                            )
+                        },
+                   // RoundDown(_duration / 1000, 0) * 1000
+                        _duration
+                    )
+                )
+            }
+        );
+        If(
+            IsEmpty(
+                Filter(
+                    'Time Entries',
+                    'Maintenance Job'.'Maintenance Job' = CurrentMaintanenceRecord.'Maintenance Job' && 'Status Reason' = 'Status Reason (Time Entries)'.Current
+                )
+            ),
+            UpdateContext({IsTimerStart: false}),
+            UpdateContext({IsTimerStart: true})
+        );
+        ClearCollect(
+                    OptionsetForExternalStatus,
+                    {
+                        elt_name: "--Select--",
+                        elt_jobstatusid: Blank()
+                    },
+                    ShowColumns(Filter('Job Statuses','Is Visible For Maintenance Jobs?', Status = 'Status (Job Statuses)'.Active), Name,'Job Status')
+        );
+    Children:
+      - Image1:
+          Control: Image@2.2.3
+          Properties:
+            BorderColor: =RGBA(0, 18, 107, 1)
+            Image: =b
+            Visible: =false
+            X: =40
+            Y: =40
+      - MaintenanceJob_Detail_Container:
+          Control: GroupContainer@1.5.0
+          Variant: AutoLayout
+          Properties:
+            DropShadow: =DropShadow.None
+            Height: =Parent.Height
+            LayoutAlignItems: =LayoutAlignItems.Stretch
+            LayoutDirection: =LayoutDirection.Vertical
+            LayoutJustifyContent: =LayoutJustifyContent.SpaceBetween
+            RadiusBottomLeft: =0
+            RadiusBottomRight: =0
+            RadiusTopLeft: =0
+            RadiusTopRight: =0
+            Width: =Parent.Width
+          Children:
+            - MaintenanceJob_Detail_Header:
+                Control: GroupContainer@1.5.0
+                Variant: ManualLayout
+                Properties:
+                  FillPortions: =0
+                  Height: |-
+                    =//If (Home.Size <= ScreenSize.Small , Parent.Height*0.15 ,Home.Size <= ScreenSize.Large,Parent.Height*0.1,Parent.Height*0.1)
+                    Parent.Height*0.12
+                  RadiusBottomLeft: =40
+                  RadiusBottomRight: =40
+                  RadiusTopLeft: =
+                  Width: =Parent.Width
+                  X: =40
+                  Y: =40
+                Children:
+                  - BackImage_3:
+                      Control: Image@2.2.3
+                      Properties:
+                        BorderColor: =RGBA(0, 18, 107, 1)
+                        Height: =Parent.Height
+                        Image: ='BG 1'
+                        ImagePosition: =ImagePosition.Tile
+                        Width: =Parent.Width
+                  - MaintenanceJob_Detail_Wrapper:
+                      Control: GroupContainer@1.5.0
+                      Variant: ManualLayout
+                      Properties:
+                        DropShadow: =DropShadow.None
+                        Height: =Parent.Height
+                        Width: =Parent.Width
+                      Children:
+                        - MaintenanceJob_Detail_Inner_Container:
+                            Control: GroupContainer@1.5.0
+                            Variant: AutoLayout
+                            Properties:
+                              Height: =Parent.Height
+                              LayoutAlignItems: =LayoutAlignItems.Center
+                              LayoutDirection: =LayoutDirection.Vertical
+                              LayoutGap: =If(HomeScreen.Size <= ScreenSize.Small ,10 ,HomeScreen.Size <= ScreenSize.Large,20,30)
+                              PaddingBottom: =8
+                              PaddingLeft: =8
+                              PaddingRight: =8
+                              PaddingTop: =8
+                              Width: =Parent.Width
+                            Children:
+                              - MaintenanceJob_Detail_Back_And _Title_And_Add_Container:
+                                  Control: GroupContainer@1.5.0
+                                  Variant: AutoLayout
+                                  Properties:
+                                    DropShadow: =DropShadow.None
+                                    LayoutAlignItems: =LayoutAlignItems.Center
+                                    LayoutDirection: =LayoutDirection.Horizontal
+                                    PaddingBottom: =8
+                                    PaddingLeft: =15
+                                    PaddingRight: =15
+                                    PaddingTop: =8
+                                    X: =40
+                                    Y: =40
+                                  Children:
+                                    - MaintenanceJob_Detail_BackButton_Container:
+                                        Control: GroupContainer@1.5.0
+                                        Variant: ManualLayout
+                                        Properties:
+                                          AlignInContainer: =AlignInContainer.Center
+                                          BorderColor: =RGBA(255, 255, 255, 0.2)
+                                          BorderThickness: =TaskDashboardScreen.Size+1
+                                          Fill: =RGBA(255, 255, 255, 0.1)
+                                          FillPortions: =0
+                                          Height: =Self.Width
+                                          LayoutMinHeight: =16
+                                          LayoutMinWidth: =16
+                                          RadiusBottomLeft: =Self.RadiusTopLeft
+                                          RadiusBottomRight: =Self.RadiusTopLeft
+                                          RadiusTopLeft: =Self.Height*0.3
+                                          RadiusTopRight: =Self.RadiusTopLeft
+                                          Width: =If (TaskDashboardScreen.Size <= ScreenSize.Small , 70 ,TaskDashboardScreen.Size <= ScreenSize.Medium,100,130)
+                                        Children:
+                                          - MaintenanceJob_Detail_Back_Button:
+                                              Control: Button@0.0.45
+                                              Properties:
+                                                Align: =Align.Center
+                                                Appearance: ='ButtonCanvas.Appearance'.Transparent
+                                                BasePaletteColor: =RGBA(255, 255, 255, 1)
+                                                BorderColor: =RGBA(255,255,255,0.2)
+                                                BorderRadius: =Self.Height*0.3
+                                                BorderStyle: =BorderStyle.None
+                                                FontColor: =RGBA(255, 255, 255, 1)
+                                                FontSize: =If (HomeScreen.Size <= ScreenSize.Small , 40 ,HomeScreen.Size <= ScreenSize.Medium,55,70)
+                                                FontWeight: =FontWeight.Bold
+                                                Height: =Self.Width
+                                                Icon: ="ArrowLeft"
+                                                IconStyle: ='ButtonCanvas.IconStyle'.Filled
+                                                OnSelect: |-
+                                                  =//Notify("Back Initiated");
+                                                  Back()
+                                                Text: =
+                                                Width: =Parent.Width
+                                    - MaintenanceJob_Detail_Header_Title_Container:
+                                        Control: GroupContainer@1.5.0
+                                        Variant: AutoLayout
+                                        Properties:
+                                          BorderColor: =RGBA(0, 0, 0, 0)
+                                          DropShadow: =DropShadow.None
+                                          LayoutAlignItems: =LayoutAlignItems.Center
+                                          LayoutDirection: =LayoutDirection.Vertical
+                                          LayoutJustifyContent: =LayoutJustifyContent.Center
+                                          LayoutMinHeight: =16
+                                          LayoutMinWidth: =16
+                                          Width: =Parent.Width*0.2
+                                        Children:
+                                          - MaintenanceJob_Detail_Header_Title:
+                                              Control: Text@0.0.51
+                                              Properties:
+                                                Align: ='TextCanvas.Align'.Center
+                                                AutoHeight: =true
+                                                Font: =Font.Lato
+                                                FontColor: =RGBA(255, 255, 255, 1)
+                                                Height: =Self.Size + 10
+                                                LayoutMinHeight: =16
+                                                LayoutMinWidth: =16
+                                                Size: |-
+                                                  =If(
+                                                      HomeScreen.Size <= ScreenSize.Small,
+                                                      45,
+                                                      HomeScreen.Size <= ScreenSize.Medium,
+                                                          70,
+                                                      90
+                                                  )
+                                                Text: =Coalesce(Text(LookUp(LabelTranslations, Language = UserLanguage).TranslatedLabels.lblMaintenanceForm),"Maintenance Form")
+                                                VerticalAlign: =VerticalAlign.Middle
+                                                Weight: ='TextCanvas.Weight'.Semibold
+                                                Width: =Parent.Width
+                                    - MaintenanceJob_Detail_Add_Button_Container:
+                                        Control: GroupContainer@1.5.0
+                                        Variant: ManualLayout
+                                        Properties:
+                                          AlignInContainer: =AlignInContainer.Center
+                                          BorderColor: =RGBA(255, 255, 255, 0.2)
+                                          BorderThickness: =TaskDashboardScreen.Size+1
+                                          Fill: =RGBA(255, 255, 255, 0.1)
+                                          FillPortions: =0
+                                          Height: =Self.Width
+                                          LayoutMinHeight: =16
+                                          LayoutMinWidth: =16
+                                          RadiusBottomLeft: =Self.RadiusTopLeft
+                                          RadiusBottomRight: =Self.RadiusTopLeft
+                                          RadiusTopLeft: =Self.Height*0.3
+                                          RadiusTopRight: =Self.RadiusTopLeft
+                                          Width: =If (TaskDashboardScreen.Size <= ScreenSize.Small , 70 ,TaskDashboardScreen.Size <= ScreenSize.Medium,100,130)
+                                        Children:
+                                          - MaintenanceJob_Detail_Add_Button:
+                                              Control: Button@0.0.45
+                                              Properties:
+                                                Align: =Align.Center
+                                                Appearance: ='ButtonCanvas.Appearance'.Transparent
+                                                BasePaletteColor: =RGBA(255, 255, 255, 1)
+                                                BorderColor: =Theme_OnStart.Colors.SecondaryColor
+                                                BorderRadius: =Self.Height*0.3
+                                                BorderStyle: =BorderStyle.None
+                                                BorderThickness: =0
+                                                FontColor: =RGBA(255, 255, 255, 1)
+                                                FontSize: =If (HomeScreen.Size <= ScreenSize.Small , 40 ,HomeScreen.Size <= ScreenSize.Medium,55,70)
+                                                FontWeight: =FontWeight.Bold
+                                                Height: =Self.Width
+                                                Icon: ="Add"
+                                                IconStyle: ='ButtonCanvas.IconStyle'.Filled
+                                                OnSelect: |-
+                                                  =//Notify("Back Initiated");
+                                                  UpdateContext( { IsSelectionOptionsVisible: true} );
+                                                Text: =
+                                                Width: =Parent.Width
+            - MaintenanceJob_Detail_Body:
+                Control: GroupContainer@1.5.0
+                Variant: AutoLayout
+                Properties:
+                  LayoutAlignItems: =LayoutAlignItems.Center
+                  LayoutDirection: =LayoutDirection.Vertical
+                  LayoutGap: =20
+                  LayoutMinHeight: =16
+                  LayoutMinWidth: =16
+                  LayoutOverflowY: =LayoutOverflow.Scroll
+                  PaddingBottom: =25
+                  PaddingLeft: =30
+                  PaddingRight: =30
+                  PaddingTop: =25
+                Children:
+                  - MaintenanceJob_Detail_Card1:
+                      Control: GroupContainer@1.5.0
+                      Variant: ManualLayout
+                      Properties:
+                        AlignInContainer: =AlignInContainer.Center
+                        BorderColor: =RGBA(228, 228, 204, 0.8)
+                        BorderThickness: =1
+                        DropShadow: =DropShadow.None
+                        Fill: =RGBA(255, 255, 255, 1)
+                        FillPortions: =0
+                        Height: = If (HomeScreen.Size <= ScreenSize.Small , 400 ,HomeScreen.Size <= ScreenSize.Medium, 600,700)
+                        LayoutMaxWidth: =1000
+                        RadiusBottomLeft: =20
+                        RadiusBottomRight: =20
+                        RadiusTopLeft: =20
+                        RadiusTopRight: =20
+                        Width: |-
+                          =If(
+                              MaintenanceJobDetailScreen.Width>=1000,
+                               If(
+                                  HomeScreen.Width >= 1300,
+                                  1200
+                                  ,
+                                  1000
+                              ),
+                              Parent.Width*0.9
+                          )
+                        X: =(Parent.Width - Self.Width)/2
+                        Y: =40
+                      Children:
+                        - MaintenanceJob_Detail_Card1_Inner:
+                            Control: GroupContainer@1.5.0
+                            Variant: AutoLayout
+                            Properties:
+                              Height: =Parent.Height
+                              LayoutAlignItems: =LayoutAlignItems.Center
+                              LayoutDirection: =LayoutDirection.Vertical
+                              PaddingBottom: =8
+                              PaddingLeft: =8
+                              PaddingRight: =8
+                              PaddingTop: =8
+                              Width: =Parent.Width
+                            Children:
+                              - MaintenanceJob_Detail_Card1_Sec1:
+                                  Control: GroupContainer@1.5.0
+                                  Variant: ManualLayout
+                                  Properties:
+                                    DropShadow: =DropShadow.None
+                                    FillPortions: =3
+                                    LayoutMinHeight: =16
+                                    LayoutMinWidth: =16
+                                  Children:
+                                    - Maintenance_View_Card_2:
+                                        Control: GroupContainer@1.5.0
+                                        Variant: AutoLayout
+                                        Properties:
+                                          DropShadow: =DropShadow.None
+                                          Height: =Parent.Height
+                                          LayoutAlignItems: =LayoutAlignItems.Center
+                                          LayoutDirection: =LayoutDirection.Vertical
+                                          PaddingBottom: =8
+                                          PaddingLeft: =8
+                                          PaddingRight: =8
+                                          PaddingTop: =8
+                                          Width: =Parent.Width
+                                        Children:
+                                          - Maintenance_View_Card_Sec1_2:
+                                              Control: GroupContainer@1.5.0
+                                              Variant: AutoLayout
+                                              Properties:
+                                                DropShadow: =DropShadow.None
+                                                LayoutAlignItems: =LayoutAlignItems.Center
+                                                LayoutDirection: =LayoutDirection.Horizontal
+                                                LayoutGap: =10
+                                                LayoutMinHeight: =16
+                                                LayoutMinWidth: =16
+                                                PaddingBottom: =8
+                                                PaddingLeft: =15
+                                                PaddingRight: =15
+                                                PaddingTop: =8
+                                              Children:
+                                                - TextCanvas10_2:
+                                                    Control: Text@0.0.51
+                                                    Properties:
+                                                      AutoHeight: =true
+                                                      FillPortions: =5
+                                                      Font: =Font.Lato
+                                                      FontColor: =EliteTheme.Colors.Body_UI.TextPrimary
+                                                      LayoutMinHeight: =16
+                                                      LayoutMinWidth: =16
+                                                      Size: = If (HomeScreen.Size <= ScreenSize.Small , 30 ,HomeScreen.Size <= ScreenSize.Medium,40,50)
+                                                      Text: =Coalesce(CurrentMaintanenceRecord.Description,"-")
+                                                      VerticalAlign: =VerticalAlign.Middle
+                                                      Weight: ='TextCanvas.Weight'.Semibold
+                                                      Wrap: =false
+                                                - TextCanvas11_4:
+                                                    Control: Text@0.0.51
+                                                    Properties:
+                                                      Align: ='TextCanvas.Align'.Center
+                                                      AlignInContainer: =AlignInContainer.Center
+                                                      BorderColor: |-
+                                                        =If(
+                                                            CurrentMaintanenceRecord.'Task Status' < 3,
+                                                            EliteTheme.Colors.StatusBadge.Warning_Border,
+                                                            If(
+                                                                CurrentMaintanenceRecord.'Task Status' = 3,
+                                                                EliteTheme.Colors.StatusBadge.Error_Border,
+                                                                EliteTheme.Colors.StatusBadge.Success_Border
+                                                            )
+                                                        )
+                                                      BorderRadius: =100
+                                                      BorderStyle: =BorderStyle.Solid
+                                                      BorderThickness: =3
+                                                      Fill: |-
+                                                        =If(
+                                                            CurrentMaintanenceRecord.'Task Status' < 3,
+                                                            EliteTheme.Colors.StatusBadge.Warning_BG,
+                                                            If(
+                                                                CurrentMaintanenceRecord.'Task Status' = 3,
+                                                                EliteTheme.Colors.StatusBadge.Error_BG,
+                                                                EliteTheme.Colors.StatusBadge.Success_BG
+                                                            )
+                                                        )
+                                                      FillPortions: =2
+                                                      Font: =Font.Lato
+                                                      FontColor: |-
+                                                        =If(
+                                                            CurrentMaintanenceRecord.'Task Status' < 3,
+                                                            EliteTheme.Colors.StatusBadge.Warning_Text,
+                                                            If(
+                                                                CurrentMaintanenceRecord.'Task Status' = 3,
+                                                                EliteTheme.Colors.StatusBadge.Error_Text,
+                                                                EliteTheme.Colors.StatusBadge.Success_Text
+                                                            )
+                                                        )
+                                                      Height: =StatusImage_2.Height
+                                                      LayoutMinHeight: =16
+                                                      LayoutMinWidth: =16
+                                                      Size: = If (HomeScreen.Size <= ScreenSize.Small , 20 ,HomeScreen.Size <= ScreenSize.Medium,30,40)
+                                                      Text: |-
+                                                        =If(
+                                                            CurrentMaintanenceRecord.'Task Status' < 3,
+                                                            Coalesce(
+                                                            Text(LookUp(LabelTranslations, Language = UserLanguage).TranslatedLabels.lblInProgress),"In Progress"),
+                                                            If(
+                                                                CurrentMaintanenceRecord.'Task Status' = 3,
+                                                                Coalesce(
+                                                                Text(LookUp(LabelTranslations, Language = UserLanguage).TranslatedLabels.lblOnHold),"On Hold"),
+                                                                Coalesce(
+                                                                Text(LookUp(LabelTranslations, Language = UserLanguage).TranslatedLabels.lblCompleted),"Completed")
+                                                            )
+                                                        )
+                                                      VerticalAlign: =VerticalAlign.Middle
+                                                      Weight: ='TextCanvas.Weight'.Bold
+                                                - StatusImage_2:
+                                                    Control: Image@2.2.3
+                                                    Properties:
+                                                      BorderColor: |-
+                                                        =If(
+                                                            CurrentMaintanenceRecord.'Task Status' < 3,
+                                                            EliteTheme.Colors.StatusBadge.Warning_Border,
+                                                            If(
+                                                                CurrentMaintanenceRecord.'Task Status' = 3,
+                                                                EliteTheme.Colors.StatusBadge.Error_Border,
+                                                                EliteTheme.Colors.StatusBadge.Success_Border
+                                                            )
+                                                        )
+                                                      BorderThickness: =3
+                                                      Fill: |-
+                                                        =If(
+                                                            CurrentMaintanenceRecord.'Task Status' < 3,
+                                                            EliteTheme.Colors.StatusBadge.Warning_BG,
+                                                            If(
+                                                                CurrentMaintanenceRecord.'Task Status' = 3,
+                                                                EliteTheme.Colors.StatusBadge.Error_BG,
+                                                                EliteTheme.Colors.StatusBadge.Success_BG
+                                                            )
+                                                        )
+                                                      Height: =Parent.Height*0.5
+                                                      Image: |-
+                                                        =If(
+                                                            CurrentMaintanenceRecord.'Task Status' < 3,
+                                                            EliteTheme.Colors.StatusBadge.Warning_Image,
+                                                            If(
+                                                                CurrentMaintanenceRecord.'Task Status' = 3,
+                                                                EliteTheme.Colors.StatusBadge.Error_Image,
+                                                                EliteTheme.Colors.StatusBadge.Success_Image
+                                                            )
+                                                        )
+                                                      LayoutMinHeight: =16
+                                                      LayoutMinWidth: =16
+                                                      PaddingBottom: =7
+                                                      PaddingLeft: =7
+                                                      PaddingRight: =7
+                                                      PaddingTop: =7
+                                                      RadiusBottomLeft: =100
+                                                      RadiusBottomRight: =100
+                                                      RadiusTopLeft: =100
+                                                      RadiusTopRight: =100
+                                                      Width: =Self.Height
+                                          - Maintenance_View_Card_Sec2_2:
+                                              Control: GroupContainer@1.5.0
+                                              Variant: AutoLayout
+                                              Properties:
+                                                DropShadow: =DropShadow.None
+                                                LayoutAlignItems: =LayoutAlignItems.Center
+                                                LayoutDirection: =LayoutDirection.Horizontal
+                                                LayoutMinHeight: =16
+                                                LayoutMinWidth: =16
+                                                PaddingBottom: =8
+                                                PaddingLeft: =8
+                                                PaddingRight: =8
+                                                PaddingTop: =8
+                                                X: =40
+                                                Y: =40
+                                              Children:
+                                                - Label3_2:
+                                                    Control: Label@2.5.1
+                                                    Properties:
+                                                      BorderColor: =RGBA(0, 18, 107, 1)
+                                                      DisabledColor: =ColorFade(EliteTheme.Colors.Body_UI.TextSecondary,-0.3)
+                                                      DisplayMode: =DisplayMode.Disabled
+                                                      FillPortions: =2
+                                                      Font: =Font.Lato
+                                                      FontWeight: =FontWeight.Bold
+                                                      LayoutMinHeight: =16
+                                                      LayoutMinWidth: =16
+                                                      PaddingLeft: =15
+                                                      Size: = If (HomeScreen.Size <= ScreenSize.Small , 22 ,HomeScreen.Size <= ScreenSize.Medium, 32,37)
+                                                      Text: =Coalesce( LookUp(Parks,Park=CurrentMaintanenceRecord.Park.Park).'Park Code',"-")
+                                                - Label4_2:
+                                                    Control: Label@2.5.1
+                                                    Properties:
+                                                      BorderColor: =RGBA(0, 18, 107, 1)
+                                                      DisabledColor: =ColorFade(EliteTheme.Colors.Body_UI.TextSecondary,-0.3)
+                                                      DisplayMode: =DisplayMode.Disabled
+                                                      FillPortions: =1
+                                                      Font: =Font.Lato
+                                                      FontWeight: =FontWeight.Bold
+                                                      LayoutMinHeight: =16
+                                                      LayoutMinWidth: =16
+                                                      PaddingLeft: =15
+                                                      Size: = If (HomeScreen.Size <= ScreenSize.Small , 22 ,HomeScreen.Size <= ScreenSize.Medium,32,37)
+                                                      Text: =Coalesce(LookUp(Plots,Plot=CurrentMaintanenceRecord.Plot.Plot).'Plot No')
+                                          - Maintenance_View_Card_Sec3_2:
+                                              Control: GroupContainer@1.5.0
+                                              Variant: AutoLayout
+                                              Properties:
+                                                DropShadow: =DropShadow.None
+                                                LayoutAlignItems: =LayoutAlignItems.Center
+                                                LayoutDirection: =LayoutDirection.Horizontal
+                                                LayoutMinHeight: =16
+                                                LayoutMinWidth: =16
+                                                PaddingBottom: =8
+                                                PaddingLeft: =8
+                                                PaddingRight: =8
+                                                PaddingTop: =8
+                                              Children:
+                                                - TextCanvas12_2:
+                                                    Control: Text@0.0.51
+                                                    Properties:
+                                                      Align: ='TextCanvas.Align'.Start
+                                                      AutoHeight: =true
+                                                      FillPortions: =2
+                                                      Font: =Font.Lato
+                                                      FontColor: =ColorFade(EliteTheme.Colors.Body_UI.TextSecondary,-0.5)
+                                                      LayoutMinHeight: =16
+                                                      LayoutMinWidth: =16
+                                                      PaddingLeft: =15
+                                                      Size: = If (HomeScreen.Size <= ScreenSize.Small , 25 ,HomeScreen.Size <= ScreenSize.Medium,35,45)
+                                                      Text: |-
+                                                        =///CurrentMaintanenceRecord.Unit.'Unit No'
+                                                         Coalesce(LookUp(Units,Unit=CurrentMaintanenceRecord.Unit.Unit).'Unit No',"-")
+                                                      VerticalAlign: =VerticalAlign.Middle
+                                                      Weight: ='TextCanvas.Weight'.Bold
+                                                - Container27_2:
+                                                    Control: GroupContainer@1.5.0
+                                                    Variant: ManualLayout
+                                                    Properties:
+                                                      DropShadow: =DropShadow.None
+                                                      LayoutMinHeight: =16
+                                                      LayoutMinWidth: =16
+                                                      PaddingLeft: =15
+                                                    Children:
+                                                      - TextCanvas11_5:
+                                                          Control: Text@0.0.51
+                                                          Properties:
+                                                            Align: ='TextCanvas.Align'.Center
+                                                            BorderColor: =Theme_OnStart.MaintenanceJobsStatus.Onprogress.OnProgress_Border
+                                                            BorderRadius: =100
+                                                            BorderStyle: =BorderStyle.Solid
+                                                            BorderThickness: =0
+                                                            Fill: |
+                                                              =    If(
+                                                                      CurrentMaintanenceRecord.Priority = 1,
+                                                                      EliteTheme.Colors.StatusBadge.Error_BG,
+                                                                      If(CurrentMaintanenceRecord.Priority = 2,
+                                                                      EliteTheme.Colors.StatusBadge.Warning_BG,
+                                                                      EliteTheme.Colors.StatusBadge.Info_BG
+                                                                      )
+                                                                  )
+                                                            Font: =Font.Lato
+                                                            FontColor: |-
+                                                              =If(
+                                                                  CurrentMaintanenceRecord.Priority = 1,
+                                                                  EliteTheme.Colors.StatusBadge.Error_Text,
+                                                                  If(CurrentMaintanenceRecord.Priority = 2,
+                                                                   EliteTheme.Colors.StatusBadge.Warning_Text,
+                                                                   EliteTheme.Colors.StatusBadge.Info_Text
+                                                                  )
+                                                              )
+                                                            Height: =StatusImage_2.Height
+                                                            PaddingLeft: =0
+                                                            Size: = If (HomeScreen.Size <= ScreenSize.Small , 23 ,HomeScreen.Size <= ScreenSize.Medium,33,43)
+                                                            Text: "=If(\r\n    CurrentMaintanenceRecord.Priority = 1,\r\n    Coalesce(\r\n    Text(LookUp(LabelTranslations, Language = UserLanguage).TranslatedLabels.lblHigh),\"High\"),\r\n    If(CurrentMaintanenceRecord.Priority = 2,\r\n    Coalesce(\r\n        Text(LookUp(LabelTranslations, Language = UserLanguage).TranslatedLabels.lblMedium),\"Medium\"),\r\n    \r\n    Coalesce(\r\n        Text(LookUp(LabelTranslations, Language = UserLanguage).TranslatedLabels.lblLow),\"Low\")\r\n    )\r\n)"
+                                                            VerticalAlign: =VerticalAlign.Middle
+                                                            Visible: =!IsBlankOrError(CurrentMaintanenceRecord.Priority)
+                                                            Weight: ='TextCanvas.Weight'.Semibold
+                                                            Width: =Self.Size*5
+                                                            Y: =(Parent.Height -Self.Height)/2
+                              - MaintenanceJob_Detail_Card1_Sep:
+                                  Control: Rectangle@2.3.0
+                                  Properties:
+                                    BorderColor: =RGBA(0, 18, 107, 1)
+                                    Fill: =RGBA(51, 51, 51, 0.3)
+                                    Height: =1
+                                    LayoutMinHeight: =16
+                                    LayoutMinWidth: =16
+                                    Width: =MaintenanceJob_Detail_Card1_Sec2.Width - 50
+                              - MaintenanceJob_Detail_Card1_Sec2:
+                                  Control: GroupContainer@1.5.0
+                                  Variant: ManualLayout
+                                  Properties:
+                                    DropShadow: =DropShadow.None
+                                    LayoutMinHeight: =16
+                                    LayoutMinWidth: =16
+                                  Children:
+                                    - Container8_2:
+                                        Control: GroupContainer@1.5.0
+                                        Variant: AutoLayout
+                                        Properties:
+                                          DropShadow: =DropShadow.None
+                                          Height: =Parent.Height
+                                          LayoutAlignItems: =LayoutAlignItems.Center
+                                          LayoutDirection: =LayoutDirection.Horizontal
+                                          PaddingBottom: =8
+                                          PaddingLeft: =8
+                                          PaddingRight: =8
+                                          PaddingTop: =8
+                                          Width: =Parent.Width
+                                        Children:
+                                          - Container14_4:
+                                              Control: GroupContainer@1.5.0
+                                              Variant: AutoLayout
+                                              Properties:
+                                                DropShadow: =DropShadow.None
+                                                FillPortions: =4
+                                                LayoutAlignItems: =LayoutAlignItems.Center
+                                                LayoutDirection: =LayoutDirection.Horizontal
+                                                LayoutMinHeight: =16
+                                                LayoutMinWidth: =16
+                                                PaddingBottom: =8
+                                                PaddingLeft: =20
+                                                PaddingRight: =20
+                                                PaddingTop: =8
+                                              Children:
+                                                - Image4_4:
+                                                    Control: Image@2.2.3
+                                                    Properties:
+                                                      BorderColor: =RGBA(0, 18, 107, 1)
+                                                      Height: =Parent.Height
+                                                      Image: =Calendar
+                                                      ImagePosition: =ImagePosition.Stretch
+                                                      LayoutMinHeight: =16
+                                                      LayoutMinWidth: =16
+                                                      Width: =Self.Height*0.4
+                                                - TextCanvas5_4:
+                                                    Control: Text@0.0.51
+                                                    Properties:
+                                                      Align: ='TextCanvas.Align'.Start
+                                                      AlignInContainer: =AlignInContainer.Stretch
+                                                      FillPortions: =1
+                                                      Font: =Font.Lato
+                                                      FontColor: =EliteTheme.Colors.Body_UI.TextPrimary
+                                                      Height: =Parent.Height
+                                                      LayoutMinHeight: =16
+                                                      LayoutMinWidth: =16
+                                                      PaddingLeft: =15
+                                                      Size: = If (HomeScreen.Size <= ScreenSize.Small , 27 ,HomeScreen.Size <= ScreenSize.Medium,37,42)
+                                                      Text: =Coalesce(Text(CurrentMaintanenceRecord.'Due Date',"dd/mm/yyyy"),"-")
+                                                      VerticalAlign: =VerticalAlign.Middle
+                                                      Weight: ='TextCanvas.Weight'.Semibold
+                                                      Width: =
+                                                      Wrap: =false
+                                          - Container14_5:
+                                              Control: GroupContainer@1.5.0
+                                              Variant: AutoLayout
+                                              Properties:
+                                                DropShadow: =DropShadow.None
+                                                FillPortions: =3
+                                                LayoutAlignItems: =LayoutAlignItems.Center
+                                                LayoutDirection: =LayoutDirection.Horizontal
+                                                LayoutJustifyContent: =LayoutJustifyContent.End
+                                                LayoutMinHeight: =16
+                                                LayoutMinWidth: =16
+                                                PaddingBottom: =8
+                                                PaddingLeft: =20
+                                                PaddingRight: =20
+                                                PaddingTop: =8
+                                                Visible: =false
+                                              Children:
+                                                - Image4_5:
+                                                    Control: Image@2.2.3
+                                                    Properties:
+                                                      BorderColor: =RGBA(0, 18, 107, 1)
+                                                      Height: =Parent.Height
+                                                      Image: =Clock
+                                                      ImagePosition: =ImagePosition.Stretch
+                                                      LayoutMinHeight: =16
+                                                      LayoutMinWidth: =16
+                                                      Width: =Self.Height*0.4
+                                                - TextCanvas5_5:
+                                                    Control: Text@0.0.51
+                                                    Properties:
+                                                      Align: ='TextCanvas.Align'.Start
+                                                      AlignInContainer: =AlignInContainer.Center
+                                                      FillPortions: =1
+                                                      Font: =Font.Lato
+                                                      FontColor: =EliteTheme.Colors.Body_UI.TextPrimary
+                                                      Height: =Parent.Height
+                                                      LayoutMinHeight: =16
+                                                      LayoutMinWidth: =16
+                                                      PaddingLeft: =15
+                                                      Size: = If (HomeScreen.Size <= ScreenSize.Small , 27 ,HomeScreen.Size <= ScreenSize.Medium,37,42)
+                                                      Text: =Coalesce(Text(CurrentMaintanenceRecord.'Due Date',"hh:mm"),"--:--")
+                                                      VerticalAlign: =VerticalAlign.Middle
+                                                      Weight: ='TextCanvas.Weight'.Semibold
+                                                      Width: =Self.Size*4
+                                                      Wrap: =false
+                                          - Container12_2:
+                                              Control: GroupContainer@1.5.0
+                                              Variant: ManualLayout
+                                              Properties:
+                                                BorderColor: =RGBA(0, 0, 0, 0)
+                                                DropShadow: =DropShadow.None
+                                                FillPortions: =2
+                                                LayoutMinHeight: =16
+                                                LayoutMinWidth: =16
+                                                PaddingBottom: =8
+                                                PaddingTop: =8
+                                                RadiusBottomLeft: =Self.RadiusTopLeft
+                                                RadiusBottomRight: =Self.RadiusTopLeft
+                                                RadiusTopLeft: |
+                                                  =0
+                                                RadiusTopRight: =Self.RadiusTopLeft
+                                                Width: =
+                                              Children:
+                                                - Container22_2:
+                                                    Control: GroupContainer@1.5.0
+                                                    Variant: ManualLayout
+                                                    Properties:
+                                                      BorderColor: =RGBA(0, 0, 0, 0)
+                                                      DropShadow: =DropShadow.None
+                                                      Fill: |+
+                                                        =EliteTheme.Colors.StatusBadge.Comment_BG
+
+                                                      Height: =Parent.Height*0.8
+                                                      RadiusBottomLeft: =Self.RadiusTopLeft
+                                                      RadiusBottomRight: =Self.RadiusTopLeft
+                                                      RadiusTopLeft: =Self.Height*0.5
+                                                      RadiusTopRight: =Self.RadiusTopLeft
+                                                      Width: =Image12_2.Width+TextCanvas9_2.Width*1.6
+                                                      X: =(Parent.Width-Self.Width)
+                                                      Y: =(Parent.Height-Self.Height)/2
+                                                    Children:
+                                                      - TextCanvas9_2:
+                                                          Control: Text@0.0.51
+                                                          Properties:
+                                                            Align: ='TextCanvas.Align'.Center
+                                                            Font: =Font.Lato
+                                                            FontColor: =EliteTheme.Colors.StatusBadge.Comment_Text
+                                                            Height: =Parent.Height
+                                                            PaddingLeft: =0
+                                                            Size: = If (HomeScreen.Size <= ScreenSize.Small , 27 ,HomeScreen.Size <= ScreenSize.Medium,37,47)
+                                                            Text: |-
+                                                              =If(
+                                                                  CountRows(
+                                                                      Filter(
+                                                                          CurrentCommentsData,
+                                                                          Regarding = CurrentMaintanenceRecord
+                                                                      )
+                                                                  ) > 99,
+                                                                  "99+",
+                                                                  CountRows(
+                                                                      Filter(
+                                                                          CurrentCommentsData,
+                                                                          Regarding = CurrentMaintanenceRecord
+                                                                      )
+                                                                  )
+                                                              )
+                                                            VerticalAlign: =VerticalAlign.Middle
+                                                            Weight: ='TextCanvas.Weight'.Semibold
+                                                            Width: =Image12_2.Width*1.5
+                                                            Wrap: =false
+                                                            X: =Image12_2.X+Image12_2.Width
+                                                            Y: |
+                                                              =0
+                                                      - Image12_2:
+                                                          Control: Image@2.2.3
+                                                          Properties:
+                                                            BorderColor: =RGBA(0, 18, 107, 1)
+                                                            Height: =Parent.Height
+                                                            Image: =Comments_Icon
+                                                            Width: =Self.Height*0.5
+                                                            X: =Parent.RadiusTopLeft*0.6
+                                                      - ButtonCanvas6_2:
+                                                          Control: Button@0.0.45
+                                                          Properties:
+                                                            Appearance: ='ButtonCanvas.Appearance'.Transparent
+                                                            Height: =Parent.Height
+                                                            OnSelect: |-
+                                                              =Navigate('Comment Screen', ScreenTransition.Fade,{RecordofComments : CurrentMaintanenceRecord})
+                                                            Text: =
+                                                            Width: =Parent.Width
+                  - MaintenanceJob_Detail_Card2:
+                      Control: GroupContainer@1.5.0
+                      Variant: ManualLayout
+                      Properties:
+                        AlignInContainer: =AlignInContainer.Center
+                        BorderColor: =RGBA(228, 228, 204, 0.8)
+                        BorderThickness: =1
+                        DropShadow: =DropShadow.None
+                        Fill: =RGBA(255, 255, 255, 1)
+                        FillPortions: =0
+                        Height: =Parent.Height*0.15
+                        RadiusBottomLeft: =20
+                        RadiusBottomRight: =20
+                        RadiusTopLeft: =20
+                        RadiusTopRight: =20
+                        Width: |-
+                          =If(
+                              MaintenanceJobDetailScreen.Width>=1000,
+                              If(
+                                  HomeScreen.Width >= 1300,
+                                  1200
+                                  ,
+                                  1000
+                              ),
+                              Parent.Width*0.9
+                          )
+                        X: =40
+                        Y: =40
+                      Children:
+                        - MaintenanceJob_Detail_Card2_Inner:
+                            Control: GroupContainer@1.5.0
+                            Variant: AutoLayout
+                            Properties:
+                              DropShadow: =DropShadow.None
+                              Height: =Parent.Height
+                              LayoutAlignItems: =LayoutAlignItems.Center
+                              LayoutDirection: =LayoutDirection.Vertical
+                              PaddingBottom: =8
+                              PaddingLeft: =8
+                              PaddingRight: =8
+                              PaddingTop: =8
+                              Width: =Parent.Width
+                            Children:
+                              - MaintenanceJob_Detail_Card2_Inner_SubSection1:
+                                  Control: GroupContainer@1.5.0
+                                  Variant: AutoLayout
+                                  Properties:
+                                    DropShadow: =DropShadow.None
+                                    LayoutAlignItems: =LayoutAlignItems.Center
+                                    LayoutDirection: =LayoutDirection.Horizontal
+                                    LayoutMinHeight: =16
+                                    LayoutMinWidth: =16
+                                    PaddingBottom: =8
+                                    PaddingLeft: =8
+                                    PaddingRight: =8
+                                    PaddingTop: =8
+                                  Children:
+                                    - Title_Key_Number:
+                                        Control: Label@2.5.1
+                                        Properties:
+                                          BorderColor: =RGBA(0, 18, 107, 1)
+                                          DisplayMode: =DisplayMode.View
+                                          FillPortions: =2
+                                          Font: =Font.Lato
+                                          FontWeight: =FontWeight.Semibold
+                                          LayoutMinHeight: =16
+                                          LayoutMinWidth: =16
+                                          PaddingLeft: =15
+                                          Size: = If (HomeScreen.Size <= ScreenSize.Small , 22 ,HomeScreen.Size <= ScreenSize.Medium,32,42)
+                                          Text: =Coalesce(Text(LookUp(LabelTranslations, Language = UserLanguage).TranslatedLabels.lblKeyNumber),"Key Number")
+                                    - Data_Key_Number:
+                                        Control: Label@2.5.1
+                                        Properties:
+                                          BorderColor: =RGBA(0, 18, 107, 1)
+                                          DisplayMode: =DisplayMode.Disabled
+                                          FillPortions: =1
+                                          Font: =Font.Lato
+                                          FontWeight: =FontWeight.Lighter
+                                          LayoutMinHeight: =16
+                                          LayoutMinWidth: =16
+                                          PaddingLeft: =15
+                                          Size: = If (HomeScreen.Size <= ScreenSize.Small , 22 ,HomeScreen.Size <= ScreenSize.Medium,32,42)
+                                          Text: =Coalesce(CurrentMaintanenceRecord.'Key Number',"-")
+                              - MaintenanceJob_Detail_Card2_Inner_SubSection2:
+                                  Control: GroupContainer@1.5.0
+                                  Variant: AutoLayout
+                                  Properties:
+                                    DropShadow: =DropShadow.None
+                                    LayoutAlignItems: =LayoutAlignItems.Center
+                                    LayoutDirection: =LayoutDirection.Horizontal
+                                    LayoutMinHeight: =16
+                                    LayoutMinWidth: =16
+                                    PaddingBottom: =8
+                                    PaddingLeft: =8
+                                    PaddingRight: =8
+                                    PaddingTop: =8
+                                  Children:
+                                    - Title_Permission_To_Enter:
+                                        Control: Label@2.5.1
+                                        Properties:
+                                          BorderColor: =RGBA(0, 18, 107, 1)
+                                          DisplayMode: =DisplayMode.View
+                                          FillPortions: =2
+                                          Font: =Font.Lato
+                                          FontWeight: =FontWeight.Semibold
+                                          LayoutMinHeight: =16
+                                          LayoutMinWidth: =16
+                                          PaddingLeft: =15
+                                          Size: = If (HomeScreen.Size <= ScreenSize.Small , 22 ,HomeScreen.Size <= ScreenSize.Medium,32,42)
+                                          Text: =Coalesce(Text(LookUp(LabelTranslations, Language = UserLanguage).TranslatedLabels.lblPermissionToEnter),"Permission to Enter")
+                                    - Container4:
+                                        Control: GroupContainer@1.5.0
+                                        Variant: ManualLayout
+                                        Properties:
+                                          DropShadow: =DropShadow.None
+                                          LayoutMinHeight: =16
+                                          LayoutMinWidth: =16
+                                        Children:
+                                          - Toggle1_1:
+                                              Control: Toggle@1.1.5
+                                              Properties:
+                                                BasePaletteColor: =RGBA(0, 119, 128, 1)
+                                                Checked: =CurrentMaintanenceRecord.'Permission to Enter'
+                                                FontSize: =30
+                                                Height: =Parent.Height
+                                                Label: =
+                                                ToggleSize: =If(HomeScreen.Size <= ScreenSize.Small , 75 ,HomeScreen.Size <= ScreenSize.Medium, 105,155)
+                                                Width: =Parent.Width
+                                          - ButtonCanvas5:
+                                              Control: Button@0.0.45
+                                              Properties:
+                                                Appearance: ='ButtonCanvas.Appearance'.Transparent
+                                                Height: =Parent.Height
+                                                Text: =
+                                                Width: =Parent.Width
+                  - MaintenanceJob_Detail_Card3:
+                      Control: GroupContainer@1.5.0
+                      Variant: ManualLayout
+                      Properties:
+                        AlignInContainer: =AlignInContainer.Center
+                        BorderColor: =RGBA(228, 228, 204, 0.8)
+                        BorderThickness: =1
+                        DropShadow: =DropShadow.None
+                        Fill: =RGBA(255, 255, 255, 1)
+                        FillPortions: =0
+                        Height: = If (HomeScreen.Size <= ScreenSize.Small ,400 ,HomeScreen.Size <= ScreenSize.Medium,600,700)
+                        PaddingBottom: =100
+                        RadiusBottomLeft: =20
+                        RadiusBottomRight: =20
+                        RadiusTopLeft: =20
+                        RadiusTopRight: =20
+                        Width: |-
+                          =If(
+                              MaintenanceJobDetailScreen.Width>=1000,
+                              If(
+                                  HomeScreen.Width >= 1300,
+                                  1200
+                                  ,
+                                  1000
+                              ),
+                              Parent.Width*0.9
+                          )
+                        X: =40
+                        Y: =40
+                      Children:
+                        - TimeLogContainer:
+                            Control: GroupContainer@1.5.0
+                            Variant: ManualLayout
+                            Properties:
+                              DropShadow: =DropShadow.None
+                              Height: =Parent.Height*0.25
+                              PaddingBottom: =10
+                              PaddingTop: =10
+                              Width: =Parent.Width
+                              Y: =MaintenanceJob_Detail_ClockContainer.Height + MaintenanceJob_Detail_TitleContainer.Height
+                            Children:
+                              - MaintenanceJob_Detail_ControlContainer_1:
+                                  Control: GroupContainer@1.5.0
+                                  Variant: AutoLayout
+                                  Properties:
+                                    DropShadow: =DropShadow.None
+                                    Height: =Parent.Height*0.9
+                                    LayoutAlignItems: =LayoutAlignItems.Center
+                                    LayoutDirection: =LayoutDirection.Horizontal
+                                    LayoutGap: =20
+                                    LayoutJustifyContent: =LayoutJustifyContent.SpaceBetween
+                                    PaddingLeft: =8
+                                    PaddingRight: =8
+                                    Width: = If (HomeScreen.Size <= ScreenSize.Small , Parent.Width*0.9 ,HomeScreen.Size <= ScreenSize.Medium,Parent.Width*0.75,Parent.Width*0.6)
+                                    X: =(Parent.Width-Self.Width)/2
+                                  Children:
+                                    - TimeLog_Pause_Button:
+                                        Control: GroupContainer@1.5.0
+                                        Variant: ManualLayout
+                                        Properties:
+                                          DropShadow: =DropShadow.None
+                                          Height: =100
+                                          LayoutMinHeight: =16
+                                          LayoutMinWidth: =16
+                                          X: =40
+                                        Children:
+                                          - PauseButton_Conainer:
+                                              Control: GroupContainer@1.5.0
+                                              Variant: AutoLayout
+                                              Properties:
+                                                Fill: =RGBA(255, 226, 226, 1)
+                                                Height: =Parent.Height
+                                                LayoutAlignItems: =LayoutAlignItems.Center
+                                                LayoutDirection: =LayoutDirection.Horizontal
+                                                LayoutJustifyContent: =LayoutJustifyContent.Center
+                                                PaddingLeft: =8
+                                                PaddingRight: =8
+                                                RadiusBottomLeft: =20
+                                                RadiusBottomRight: =20
+                                                RadiusTopLeft: =20
+                                                RadiusTopRight: =20
+                                                Width: =Parent.Width
+                                              Children:
+                                                - PauseButton_Image:
+                                                    Control: Image@2.2.3
+                                                    Properties:
+                                                      BorderColor: =RGBA(0, 18, 107, 1)
+                                                      Height: =40
+                                                      Image: =Pause
+                                                      LayoutMinWidth: =16
+                                                      Width: =Self.Height
+                                                      X: =20
+                                                      Y: =20
+                                                - PauseButton_Label:
+                                                    Control: Label@2.5.1
+                                                    Properties:
+                                                      Align: =Align.Center
+                                                      BorderColor: =RGBA(0, 18, 107, 1)
+                                                      Color: =RGBA(255, 71, 71, 1)
+                                                      Font: =Font.Lato
+                                                      FontWeight: =FontWeight.Bold
+                                                      Size: = If (HomeScreen.Size <= ScreenSize.Small , 23 ,HomeScreen.Size <= ScreenSize.Medium,33,43)
+                                                      Text: =Coalesce(Text(LookUp(LabelTranslations, Language = UserLanguage).TranslatedLabels.btnPause),"Pause")
+                                                      Width: =Parent.Width*0.5
+                                                      X: =20
+                                                      Y: =14
+                                          - Pause_Button_Wrapper:
+                                              Control: Button@0.0.45
+                                              Properties:
+                                                Appearance: ='ButtonCanvas.Appearance'.Transparent
+                                                DisplayMode: |-
+                                                  =If(
+                                                      CurrentMaintanenceRecord.'Task Status' = 'Task Status'.Completed,
+                                                      DisplayMode.Disabled,
+                                                      If(
+                                                          IsTimerStart,
+                                                          DisplayMode.Edit,
+                                                          DisplayMode.Disabled
+                                                      )
+                                                  )
+                                                Height: =Parent.Height
+                                                OnSelect: |-
+                                                  =UpdateContext({IsTimerStart: false});
+                                                  Patch(
+                                                      'Time Entries',
+                                                      LookUp(
+                                                          'Time Entries',
+                                                          'Maintenance Job'.'Maintenance Job' = CurrentMaintanenceRecord.'Maintenance Job' && 'Status Reason' = 'Status Reason (Time Entries)'.Current
+                                                      ),
+                                                      {
+                                                          'End Time': Now(),
+                                                          'Status Reason': 'Status Reason (Time Entries)'.Past
+                                                      }
+                                                  )
+                                                Text: =
+                                                Width: =Parent.Width
+                                    - TimeLog_Start_Button:
+                                        Control: GroupContainer@1.5.0
+                                        Variant: ManualLayout
+                                        Properties:
+                                          DropShadow: =DropShadow.None
+                                          LayoutMinHeight: =16
+                                          LayoutMinWidth: =16
+                                        Children:
+                                          - StartButton_Container:
+                                              Control: GroupContainer@1.5.0
+                                              Variant: AutoLayout
+                                              Properties:
+                                                Fill: =RGBA(0, 119, 128, 1)
+                                                Height: =Parent.Height
+                                                LayoutAlignItems: =LayoutAlignItems.Center
+                                                LayoutDirection: =LayoutDirection.Horizontal
+                                                LayoutJustifyContent: =LayoutJustifyContent.Center
+                                                PaddingLeft: =8
+                                                PaddingRight: =8
+                                                RadiusBottomLeft: =20
+                                                RadiusBottomRight: =20
+                                                RadiusTopLeft: =20
+                                                RadiusTopRight: =20
+                                                Width: =Parent.Width
+                                              Children:
+                                                - StartButton_Image:
+                                                    Control: Image@2.2.3
+                                                    Properties:
+                                                      BorderColor: =RGBA(0, 18, 107, 1)
+                                                      Height: =40
+                                                      Image: =Start
+                                                      LayoutMinWidth: =16
+                                                      Width: =Self.Height
+                                                      X: =20
+                                                      Y: =20
+                                                - StartButton_Label:
+                                                    Control: Label@2.5.1
+                                                    Properties:
+                                                      Align: =Align.Center
+                                                      BorderColor: =RGBA(0, 18, 107, 1)
+                                                      Color: =RGBA(255, 255, 255, 1)
+                                                      Font: =Font.Lato
+                                                      FontWeight: =FontWeight.Bold
+                                                      Size: = If (HomeScreen.Size <= ScreenSize.Small , 23 ,HomeScreen.Size <= ScreenSize.Medium,33,43)
+                                                      Text: =Coalesce(Text(LookUp(LabelTranslations, Language = UserLanguage).TranslatedLabels.btnStart),"Start")
+                                                      Width: =Parent.Width*0.5
+                                                      X: =20
+                                                      Y: =14
+                                          - Start_Button_Wrapper:
+                                              Control: Button@0.0.45
+                                              Properties:
+                                                Appearance: ='ButtonCanvas.Appearance'.Transparent
+                                                DisplayMode: |-
+                                                  =//If(IsTimerStart,DisplayMode.Disabled,DisplayMode.Edit)
+                                                  If(
+                                                      CurrentMaintanenceRecord.'Task Status' = 'Task Status'.Completed,
+                                                      DisplayMode.Disabled,
+                                                      If(
+                                                          IsTimerStart,
+                                                         DisplayMode.Disabled,
+                                                          DisplayMode.Edit
+                                                      )
+                                                  )
+                                                Height: =Parent.Height
+                                                OnSelect: |
+                                                  =UpdateContext({IsTimerStart: true});
+                                                  Patch(
+                                                      'Time Entries',
+                                                      Defaults('Time Entries'),
+                                                      {
+                                                          'Start Time':Now(),
+                                                          'Maintenance Job': CurrentMaintanenceRecord,
+                                                          'Status Reason': 'Status Reason (Time Entries)'.Current
+                                                      }
+                                                  );
+                                                Text: =
+                                                Width: =Parent.Width
+                        - MaintenanceJob_Detail_ClockContainer:
+                            Control: GroupContainer@1.5.0
+                            Variant: ManualLayout
+                            Properties:
+                              DropShadow: =DropShadow.None
+                              Height: =Parent.Height*0.45
+                              Width: =Parent.Width
+                              Y: =MaintenanceJob_Detail_TitleContainer.Height
+                            Children:
+                              - Timer1:
+                                  Control: Timer@2.1.0
+                                  Properties:
+                                    AutoPause: =false
+                                    BorderColor: =ColorFade(Self.Fill, -15%)
+                                    Color: =RGBA(0, 0, 0, 1)
+                                    DisabledBorderColor: =ColorFade(Self.BorderColor, 70%)
+                                    DisabledColor: =ColorFade(Self.Fill, 90%)
+                                    DisabledFill: =ColorFade(Self.Fill, 70%)
+                                    DisplayMode: =DisplayMode.View
+                                    Duration: '=If(Self.Value<=0, 600000, Self.Value*60) '
+                                    Fill: =RGBA(0, 0, 0, 0)
+                                    Font: =Font.Lato
+                                    FontWeight: =FontWeight.Bold
+                                    Height: =Parent.Height
+                                    HoverBorderColor: =ColorFade(Self.BorderColor, 20%)
+                                    HoverColor: =RGBA(255, 255, 255, 1)
+                                    HoverFill: =ColorFade(RGBA(56, 96, 178, 1), -20%)
+                                    PaddingBottom: =0
+                                    PaddingLeft: =0
+                                    PaddingRight: =0
+                                    PaddingTop: =0
+                                    PressedBorderColor: =Self.Fill
+                                    PressedColor: =Self.Fill
+                                    PressedFill: =Self.Color
+                                    Repeat: =true
+                                    Size: = If (HomeScreen.Size <= ScreenSize.Small , 50 ,HomeScreen.Size <= ScreenSize.Medium,65,80)
+                                    Start: =IsTimerStart
+                                    Text: |-
+                                      =Text(
+                                          Time(
+                                              0,
+                                              0,
+                                              (TimerDefaultValue+Self.Value)/1000
+                                          ),
+                                          "hh:mm:ss"
+                                      )
+                                    Width: =Parent.Width
+                        - MaintenanceJob_Detail_TitleContainer:
+                            Control: GroupContainer@1.5.0
+                            Variant: ManualLayout
+                            Properties:
+                              DropShadow: =DropShadow.None
+                              Height: =Parent.Height*0.2
+                              Width: =Parent.Width
+                            Children:
+                              - Label5:
+                                  Control: Label@2.5.1
+                                  Properties:
+                                    Align: =Align.Center
+                                    BorderColor: =RGBA(0, 18, 107, 1)
+                                    Color: =RGBA(0, 141, 132, 1)
+                                    Font: =Font.Lato
+                                    FontWeight: =FontWeight.Bold
+                                    Height: =Parent.Height
+                                    Size: = If (HomeScreen.Size <= ScreenSize.Small , 24 ,HomeScreen.Size <= ScreenSize.Medium,42,47)
+                                    Text: =Coalesce(Text(LookUp(LabelTranslations, Language = UserLanguage).TranslatedLabels.lblTimeLog),"Time Log")
+                                    Width: =Parent.Width
+                  - MaintenanceJob_Detail_Card4:
+                      Control: GroupContainer@1.5.0
+                      Variant: ManualLayout
+                      Properties:
+                        AlignInContainer: =AlignInContainer.Center
+                        BorderColor: =RGBA(228, 228, 204, 0.8)
+                        BorderThickness: =1
+                        DropShadow: =DropShadow.None
+                        Fill: =RGBA(255, 255, 255, 1)
+                        FillPortions: =0
+                        Height: =MaintenanceJob_Detail_Card4_Inner.Height+(Self.PaddingTop*2)
+                        LayoutMaxHeight: =500
+                        LayoutMinHeight: =250
+                        PaddingBottom: =Self.PaddingTop
+                        PaddingLeft: =10
+                        PaddingRight: =Self.PaddingLeft
+                        PaddingTop: =10
+                        RadiusBottomLeft: =20
+                        RadiusBottomRight: =20
+                        RadiusTopLeft: =20
+                        RadiusTopRight: =20
+                        Width: |-
+                          =If(
+                              MaintenanceJobDetailScreen.Width>=1000,
+                              If(
+                                  HomeScreen.Width >= 1300,
+                                  1200
+                                  ,
+                                  1000
+                              ),
+                              Parent.Width*0.9
+                          )
+                        X: =40
+                        Y: =40
+                      Children:
+                        - MaintenanceJob_Detail_Card4_Inner:
+                            Control: GroupContainer@1.5.0
+                            Variant: AutoLayout
+                            Properties:
+                              DropShadow: =DropShadow.None
+                              Height: =MaintenanceJob_Detail_Card4_Inner_SubSection1.Height+MaintenanceJob_Detail_Card4_Inner_SubSection2.Height+MaintenanceJob_Detail_Card4_Inner_SubSection1_1.Height+MaintenanceJob_Detail_Card4_Inner_SubSection2_1.Height
+                              LayoutAlignItems: =LayoutAlignItems.Center
+                              LayoutDirection: =LayoutDirection.Vertical
+                              Width: =Parent.Width
+                              Y: =(Parent.Height-Self.Height)/2
+                            Children:
+                              - MaintenanceJob_Detail_Card4_Inner_SubSection1:
+                                  Control: GroupContainer@1.5.0
+                                  Variant: AutoLayout
+                                  Properties:
+                                    DropShadow: =DropShadow.None
+                                    FillPortions: =0
+                                    Height: =Data_Type_Name.Height+30
+                                    LayoutAlignItems: =LayoutAlignItems.Center
+                                    LayoutDirection: =LayoutDirection.Horizontal
+                                    LayoutMaxHeight: =100
+                                    LayoutMinHeight: =16
+                                    LayoutMinWidth: =16
+                                    PaddingLeft: =8
+                                    PaddingRight: =8
+                                  Children:
+                                    - Title_Type_Name:
+                                        Control: Label@2.5.1
+                                        Properties:
+                                          AutoHeight: =true
+                                          BorderColor: =RGBA(0, 18, 107, 1)
+                                          DisplayMode: =DisplayMode.View
+                                          FillPortions: =1
+                                          Font: =Font.Lato
+                                          FontWeight: =FontWeight.Semibold
+                                          LayoutMinHeight: =16
+                                          LayoutMinWidth: =16
+                                          PaddingLeft: =15
+                                          Size: = If (HomeScreen.Size <= ScreenSize.Small , 22 ,HomeScreen.Size <= ScreenSize.Medium,32,42)
+                                          Text: =Coalesce(Text(LookUp(LabelTranslations, Language = UserLanguage).TranslatedLabels.lblTypeName), "Type Name")
+                                    - Data_Type_Name:
+                                        Control: Label@2.5.1
+                                        Properties:
+                                          AutoHeight: =true
+                                          BorderColor: =RGBA(0, 18, 107, 1)
+                                          DisplayMode: =DisplayMode.Disabled
+                                          FillPortions: =2
+                                          Font: =Font.Lato
+                                          FontWeight: =FontWeight.Lighter
+                                          LayoutMinHeight: =16
+                                          LayoutMinWidth: =16
+                                          PaddingLeft: =15
+                                          Size: = If (HomeScreen.Size <= ScreenSize.Small , 22 ,HomeScreen.Size <= ScreenSize.Medium,32,42)
+                                          Text: =Coalesce(CurrentMaintanenceRecord.'Type Name',"-")
+                              - MaintenanceJob_Detail_Card4_Inner_SubSection2:
+                                  Control: GroupContainer@1.5.0
+                                  Variant: AutoLayout
+                                  Properties:
+                                    DropShadow: =DropShadow.None
+                                    FillPortions: =0
+                                    Height: =If(Self.Visible,Title_Status.Height+30,0)
+                                    LayoutAlignItems: =LayoutAlignItems.Center
+                                    LayoutDirection: =LayoutDirection.Horizontal
+                                    LayoutMaxHeight: =100
+                                    LayoutMinHeight: =16
+                                    LayoutMinWidth: =16
+                                    PaddingLeft: =8
+                                    Visible: =false
+                                  Children:
+                                    - Title_Status:
+                                        Control: Label@2.5.1
+                                        Properties:
+                                          AutoHeight: =true
+                                          BorderColor: =RGBA(0, 18, 107, 1)
+                                          DisplayMode: =DisplayMode.View
+                                          FillPortions: =1
+                                          Font: =Font.Lato
+                                          FontWeight: =FontWeight.Semibold
+                                          LayoutMinHeight: =16
+                                          LayoutMinWidth: =16
+                                          PaddingLeft: =15
+                                          Size: = If (HomeScreen.Size <= ScreenSize.Small , 22 ,HomeScreen.Size <= ScreenSize.Medium,32,42)
+                                          Text: =Coalesce(Text(LookUp(LabelTranslations, Language = UserLanguage).TranslatedLabels.lblStatus), "Status")
+                                    - Container25:
+                                        Control: GroupContainer@1.5.0
+                                        Variant: ManualLayout
+                                        Properties:
+                                          DropShadow: =DropShadow.None
+                                          FillPortions: =2
+                                          LayoutMinHeight: =16
+                                          LayoutMinWidth: =16
+                                        Children:
+                                          - TextCanvas11_7:
+                                              Control: Text@0.0.51
+                                              Properties:
+                                                Align: ='TextCanvas.Align'.Center
+                                                BorderColor: |-
+                                                  =If(
+                                                      CurrentMaintanenceRecord.'Task Status' < 3,
+                                                      EliteTheme.Colors.StatusBadge.Warning_Border,
+                                                      If(
+                                                          CurrentMaintanenceRecord.'Task Status' = 3,
+                                                          EliteTheme.Colors.StatusBadge.Error_Border,
+                                                          EliteTheme.Colors.StatusBadge.Success_Border
+                                                      )
+                                                  )
+                                                BorderRadius: =100
+                                                BorderStyle: =BorderStyle.Solid
+                                                BorderThickness: =3
+                                                Fill: |-
+                                                  =If(
+                                                      CurrentMaintanenceRecord.'Task Status' < 3,
+                                                      EliteTheme.Colors.StatusBadge.Warning_BG,
+                                                      If(
+                                                          CurrentMaintanenceRecord.'Task Status' = 3,
+                                                          EliteTheme.Colors.StatusBadge.Error_BG,
+                                                          EliteTheme.Colors.StatusBadge.Success_BG
+                                                      )
+                                                  )
+                                                Font: =Font.Lato
+                                                FontColor: |-
+                                                  =If(
+                                                      CurrentMaintanenceRecord.'Task Status' < 3,
+                                                      EliteTheme.Colors.StatusBadge.Warning_Text,
+                                                      If(
+                                                          CurrentMaintanenceRecord.'Task Status' = 3,
+                                                          EliteTheme.Colors.StatusBadge.Error_Text,
+                                                          EliteTheme.Colors.StatusBadge.Success_Text
+                                                      )
+                                                  )
+                                                Height: =Title_Status.Height
+                                                Size: = If (HomeScreen.Size <= ScreenSize.Small , 19 ,HomeScreen.Size <= ScreenSize.Medium,29,39)
+                                                Text: |-
+                                                  =If(
+                                                      CurrentMaintanenceRecord.'Task Status' < 3,
+                                                      Coalesce(
+                                                      Text(LookUp(LabelTranslations, Language = UserLanguage).TranslatedLabels.lblInProgress),"In Progress"),
+                                                      If(
+                                                          CurrentMaintanenceRecord.'Task Status' = 3,
+                                                          Coalesce(
+                                                          Text(LookUp(LabelTranslations, Language = UserLanguage).TranslatedLabels.lblOnHold),"On Hold"),
+                                                          Coalesce(
+                                                          Text(LookUp(LabelTranslations, Language = UserLanguage).TranslatedLabels.lblCompleted),"Completed")
+                                                      )
+                                                  )
+                                                VerticalAlign: =VerticalAlign.Middle
+                                                Weight: ='TextCanvas.Weight'.Bold
+                                                Width: = If (HomeScreen.Size <= ScreenSize.Small , 130 ,HomeScreen.Size <= ScreenSize.Medium,170,210)
+                                                Y: =(Parent.Height -Self.Height)/2
+                              - MaintenanceJob_Detail_Card4_Inner_SubSection2_1:
+                                  Control: GroupContainer@1.5.0
+                                  Variant: AutoLayout
+                                  Properties:
+                                    DropShadow: =DropShadow.None
+                                    FillPortions: =0
+                                    Height: =Title_Status_1.Height+30
+                                    LayoutAlignItems: =LayoutAlignItems.Center
+                                    LayoutDirection: =LayoutDirection.Horizontal
+                                    LayoutMaxHeight: =100
+                                    LayoutMinHeight: =16
+                                    LayoutMinWidth: =16
+                                    PaddingLeft: =8
+                                  Children:
+                                    - Title_Status_1:
+                                        Control: Label@2.5.1
+                                        Properties:
+                                          AutoHeight: =true
+                                          BorderColor: =RGBA(0, 18, 107, 1)
+                                          DisplayMode: =DisplayMode.View
+                                          FillPortions: =1
+                                          Font: =Font.Lato
+                                          FontWeight: =FontWeight.Semibold
+                                          LayoutMinHeight: =16
+                                          LayoutMinWidth: =16
+                                          PaddingLeft: =15
+                                          Size: = If (HomeScreen.Size <= ScreenSize.Small , 22 ,HomeScreen.Size <= ScreenSize.Medium,32,42)
+                                          Text: =Coalesce(Text(LookUp(LabelTranslations, Language = UserLanguage).TranslatedLabels.lblJobStatus), "Job Status")
+                                    - Title_Status_2:
+                                        Control: Label@2.5.1
+                                        Properties:
+                                          AutoHeight: =true
+                                          BorderColor: =RGBA(0, 18, 107, 1)
+                                          DisplayMode: =DisplayMode.View
+                                          FillPortions: =2
+                                          Font: =Font.Lato
+                                          FontWeight: =FontWeight.Lighter
+                                          LayoutMinHeight: =16
+                                          LayoutMinWidth: =16
+                                          PaddingLeft: =15
+                                          Size: = If (HomeScreen.Size <= ScreenSize.Small , 22 ,HomeScreen.Size <= ScreenSize.Medium,32,42)
+                                          Text: =Coalesce(CurrentMaintanenceRecord.'Job Status (External)'.Name,"-")
+                              - MaintenanceJob_Detail_Card4_Inner_SubSection1_1:
+                                  Control: GroupContainer@1.5.0
+                                  Variant: AutoLayout
+                                  Properties:
+                                    DropShadow: =DropShadow.None
+                                    FillPortions: =0
+                                    Height: =Min(Max(Title_Type_Name_1.Height,Data_Type_Name_1.Height),400)+30
+                                    LayoutDirection: =LayoutDirection.Horizontal
+                                    LayoutMaxHeight: =100
+                                    LayoutMinHeight: =16
+                                    LayoutMinWidth: =16
+                                    LayoutOverflowX: =LayoutOverflow.Scroll
+                                    LayoutOverflowY: =LayoutOverflow.Scroll
+                                    PaddingLeft: =8
+                                    PaddingRight: =8
+                                    PaddingTop: =15
+                                  Children:
+                                    - Title_Type_Name_1:
+                                        Control: Label@2.5.1
+                                        Properties:
+                                          AutoHeight: =true
+                                          BorderColor: =RGBA(0, 18, 107, 1)
+                                          DisplayMode: =DisplayMode.View
+                                          FillPortions: =1
+                                          Font: =Font.Lato
+                                          FontWeight: =FontWeight.Semibold
+                                          LayoutMinHeight: =16
+                                          LayoutMinWidth: =16
+                                          PaddingLeft: =15
+                                          Size: = If (HomeScreen.Size <= ScreenSize.Small , 22 ,HomeScreen.Size <= ScreenSize.Medium,32,42)
+                                          Text: =Coalesce(Text(LookUp(LabelTranslations, Language = UserLanguage).TranslatedLabels.lblDescription), "Description")
+                                    - Data_Type_Name_1:
+                                        Control: Label@2.5.1
+                                        Properties:
+                                          AutoHeight: =true
+                                          BorderColor: =RGBA(0, 18, 107, 1)
+                                          DisplayMode: =DisplayMode.Disabled
+                                          FillPortions: =2
+                                          Font: =Font.Lato
+                                          FontWeight: =FontWeight.Lighter
+                                          LayoutMinHeight: =16
+                                          LayoutMinWidth: =16
+                                          PaddingLeft: =15
+                                          Size: = If (HomeScreen.Size <= ScreenSize.Small , 22 ,HomeScreen.Size <= ScreenSize.Medium,32,42)
+                                          Text: =Coalesce(CurrentMaintanenceRecord.Description,"-")
+                  - Container5:
+                      Control: GroupContainer@1.5.0
+                      Variant: AutoLayout
+                      Properties:
+                        DropShadow: =DropShadow.None
+                        FillPortions: =0
+                        Height: =Maintenance_UpdateStatus_Btn.Height*2*1.25
+                        LayoutAlignItems: =LayoutAlignItems.Center
+                        LayoutDirection: =LayoutDirection.Vertical
+                        LayoutGap: =15
+                        LayoutJustifyContent: =LayoutJustifyContent.Center
+                        LayoutMinHeight: =16
+                        LayoutMinWidth: =16
+                        PaddingBottom: =8
+                        PaddingLeft: =8
+                        PaddingRight: =8
+                        PaddingTop: =8
+                      Children:
+                        - Maintenance_UpdateStatus_Btn:
+                            Control: Classic/Button@2.2.0
+                            Properties:
+                              BorderColor: =ColorFade(Self.Fill, -15%)
+                              Color: =RGBA(255, 255, 255, 1)
+                              DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                              Fill: =RGBA(0, 119, 128, 1)
+                              Font: =Font.Lato
+                              Height: = If (HomeScreen.Size <= ScreenSize.Small , 85 ,HomeScreen.Size <= ScreenSize.Medium,105,125)
+                              HoverBorderColor: =ColorFade(Self.BorderColor, 20%)
+                              HoverColor: =RGBA(255, 255, 255, 1)
+                              HoverFill: =Self.Fill
+                              OnSelect: |-
+                                =/*If(
+                                    IsTimerStart,
+                                    Notify(Coalesce(Text(LookUp(LabelTranslations, Language = UserLanguage).TranslatedLabels.notifyEndTimerError),"Please pause or stop the timer before completing this activity."), NotificationType.Warning),
+                                    UpdateContext({IsVisibleConfirmPopupForm:true})
+                                );*/
+                                Reset(Update_Status_Dropdown_Maintanance);
+                                UpdateContext({IsVisibleUpdateStatusPopupForm:true});
+                              PressedBorderColor: =Self.Fill
+                              PressedFill: =Self.Fill
+                              RadiusBottomLeft: =20
+                              RadiusBottomRight: =20
+                              RadiusTopLeft: =20
+                              RadiusTopRight: =20
+                              Size: = If (HomeScreen.Size <= ScreenSize.Small , 23 ,HomeScreen.Size <= ScreenSize.Medium,28,33)
+                              Text: =Coalesce(Text(LookUp(LabelTranslations, Language = UserLanguage).TranslatedLabels.btnUpdateStatus), "Update Status")
+                              Visible: =If(CurrentMaintanenceRecord.'Task Status' = 'Task Status'.Completed,false,true)
+                              Width: =Parent.Width
+                              Y: =(Parent.Height - Self.Height)/2
+                        - Maintenance_Complete_Btn:
+                            Control: Classic/Button@2.2.0
+                            Properties:
+                              BorderColor: =ColorFade(Self.Fill, -15%)
+                              Color: =RGBA(255, 255, 255, 1)
+                              DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                              Fill: =RGBA(0, 119, 128, 1)
+                              Font: =Font.Lato
+                              Height: = If (HomeScreen.Size <= ScreenSize.Small , 85 ,HomeScreen.Size <= ScreenSize.Medium,105,125)
+                              HoverBorderColor: =ColorFade(Self.BorderColor, 20%)
+                              HoverColor: =RGBA(255, 255, 255, 1)
+                              HoverFill: =Self.Fill
+                              OnSelect: |-
+                                =If(
+                                    IsTimerStart,
+                                    Notify(Coalesce(Text(LookUp(LabelTranslations, Language = UserLanguage).TranslatedLabels.notifyEndTimerError),"Please pause or stop the timer before completing this activity."), NotificationType.Warning),
+                                    UpdateContext({IsVisibleConfirmPopupForm:true})
+                                );
+                              PressedBorderColor: =Self.Fill
+                              PressedFill: =Self.Fill
+                              RadiusBottomLeft: =20
+                              RadiusBottomRight: =20
+                              RadiusTopLeft: =20
+                              RadiusTopRight: =20
+                              Size: = If (HomeScreen.Size <= ScreenSize.Small , 23 ,HomeScreen.Size <= ScreenSize.Medium,28,33)
+                              Text: =Coalesce(Text(LookUp(LabelTranslations, Language = UserLanguage).TranslatedLabels.btnComplete), "Complete")
+                              Visible: =If(CurrentMaintanenceRecord.'Task Status' = 'Task Status'.Completed,false,true)
+                              Width: =Parent.Width
+                              Y: =(Parent.Height - Self.Height)/2
+      - MaintenanceJob_Selection_Container:
+          Control: GroupContainer@1.5.0
+          Variant: ManualLayout
+          Properties:
+            DropShadow: =DropShadow.None
+            Height: =If(IsSelectionOptionsVisible, Parent.Height,0)
+            Visible: '=IsSelectionOptionsVisible '
+            Width: =Parent.Width
+          Children:
+            - MaintenanceJob_Selection_Close_Button:
+                Control: Button@0.0.45
+                Properties:
+                  Appearance: ='ButtonCanvas.Appearance'.Transparent
+                  Height: =Parent.Height
+                  OnSelect: |-
+                    =UpdateContext( { IsSelectionOptionsVisible: false} );
+                  Text: =
+                  Width: =Parent.Width
+            - MaintenanceJob_Selection_Options:
+                Control: GroupContainer@1.5.0
+                Variant: AutoLayout
+                Properties:
+                  DropShadow: =DropShadow.Bold
+                  Fill: =RGBA(255, 255, 255, 1)
+                  Height: =MaintenanceJob_Selection_MoreInformation_Container.Height*2
+                  LayoutAlignItems: =LayoutAlignItems.Center
+                  LayoutDirection: =LayoutDirection.Vertical
+                  LayoutJustifyContent: =LayoutJustifyContent.Center
+                  RadiusBottomLeft: =Self.RadiusTopLeft
+                  RadiusBottomRight: =Self.RadiusTopLeft
+                  RadiusTopLeft: =Self.Height*0.1
+                  RadiusTopRight: =Self.RadiusTopLeft
+                  Width: =MaintenanceJob_Selection_MoreInformation_Text_2.Width*1.75
+                  X: =(MaintenanceJob_Detail_Add_Button_Container.X + MaintenanceJob_Detail_Add_Button_Container.Width) - Self.Width
+                  Y: =(MaintenanceJob_Detail_Add_Button_Container.Y + (1.25*MaintenanceJob_Detail_Add_Button_Container.Height))
+                Children:
+                  - Container30:
+                      Control: GroupContainer@1.5.0
+                      Variant: ManualLayout
+                      Properties:
+                        LayoutMinHeight: =16
+                        LayoutMinWidth: =16
+                      Children:
+                        - MaintenanceJob_Selection_MoreInformation_Container:
+                            Control: GroupContainer@1.5.0
+                            Variant: AutoLayout
+                            Properties:
+                              Height: =MaintenanceJob_Selection_MoreInformation_Text_2.Height*2.25
+                              LayoutAlignItems: =LayoutAlignItems.Center
+                              LayoutDirection: =LayoutDirection.Horizontal
+                              LayoutJustifyContent: =LayoutJustifyContent.SpaceBetween
+                              PaddingBottom: =8
+                              PaddingLeft: =Self.Width*0.07
+                              PaddingRight: =Self.PaddingLeft
+                              PaddingTop: =8
+                              Width: |-
+                                =//MaintenanceJob_Selection_MoreInformation_Text_2.Width*1.75
+                                Parent.Width
+                            Children:
+                              - MaintenanceJob_Selection_MoreInformation_Text_2:
+                                  Control: Text@0.0.51
+                                  Properties:
+                                    Font: =Font.Lato
+                                    Height: =Self.Size*1.5
+                                    LayoutMinHeight: =16
+                                    LayoutMinWidth: =16
+                                    Size: =If (HomeScreen.Size <= ScreenSize.Small , 30 ,HomeScreen.Size <= ScreenSize.Medium,45,60)
+                                    Text: =Coalesce(Text(LookUp(LabelTranslations, Language = UserLanguage).TranslatedLabels.lblMoreInformation), "More Information")
+                                    Weight: ='TextCanvas.Weight'.Regular
+                                    Width: =Self.Size*10
+                              - MaintenanceJob_Selection_MoreInformation_Icon_2:
+                                  Control: Image@2.2.3
+                                  Properties:
+                                    BorderColor: =RGBA(0, 18, 107, 1)
+                                    Height: =MaintenanceJob_Selection_MoreInformation_Text_2.Height
+                                    Image: =More_Informaion
+                                    LayoutMinHeight: =16
+                                    LayoutMinWidth: =16
+                                    PaddingBottom: =2
+                                    PaddingLeft: =2
+                                    PaddingRight: =2
+                                    PaddingTop: =2
+                                    Width: =Self.Height
+                        - ButtonCanvas7:
+                            Control: Button@0.0.45
+                            Properties:
+                              Appearance: ='ButtonCanvas.Appearance'.Transparent
+                              Height: =Parent.Height
+                              OnSelect: =UpdateContext({IsVisibleMoreInformationPopupForm:true});
+                              Text: =
+                              Width: =Parent.Width
+                  - Container31_1:
+                      Control: GroupContainer@1.5.0
+                      Variant: ManualLayout
+                      Properties:
+                        LayoutMinHeight: =16
+                        LayoutMinWidth: =16
+                      Children:
+                        - MaintenanceJob_Selection_AddRequest_Container_3:
+                            Control: GroupContainer@1.5.0
+                            Variant: AutoLayout
+                            Properties:
+                              Height: =MaintenanceJob_Selection_MoreInformation_Container.Height
+                              LayoutAlignItems: =LayoutAlignItems.Center
+                              LayoutDirection: =LayoutDirection.Horizontal
+                              LayoutJustifyContent: =LayoutJustifyContent.SpaceBetween
+                              PaddingBottom: =8
+                              PaddingLeft: =MaintenanceJob_Selection_MoreInformation_Container.PaddingLeft
+                              PaddingRight: =Self.PaddingLeft
+                              PaddingTop: =8
+                              Width: =MaintenanceJob_Selection_MoreInformation_Container.Width
+                            Children:
+                              - MaintenanceJob_Selection_AddRequest_Text_3:
+                                  Control: Text@0.0.51
+                                  Properties:
+                                    AutoHeight: =true
+                                    Font: =Font.Lato
+                                    Height: =Self.Size*1.5
+                                    LayoutMinHeight: =16
+                                    LayoutMinWidth: =16
+                                    Size: =MaintenanceJob_Selection_MoreInformation_Text_2.Size
+                                    Text: =Coalesce(Text(LookUp(LabelTranslations, Language = UserLanguage).TranslatedLabels.lblRequests), "Requests")
+                                    Weight: ='TextCanvas.Weight'.Regular
+                                    Width: =MaintenanceJob_Selection_MoreInformation_Text_2.Width
+                              - MaintenanceJob_Selection_AddRequest_Icon_3:
+                                  Control: Image@2.2.3
+                                  Properties:
+                                    BorderColor: =RGBA(0, 18, 107, 1)
+                                    Height: =MaintenanceJob_Selection_MoreInformation_Text_2.Height
+                                    Image: =Comment_Black_icon
+                                    LayoutMinHeight: =16
+                                    LayoutMinWidth: =16
+                                    PaddingBottom: =2
+                                    PaddingLeft: =2
+                                    PaddingRight: =2
+                                    PaddingTop: =2
+                                    Width: =Self.Height
+                        - ButtonCanvas7_2:
+                            Control: Button@0.0.45
+                            Properties:
+                              Appearance: ='ButtonCanvas.Appearance'.Transparent
+                              FontWeight: =FontWeight.Normal
+                              Height: =Parent.Height
+                              OnSelect: |-
+                                =Navigate('Requests Screen', ScreenTransition.Fade,{RecordofRequests : CurrentMaintanenceRecord})
+                              Text: =
+                              Width: =Parent.Width
+      - MaintenanceJob_MoreInformation_Popupform:
+          Control: GroupContainer@1.5.0
+          Variant: ManualLayout
+          Properties:
+            Fill: =RGBA(0, 0, 0, 0.7)
+            Height: =Parent.Height
+            Visible: '=IsVisibleUpdateStatusPopupForm || IsVisibleMoreInformationPopupForm || IsVisibleConfirmPopupForm '
+            Width: =Parent.Width
+          Children:
+            - MaintenanceJob_Complete_Popupform_Container:
+                Control: GroupContainer@1.5.0
+                Variant: AutoLayout
+                Properties:
+                  Fill: =RGBA(255, 255, 255, 1)
+                  Height: = If (HomeScreen.Size <= ScreenSize.Small , 400 ,HomeScreen.Size <= ScreenSize.Medium,600,700)
+                  LayoutAlignItems: =LayoutAlignItems.Center
+                  LayoutDirection: =LayoutDirection.Vertical
+                  LayoutJustifyContent: =LayoutJustifyContent.Center
+                  RadiusBottomLeft: =25
+                  RadiusBottomRight: =25
+                  RadiusTopLeft: =25
+                  RadiusTopRight: =25
+                  Visible: =IsVisibleConfirmPopupForm
+                  Width: |-
+                    =If(
+                        'Comment Screen'.Size <= ScreenSize.Small,
+                        Parent.Width*0.8,
+                        'Comment Screen'.Size <= ScreenSize.Large,
+                        If(
+                            'Comment Screen'.Width >= 1300,
+                            Parent.Width*0.6,
+                            Parent.Width*0.6
+                        ),
+                        Parent.Width*0.6
+                    )
+                  X: =(Parent.Width-Self.Width)/2
+                  Y: =(Parent.Height-Self.Height)/2
+                Children:
+                  - Complete_Logo:
+                      Control: Image@2.2.3
+                      Properties:
+                        BorderColor: =RGBA(0, 18, 107, 1)
+                        Height: = If (HomeScreen.Size <= ScreenSize.Small , 80 ,HomeScreen.Size <= ScreenSize.Medium,90,100)
+                        Image: =ConfirmComplete
+                        ImagePosition: =ImagePosition.Fill
+                        LayoutMinHeight: =16
+                        LayoutMinWidth: =16
+                        Width: =Self.Height
+                  - Label8:
+                      Control: Label@2.5.1
+                      Properties:
+                        Align: =Align.Center
+                        BorderColor: =RGBA(0, 18, 107, 1)
+                        Font: =Font.Lato
+                        FontWeight: =FontWeight.Bold
+                        LayoutMinHeight: =16
+                        LayoutMinWidth: =16
+                        PaddingBottom: =0
+                        PaddingTop: =10
+                        Size: = If (HomeScreen.Size <= ScreenSize.Small , 25 ,HomeScreen.Size <= ScreenSize.Medium,35,45)
+                        Text: =Coalesce(Text(LookUp(LabelTranslations, Language = UserLanguage).TranslatedLabels.lblConfirmation), "Confirmation")
+                        Width: =Parent.Width
+                  - Label9:
+                      Control: Label@2.5.1
+                      Properties:
+                        Align: =Align.Center
+                        AlignInContainer: =AlignInContainer.Center
+                        AutoHeight: =true
+                        BorderColor: =RGBA(0, 18, 107, 1)
+                        DisplayMode: =DisplayMode.Disabled
+                        Font: =Font.Lato
+                        FontWeight: =FontWeight.Lighter
+                        LayoutMinHeight: =16
+                        LayoutMinWidth: =16
+                        LineHeight: =1
+                        PaddingBottom: =12
+                        PaddingTop: =0
+                        Size: = If (HomeScreen.Size <= ScreenSize.Small , 16 ,HomeScreen.Size <= ScreenSize.Medium,26,36)
+                        Text: =Coalesce(Text(LookUp(LabelTranslations, Language = UserLanguage).TranslatedLabels.lblConfirmationDetail), "Are you sure you want to mark this task as complete?")
+                        Width: =512
+                  - TimeLogContainer_1:
+                      Control: GroupContainer@1.5.0
+                      Variant: ManualLayout
+                      Properties:
+                        AlignInContainer: =AlignInContainer.Center
+                        DropShadow: =DropShadow.None
+                        FillPortions: =0
+                        Height: = If (HomeScreen.Size <= ScreenSize.Small , Parent.Height*0.27 ,HomeScreen.Size <= ScreenSize.Medium,Parent.Height*0.32,Parent.Height*0.37)
+                        LayoutMinHeight: =
+                        PaddingBottom: =10
+                        PaddingTop: =10
+                        Width: =Parent.Width
+                        Y: =MaintenanceJob_Detail_ClockContainer.Height + MaintenanceJob_Detail_TitleContainer.Height
+                      Children:
+                        - MaintenanceJob_Detail_ControlContainer_2:
+                            Control: GroupContainer@1.5.0
+                            Variant: AutoLayout
+                            Properties:
+                              DropShadow: =DropShadow.None
+                              Height: =Button3.Height*1.25
+                              LayoutAlignItems: =LayoutAlignItems.Center
+                              LayoutDirection: =LayoutDirection.Horizontal
+                              LayoutGap: =20
+                              LayoutJustifyContent: =LayoutJustifyContent.Center
+                              PaddingLeft: =8
+                              PaddingRight: =8
+                              Width: = If (HomeScreen.Size <= ScreenSize.Small , Parent.Width*0.9 ,HomeScreen.Size <= ScreenSize.Medium,Parent.Width*0.75,Parent.Width*0.6)
+                              X: =(Parent.Width-Self.Width)/2
+                              Y: =(Parent.Height-Self.Height)/2
+                            Children:
+                              - Button3:
+                                  Control: Classic/Button@2.2.0
+                                  Properties:
+                                    BorderColor: =ColorFade(Self.Fill, -15%)
+                                    BorderThickness: =0
+                                    Color: =RGBA(0, 0, 0, 1)
+                                    DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                                    Fill: =RGBA(240, 240, 240, 1)
+                                    FillPortions: =1
+                                    Font: =Font.Lato
+                                    Height: = If (HomeScreen.Size <= ScreenSize.Small , 80 ,HomeScreen.Size <= ScreenSize.Medium,120,160)
+                                    HoverBorderColor: =ColorFade(Self.BorderColor, 20%)
+                                    HoverColor: =RGBA(0, 0, 0, 1)
+                                    HoverFill: =Self.Fill
+                                    LayoutMinHeight: =16
+                                    LayoutMinWidth: =16
+                                    OnSelect: =UpdateContext({IsVisibleConfirmPopupForm:false})
+                                    PressedBorderColor: =Self.Fill
+                                    PressedFill: =Self.Fill
+                                    RadiusBottomLeft: =20
+                                    RadiusBottomRight: =20
+                                    RadiusTopLeft: =20
+                                    RadiusTopRight: =20
+                                    Size: = If (HomeScreen.Size <= ScreenSize.Small , 23 ,HomeScreen.Size <= ScreenSize.Medium,33,43)
+                                    Text: =Coalesce(Text(LookUp(LabelTranslations, Language = UserLanguage).TranslatedLabels.btnCancel), "Cancel")
+                              - Button4:
+                                  Control: Classic/Button@2.2.0
+                                  Properties:
+                                    BorderColor: =ColorFade(Self.Fill, -15%)
+                                    BorderThickness: =0
+                                    Color: =RGBA(255, 255, 255, 1)
+                                    DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                                    Fill: =RGBA(0, 141, 132, 1)
+                                    FillPortions: =1
+                                    Font: =Font.Lato
+                                    Height: =Button3.Height
+                                    HoverBorderColor: =ColorFade(Self.BorderColor, 20%)
+                                    HoverColor: =RGBA(255, 255, 255, 1)
+                                    HoverFill: =Self.Fill
+                                    LayoutMinHeight: =16
+                                    LayoutMinWidth: =0
+                                    OnSelect: |-
+                                      =Patch(
+                                          'Maintenance Jobs',
+                                          LookUp('Maintenance Jobs', 'Maintenance Job' = CurrentMaintanenceRecord.'Maintenance Job'),
+                                          {
+                                              'Task Status': 'Task Status'.Completed
+                                          }
+                                      );
+                                      Refresh('Maintenance Jobs');
+                                      UpdateContext({CurrentMaintanenceRecord:  LookUp('Maintenance Jobs', 'Maintenance Job' = CurrentMaintanenceRecord.'Maintenance Job')});
+                                      Notify(Coalesce(Text(LookUp(LabelTranslations, Language = UserLanguage).TranslatedLabels.notifyTaskCompleted),"Task completed"),NotificationType.Success);
+
+                                      UpdateContext({IsVisibleConfirmPopupForm:false});
+                                    PressedBorderColor: =Self.Fill
+                                    PressedFill: =Self.Fill
+                                    RadiusBottomLeft: =20
+                                    RadiusBottomRight: =20
+                                    RadiusTopLeft: =20
+                                    RadiusTopRight: =20
+                                    Size: = If (HomeScreen.Size <= ScreenSize.Small , 20 ,HomeScreen.Size <= ScreenSize.Medium,30,40)
+                                    Text: =Coalesce(Text(LookUp(LabelTranslations, Language = UserLanguage).TranslatedLabels.btnYes), "Yes")
+            - MaintenanceJob_MainForm_Popupform_Container:
+                Control: GroupContainer@1.5.0
+                Variant: AutoLayout
+                Properties:
+                  Fill: =RGBA(255, 255, 255, 1)
+                  Height: =(Comment_PopupForm_Header_Container_1.Height+Comment_PopupForm_Body_Container_1.Height)
+                  LayoutAlignItems: =LayoutAlignItems.Center
+                  LayoutDirection: =LayoutDirection.Vertical
+                  RadiusBottomLeft: =25
+                  RadiusBottomRight: =25
+                  RadiusTopLeft: =25
+                  RadiusTopRight: =25
+                  Visible: =IsVisibleMoreInformationPopupForm
+                  Width: |-
+                    =If(
+                        'Comment Screen'.Size <= ScreenSize.Small,
+                        Parent.Width*0.8,
+                        'Comment Screen'.Size <= ScreenSize.Large,
+                        If(
+                            'Comment Screen'.Width >= 1300,
+                            Parent.Width*0.6,
+                            Parent.Width*0.6
+                        ),
+                        Parent.Width*0.6
+                    )
+                  X: =(Parent.Width-Self.Width)/2
+                  Y: =(Parent.Height-Self.Height)/2
+                Children:
+                  - Comment_PopupForm_Header_Container_1:
+                      Control: GroupContainer@1.5.0
+                      Variant: AutoLayout
+                      Properties:
+                        FillPortions: =0
+                        Height: =Comment_PopupForm_Header_Title_1.Height*2.5
+                        LayoutAlignItems: =LayoutAlignItems.Center
+                        LayoutDirection: =LayoutDirection.Horizontal
+                        LayoutMinHeight: =16
+                        LayoutMinWidth: =16
+                        PaddingBottom: =Self.PaddingTop
+                        PaddingLeft: =30
+                        PaddingRight: =Self.PaddingLeft
+                        PaddingTop: =8
+                      Children:
+                        - Comment_PopupForm_Header_Title_1:
+                            Control: Text@0.0.51
+                            Properties:
+                              AlignInContainer: =AlignInContainer.Center
+                              FillPortions: =1
+                              Font: =Font.Lato
+                              FontColor: =Theme_OnStart.Colors.SecondaryColor
+                              Height: =Self.Size*1.5
+                              Size: |
+                                =If(
+                                    'Comment Screen'.Size <= ScreenSize.Small,
+                                    32,
+                                    'Comment Screen'.Size <= ScreenSize.Large,
+                                    If(
+                                        'Comment Screen'.Width >= 1300,
+                                        48,
+                                        40
+                                    ),
+                                    48
+                                )
+                              Text: =Coalesce(Text(LookUp(LabelTranslations, Language = UserLanguage).TranslatedLabels.lblMoreInformation), "More Information")
+                              VerticalAlign: =VerticalAlign.Middle
+                              Weight: ='TextCanvas.Weight'.Bold
+                        - Comment_Close_Container_2:
+                            Control: GroupContainer@1.5.0
+                            Variant: ManualLayout
+                            Properties:
+                              AlignInContainer: =AlignInContainer.Center
+                              BorderColor: =RGBA(0, 0, 0, 0)
+                              Fill: =RGBA(255, 71, 71, 1)
+                              FillPortions: =0
+                              Height: =Comment_PopupForm_Header_Title_1.Height
+                              LayoutMinHeight: =16
+                              LayoutMinWidth: =16
+                              RadiusBottomLeft: =Self.RadiusTopLeft
+                              RadiusBottomRight: =Self.RadiusTopLeft
+                              RadiusTopLeft: =Self.Height
+                              RadiusTopRight: =Self.RadiusTopLeft
+                              Width: =Self.Height
+                            Children:
+                              - ButtonCanvas4_2:
+                                  Control: Button@0.0.45
+                                  Properties:
+                                    Appearance: ='ButtonCanvas.Appearance'.Outline
+                                    BorderRadius: =Self.Height
+                                    BorderThickness: =0
+                                    FontColor: =RGBA(255, 255, 255, 1)
+                                    FontSize: =Parent.Height*0.6
+                                    FontWeight: =FontWeight.Bold
+                                    Height: =Parent.Height
+                                    Icon: ="Dismiss"
+                                    IconStyle: ='ButtonCanvas.IconStyle'.Filled
+                                    Layout: ='ButtonCanvas.Layout'.IconOnly
+                                    OnSelect: =UpdateContext({IsVisibleMoreInformationPopupForm:false});
+                                    Width: =Parent.Width
+                  - Comment_PopupForm_Body_Container_1:
+                      Control: GroupContainer@1.5.0
+                      Variant: AutoLayout
+                      Properties:
+                        FillPortions: =0
+                        Height: =(Container10_3.Height+Container10_4.Height+Container10_5.Height+Container10_6.Height+Container10_57.Height)*1.25
+                        LayoutAlignItems: =LayoutAlignItems.Center
+                        LayoutDirection: =LayoutDirection.Vertical
+                        LayoutGap: =20
+                        LayoutJustifyContent: =LayoutJustifyContent.Center
+                        LayoutMinHeight: =16
+                        LayoutMinWidth: =16
+                        PaddingBottom: =Self.PaddingTop
+                        PaddingLeft: =30
+                        PaddingRight: =Self.PaddingLeft
+                        PaddingTop: =20
+                      Children:
+                        - Container10_57:
+                            Control: GroupContainer@1.5.0
+                            Variant: AutoLayout
+                            Properties:
+                              DropShadow: =DropShadow.None
+                              FillPortions: =0
+                              Height: =(TextCanvas2_63.Height+TextInputCanvas2_53.Height)+20
+                              LayoutAlignItems: =LayoutAlignItems.Center
+                              LayoutDirection: =LayoutDirection.Vertical
+                              LayoutGap: =10
+                              LayoutMinHeight: =16
+                              LayoutMinWidth: =16
+                            Children:
+                              - TextCanvas2_63:
+                                  Control: Text@0.0.51
+                                  Properties:
+                                    AlignInContainer: =AlignInContainer.Stretch
+                                    AutoHeight: =true
+                                    Font: =Font.Lato
+                                    LayoutMinHeight: =16
+                                    LayoutMinWidth: =16
+                                    PaddingLeft: =13
+                                    Size: |
+                                      =If(
+                                          'Comment Screen'.Size <= ScreenSize.Small,
+                                          27,
+                                          'Comment Screen'.Size <= ScreenSize.Large,
+                                          If(
+                                              'Comment Screen'.Width >= 1300,
+                                              39,
+                                              33
+                                          ),
+                                          39
+                                      )
+                                    Text: =    Coalesce(Text(LookUp(LabelTranslations, Language = UserLanguage).TranslatedLabels.lblJobNo), "Job No.")
+                                    Weight: ='TextCanvas.Weight'.Bold
+                              - TextInputCanvas2_53:
+                                  Control: TextInput@0.0.54
+                                  Properties:
+                                    AlignInContainer: =AlignInContainer.Stretch
+                                    Appearance: ='TextInputCanvas.Appearance'.FilledDarker
+                                    BorderColor: =RGBA(214, 221, 224, 1)
+                                    BorderRadius: =15
+                                    BorderStyle: =BorderStyle.Solid
+                                    BorderThickness: =2
+                                    DisplayMode: =DisplayMode.View
+                                    Font: =Font.Lato
+                                    FontSize: |
+                                      =If(
+                                          'Comment Screen'.Size <= ScreenSize.Small,
+                                          26,
+                                          'Comment Screen'.Size <= ScreenSize.Large,
+                                          If(
+                                              'Comment Screen'.Width >= 1300,
+                                              38,
+                                              32
+                                          ),
+                                          38
+                                      )
+                                    Height: =TextCanvas2_63.Height*2
+                                    LayoutMinHeight: =16
+                                    LayoutMinWidth: =16
+                                    Mode: ='TextInputCanvas.Mode'.SingleLine
+                                    Placeholder: ="Enter Type Code"
+                                    Value: =Coalesce(CurrentMaintanenceRecord.'Job No.',"-")
+                        - Container10_6:
+                            Control: GroupContainer@1.5.0
+                            Variant: AutoLayout
+                            Properties:
+                              DropShadow: =DropShadow.None
+                              FillPortions: =0
+                              Height: =(TextCanvas2_6.Height+TextInputCanvas2_4.Height)+20
+                              LayoutAlignItems: =LayoutAlignItems.Center
+                              LayoutDirection: =LayoutDirection.Vertical
+                              LayoutGap: =10
+                              LayoutMinHeight: =16
+                              LayoutMinWidth: =16
+                            Children:
+                              - TextCanvas2_6:
+                                  Control: Text@0.0.51
+                                  Properties:
+                                    AlignInContainer: =AlignInContainer.Stretch
+                                    AutoHeight: =true
+                                    Font: =Font.Lato
+                                    LayoutMinHeight: =16
+                                    LayoutMinWidth: =16
+                                    PaddingLeft: =13
+                                    Size: |
+                                      =If(
+                                          'Comment Screen'.Size <= ScreenSize.Small,
+                                          27,
+                                          'Comment Screen'.Size <= ScreenSize.Large,
+                                          If(
+                                              'Comment Screen'.Width >= 1300,
+                                              39,
+                                              33
+                                          ),
+                                          39
+                                      )
+                                    Text: =Coalesce(Text(LookUp(LabelTranslations, Language = UserLanguage).TranslatedLabels.lblTypeCode), "Type Code")
+                                    Weight: ='TextCanvas.Weight'.Bold
+                              - TextInputCanvas2_4:
+                                  Control: TextInput@0.0.54
+                                  Properties:
+                                    AlignInContainer: =AlignInContainer.Stretch
+                                    Appearance: ='TextInputCanvas.Appearance'.FilledDarker
+                                    BorderColor: =RGBA(214, 221, 224, 1)
+                                    BorderRadius: =15
+                                    BorderStyle: =BorderStyle.Solid
+                                    BorderThickness: =2
+                                    DisplayMode: =DisplayMode.View
+                                    Font: =Font.Lato
+                                    FontSize: |
+                                      =If(
+                                          'Comment Screen'.Size <= ScreenSize.Small,
+                                          26,
+                                          'Comment Screen'.Size <= ScreenSize.Large,
+                                          If(
+                                              'Comment Screen'.Width >= 1300,
+                                              38,
+                                              32
+                                          ),
+                                          38
+                                      )
+                                    Height: =TextCanvas2_6.Height*2
+                                    LayoutMinHeight: =16
+                                    LayoutMinWidth: =16
+                                    Mode: ='TextInputCanvas.Mode'.SingleLine
+                                    Placeholder: ="Enter Type Code"
+                                    Value: =Coalesce(CurrentMaintanenceRecord.'Type Code​',"-")
+                        - Container10_3:
+                            Control: GroupContainer@1.5.0
+                            Variant: AutoLayout
+                            Properties:
+                              DropShadow: =DropShadow.None
+                              FillPortions: =0
+                              Height: =(TextCanvas2_3.Height+TextInputCanvas2_1.Height)+20
+                              LayoutAlignItems: =LayoutAlignItems.Center
+                              LayoutDirection: =LayoutDirection.Vertical
+                              LayoutGap: =10
+                              LayoutMinHeight: =16
+                              LayoutMinWidth: =16
+                            Children:
+                              - TextCanvas2_3:
+                                  Control: Text@0.0.51
+                                  Properties:
+                                    AlignInContainer: =AlignInContainer.Stretch
+                                    AutoHeight: =true
+                                    Font: =Font.Lato
+                                    LayoutMinHeight: =16
+                                    LayoutMinWidth: =16
+                                    PaddingLeft: =13
+                                    Size: |
+                                      =If(
+                                          'Comment Screen'.Size <= ScreenSize.Small,
+                                          28,
+                                          'Comment Screen'.Size <= ScreenSize.Large,
+                                          If(
+                                              'Comment Screen'.Width >= 1300,
+                                              40,
+                                              34
+                                          ),
+                                          40
+                                      )
+                                    Text: =Coalesce(Text(LookUp(LabelTranslations, Language = UserLanguage).TranslatedLabels.lblResourceNo), "Resource No.")
+                                    Weight: ='TextCanvas.Weight'.Bold
+                              - TextInputCanvas2_1:
+                                  Control: TextInput@0.0.54
+                                  Properties:
+                                    AlignInContainer: =AlignInContainer.Stretch
+                                    Appearance: ='TextInputCanvas.Appearance'.FilledDarker
+                                    BorderColor: =RGBA(214, 221, 224, 1)
+                                    BorderRadius: =15
+                                    BorderStyle: =BorderStyle.Solid
+                                    BorderThickness: =2
+                                    DisplayMode: =DisplayMode.View
+                                    Font: =Font.Lato
+                                    FontSize: |
+                                      =If(
+                                          'Comment Screen'.Size <= ScreenSize.Small,
+                                          26,
+                                          'Comment Screen'.Size <= ScreenSize.Large,
+                                          If(
+                                              'Comment Screen'.Width >= 1300,
+                                              38,
+                                              32
+                                          ),
+                                          38
+                                      )
+                                    Height: =TextCanvas2_3.Height*2
+                                    LayoutMinHeight: =16
+                                    LayoutMinWidth: =16
+                                    Mode: ='TextInputCanvas.Mode'.SingleLine
+                                    Placeholder: ="Enter Resource No."
+                                    Value: =Coalesce(CurrentMaintanenceRecord.'Resource No.',"-")
+                        - Container10_4:
+                            Control: GroupContainer@1.5.0
+                            Variant: AutoLayout
+                            Properties:
+                              DropShadow: =DropShadow.None
+                              FillPortions: =0
+                              Height: =(TextCanvas2_4.Height+TextInputCanvas2_2.Height)+20
+                              LayoutAlignItems: =LayoutAlignItems.Center
+                              LayoutDirection: =LayoutDirection.Vertical
+                              LayoutGap: =10
+                              LayoutMinHeight: =16
+                              LayoutMinWidth: =16
+                            Children:
+                              - TextCanvas2_4:
+                                  Control: Text@0.0.51
+                                  Properties:
+                                    AlignInContainer: =AlignInContainer.Stretch
+                                    AutoHeight: =true
+                                    Font: =Font.Lato
+                                    LayoutMinHeight: =16
+                                    LayoutMinWidth: =16
+                                    PaddingLeft: =13
+                                    Size: |
+                                      =If(
+                                          'Comment Screen'.Size <= ScreenSize.Small,
+                                          28,
+                                          'Comment Screen'.Size <= ScreenSize.Large,
+                                          If(
+                                              'Comment Screen'.Width >= 1300,
+                                              40,
+                                              34
+                                          ),
+                                          40
+                                      )
+                                    Text: =Coalesce(Text(LookUp(LabelTranslations, Language = UserLanguage).TranslatedLabels.lblReportedBy), "Reported By")
+                                    Weight: ='TextCanvas.Weight'.Bold
+                              - TextInputCanvas2_2:
+                                  Control: TextInput@0.0.54
+                                  Properties:
+                                    AlignInContainer: =AlignInContainer.Stretch
+                                    Appearance: ='TextInputCanvas.Appearance'.FilledDarker
+                                    BorderColor: =RGBA(214, 221, 224, 1)
+                                    BorderRadius: =15
+                                    BorderStyle: =BorderStyle.Solid
+                                    BorderThickness: =2
+                                    DisplayMode: =DisplayMode.View
+                                    Font: =Font.Lato
+                                    FontSize: |
+                                      =If(
+                                          'Comment Screen'.Size <= ScreenSize.Small,
+                                          26,
+                                          'Comment Screen'.Size <= ScreenSize.Large,
+                                          If(
+                                              'Comment Screen'.Width >= 1300,
+                                              38,
+                                              32
+                                          ),
+                                          38
+                                      )
+                                    Height: =TextCanvas2_4.Height*2
+                                    LayoutMinHeight: =16
+                                    LayoutMinWidth: =16
+                                    Mode: ='TextInputCanvas.Mode'.SingleLine
+                                    Placeholder: ="Enter Reported By"
+                                    Value: =Coalesce(CurrentMaintanenceRecord.'Reported by',"-")
+                        - Container10_5:
+                            Control: GroupContainer@1.5.0
+                            Variant: AutoLayout
+                            Properties:
+                              DropShadow: =DropShadow.None
+                              FillPortions: =0
+                              Height: =(TextCanvas2_5.Height+TextInputCanvas2_3.Height)+20
+                              LayoutAlignItems: =LayoutAlignItems.Center
+                              LayoutDirection: =LayoutDirection.Vertical
+                              LayoutGap: =10
+                              LayoutMinHeight: =16
+                              LayoutMinWidth: =16
+                            Children:
+                              - TextCanvas2_5:
+                                  Control: Text@0.0.51
+                                  Properties:
+                                    AlignInContainer: =AlignInContainer.Stretch
+                                    AutoHeight: =true
+                                    Font: =Font.Lato
+                                    LayoutMinHeight: =16
+                                    LayoutMinWidth: =16
+                                    PaddingLeft: =13
+                                    Size: |
+                                      =If(
+                                          'Comment Screen'.Size <= ScreenSize.Small,
+                                          28,
+                                          'Comment Screen'.Size <= ScreenSize.Large,
+                                          If(
+                                              'Comment Screen'.Width >= 1300,
+                                              40,
+                                              34
+                                          ),
+                                          40
+                                      )
+                                    Text: =Coalesce(Text(LookUp(LabelTranslations, Language = UserLanguage).TranslatedLabels.lblUnit), "Unit")
+                                    Weight: ='TextCanvas.Weight'.Bold
+                              - TextInputCanvas2_3:
+                                  Control: TextInput@0.0.54
+                                  Properties:
+                                    AlignInContainer: =AlignInContainer.Stretch
+                                    Appearance: ='TextInputCanvas.Appearance'.FilledDarker
+                                    BorderColor: =RGBA(214, 221, 224, 1)
+                                    BorderRadius: =15
+                                    BorderStyle: =BorderStyle.Solid
+                                    BorderThickness: =2
+                                    DisplayMode: =DisplayMode.View
+                                    Font: =Font.Lato
+                                    FontSize: |
+                                      =If(
+                                          'Comment Screen'.Size <= ScreenSize.Small,
+                                          26,
+                                          'Comment Screen'.Size <= ScreenSize.Large,
+                                          If(
+                                              'Comment Screen'.Width >= 1300,
+                                              38,
+                                              32
+                                          ),
+                                          38
+                                      )
+                                    Height: =TextCanvas2_5.Height*2
+                                    LayoutMinHeight: =16
+                                    LayoutMinWidth: =16
+                                    Mode: ='TextInputCanvas.Mode'.SingleLine
+                                    Placeholder: ="Enter Unit"
+                                    Value: =Coalesce(CurrentMaintanenceRecord.Unit.'Unit No',"-")
+            - MaintenanceJob_UpdateStatus_Popupform_Container:
+                Control: GroupContainer@1.5.0
+                Variant: AutoLayout
+                Properties:
+                  Fill: =RGBA(255, 255, 255, 1)
+                  Height: =(Comment_PopupForm_Header_Container_2.Height+Comment_PopupForm_Body_Container_2.Height)
+                  LayoutAlignItems: =LayoutAlignItems.Center
+                  LayoutDirection: =LayoutDirection.Vertical
+                  RadiusBottomLeft: =25
+                  RadiusBottomRight: =25
+                  RadiusTopLeft: =25
+                  RadiusTopRight: =25
+                  Visible: =IsVisibleUpdateStatusPopupForm
+                  Width: |-
+                    =If(
+                        'Comment Screen'.Size <= ScreenSize.Small,
+                        Parent.Width*0.8,
+                        'Comment Screen'.Size <= ScreenSize.Large,
+                        If(
+                            'Comment Screen'.Width >= 1300,
+                            Parent.Width*0.6,
+                            Parent.Width*0.6
+                        ),
+                        Parent.Width*0.6
+                    )
+                  X: =(Parent.Width-Self.Width)/2
+                  Y: =(Parent.Height-Self.Height)/2
+                Children:
+                  - Comment_PopupForm_Header_Container_2:
+                      Control: GroupContainer@1.5.0
+                      Variant: AutoLayout
+                      Properties:
+                        FillPortions: =0
+                        Height: =Comment_PopupForm_Header_Title_2.Height*2
+                        LayoutAlignItems: =LayoutAlignItems.Center
+                        LayoutDirection: =LayoutDirection.Horizontal
+                        LayoutMinHeight: =16
+                        LayoutMinWidth: =16
+                        PaddingBottom: =Self.PaddingTop
+                        PaddingLeft: =30
+                        PaddingRight: =Self.PaddingLeft
+                        PaddingTop: =8
+                      Children:
+                        - Comment_PopupForm_Header_Title_2:
+                            Control: Text@0.0.51
+                            Properties:
+                              AlignInContainer: =AlignInContainer.Center
+                              AutoHeight: =true
+                              FillPortions: =1
+                              Font: =Font.Lato
+                              FontColor: =Theme_OnStart.Colors.SecondaryColor
+                              Size: |
+                                =If(
+                                    'Comment Screen'.Size <= ScreenSize.Small,
+                                    32,
+                                    'Comment Screen'.Size <= ScreenSize.Large,
+                                    If(
+                                        'Comment Screen'.Width >= 1300,
+                                        48,
+                                        40
+                                    ),
+                                    48
+                                )
+                              Text: =Coalesce(Text(LookUp(LabelTranslations, Language = UserLanguage).TranslatedLabels.lblActionsField), "Actions Field")
+                              VerticalAlign: =VerticalAlign.Middle
+                              Weight: ='TextCanvas.Weight'.Bold
+                        - Comment_Close_Container_3:
+                            Control: GroupContainer@1.5.0
+                            Variant: ManualLayout
+                            Properties:
+                              AlignInContainer: =AlignInContainer.Center
+                              BorderColor: =RGBA(0, 0, 0, 0)
+                              Fill: =RGBA(255, 71, 71, 1)
+                              FillPortions: =0
+                              Height: =Comment_PopupForm_Header_Title_2.Height
+                              LayoutMinHeight: =16
+                              LayoutMinWidth: =16
+                              RadiusBottomLeft: =Self.RadiusTopLeft
+                              RadiusBottomRight: =Self.RadiusTopLeft
+                              RadiusTopLeft: =Self.Height
+                              RadiusTopRight: =Self.RadiusTopLeft
+                              Width: =Self.Height
+                            Children:
+                              - ButtonCanvas4_3:
+                                  Control: Button@0.0.45
+                                  Properties:
+                                    Appearance: ='ButtonCanvas.Appearance'.Outline
+                                    BorderRadius: =Self.Height
+                                    BorderThickness: =0
+                                    FontColor: =RGBA(255, 255, 255, 1)
+                                    FontSize: =Parent.Height*0.6
+                                    FontWeight: =FontWeight.Bold
+                                    Height: =Parent.Height
+                                    Icon: ="Dismiss"
+                                    IconStyle: ='ButtonCanvas.IconStyle'.Filled
+                                    Layout: ='ButtonCanvas.Layout'.IconOnly
+                                    OnSelect: |-
+                                      =UpdateContext( { IsVisibleUpdateStatusPopupForm: false} )
+                                    Width: =Parent.Width
+                  - Comment_PopupForm_Body_Container_2:
+                      Control: GroupContainer@1.5.0
+                      Variant: AutoLayout
+                      Properties:
+                        FillPortions: =0
+                        Height: =(Container10_11.Height+Button2_2.Height)*1.25
+                        LayoutAlignItems: =LayoutAlignItems.Center
+                        LayoutDirection: =LayoutDirection.Vertical
+                        LayoutGap: =20
+                        LayoutJustifyContent: =LayoutJustifyContent.Center
+                        LayoutMinHeight: =16
+                        LayoutMinWidth: =16
+                        PaddingBottom: =Self.PaddingTop
+                        PaddingLeft: =20
+                        PaddingRight: =Self.PaddingLeft
+                        PaddingTop: =20
+                      Children:
+                        - Container10_11:
+                            Control: GroupContainer@1.5.0
+                            Variant: AutoLayout
+                            Properties:
+                              DropShadow: =DropShadow.None
+                              FillPortions: =0
+                              Height: =(TextCanvas2_11.Height+Update_Status_Dropdown_Maintanance.Height)+10
+                              LayoutAlignItems: =LayoutAlignItems.Stretch
+                              LayoutDirection: =LayoutDirection.Vertical
+                              LayoutGap: =10
+                            Children:
+                              - TextCanvas2_11:
+                                  Control: Text@0.0.51
+                                  Properties:
+                                    AutoHeight: =true
+                                    Font: =Font.Lato
+                                    PaddingLeft: =13
+                                    Size: |
+                                      =If(
+                                          'Comment Screen'.Size <= ScreenSize.Small,
+                                          28,
+                                          'Comment Screen'.Size <= ScreenSize.Large,
+                                          If(
+                                              'Comment Screen'.Width >= 1300,
+                                              40,
+                                              34
+                                          ),
+                                          40
+                                      )
+                                    Text: =Coalesce(Text(LookUp(LabelTranslations, Language = UserLanguage).TranslatedLabels.lblStatus), "Status")
+                                    Weight: ='TextCanvas.Weight'.Bold
+                                    Width: =Parent.Width
+                              - Update_Status_Dropdown_Maintanance:
+                                  Control: DropDown@0.0.45
+                                  Properties:
+                                    AlignInContainer: =AlignInContainer.Stretch
+                                    BorderColor: =EliteTheme.Colors.Body_UI.BorderLight
+                                    BorderRadius: =15
+                                    BorderStyle: =BorderStyle.Solid
+                                    BorderThickness: =2
+                                    DefaultSelectedItems: |-
+                                      =If(
+                                          IsBlankOrError(CurrentMaintanenceRecord.'Job Status (External)'),
+                                          First(OptionsetForExternalStatus),
+                                          LookUp(
+                                              OptionsetForExternalStatus,
+                                              elt_jobstatusid = CurrentMaintanenceRecord.'Job Status (External)'.'Job Status'
+                                          )
+                                      )
+                                    FontSize: |
+                                      =If(
+                                          'Requests Screen'.Size <= ScreenSize.Small,
+                                          26,
+                                          'Requests Screen'.Size <= ScreenSize.Large,
+                                          32,
+                                          38
+                                      )
+                                    Height: =TextCanvas2_11.Height*2
+                                    Items: =OptionsetForExternalStatus
+                                    LayoutMinHeight: =16
+                                    LayoutMinWidth: =16
+                                    Required: =true
+                                  Children:
+                                    - elt_name3:
+                                        Control: DropDownDataField@1.5.0
+                                        Variant: textualColumn
+                                        IsLocked: true
+                                        Properties:
+                                          FieldDisplayName: ="elt_name"
+                                          FieldName: ="elt_name"
+                                          FieldType: ="s"
+                                          Order: =1
+                        - Button2_2:
+                            Control: Classic/Button@2.2.0
+                            Properties:
+                              AlignInContainer: =AlignInContainer.Stretch
+                              BorderColor: =ColorFade(Self.Fill, -15%)
+                              BorderStyle: =BorderStyle.None
+                              BorderThickness: =0
+                              Color: =RGBA(255,255,255,1)
+                              DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                              Fill: =Theme_OnStart.Colors.SecondaryColor
+                              Font: =Font.Lato
+                              FontWeight: =FontWeight.Normal
+                              Height: =Update_Status_Dropdown_Maintanance.Height
+                              HoverBorderColor: =ColorFade(Self.BorderColor, 20%)
+                              HoverColor: =RGBA(255, 255, 255, 1)
+                              HoverFill: =ColorFade(Theme_OnStart.Colors.SecondaryColor, -20%)
+                              LayoutMinHeight: =16
+                              LayoutMinWidth: =16
+                              OnSelect: |+
+                                =If(
+                                    IsBlank(Update_Status_Dropdown_Maintanance.Selected.elt_jobstatusid),
+                                    Notify(Coalesce(Text(LookUp(LabelTranslations, Language = UserLanguage).TranslatedLabels.notifyUpdateExternalStatusError),"Please select a job status."),NotificationType.Error),
+
+                                    Patch(
+                                        'Maintenance Jobs',
+                                        CurrentMaintanenceRecord,
+                                        {
+                                            'Job Status (External)': LookUp('Job Statuses','Job Status'= Update_Status_Dropdown_Maintanance.Selected.elt_jobstatusid)
+                                        }
+                                    );
+                                    Refresh('Maintenance Jobs');
+                                    UpdateContext({CurrentMaintanenceRecord: LookUp('Maintenance Jobs','Maintenance Job' = CurrentMaintanenceRecord.'Maintenance Job')  });
+                                    Notify(Coalesce(Text(LookUp(LabelTranslations, Language = UserLanguage).TranslatedLabels.notifyUpdateExternalStatus),"Job status updated successfully."),NotificationType.Success);
+                                    UpdateContext({IsVisibleUpdateStatusPopupForm:false});
+                                )
+
+                              PressedBorderColor: =Self.Fill
+                              PressedFill: =Self.Fill
+                              Size: |
+                                =If(
+                                    'Comment Screen'.Size <= ScreenSize.Small,
+                                    21,
+                                    'Comment Screen'.Size <= ScreenSize.Large,
+                                    If(
+                                        'Comment Screen'.Width >= 1300,
+                                        33,
+                                        27
+                                    ),
+                                    33
+                                )
+                              Text: =Coalesce(Text(LookUp(LabelTranslations, Language = UserLanguage).TranslatedLabels.btnUpdate), "Update")
+                              Y: =

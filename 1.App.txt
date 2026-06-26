@@ -1,0 +1,492 @@
+OnStart: 
+
+Set(IsHomeScreenLoaderVisible,true);
+Concurrent(
+    Set(
+    Theme_OnStart,
+    {
+        Colors: {
+            PrimaryColor: RGBA(0,119,128,1),
+            SecondaryColor: RGBA(0,141,132,1),
+            SecondaryColor_10: RGBA(0,141,132,0.1),
+            SecondaryColor_50: RGBA(0,141,132,0.5),
+            MenuLightColor: RGBA(216,216,216,0.2),
+            TaskCategoryColor: RGBA(100,134,189,1),
+            TaskCategoryColor_10: RGBA(100,134,189,0.1),
+            TaskCategoryColor_50: RGBA(100,134,189,0.5),
+            DisableTextColor: ColorValue("#A1A1A1"),
+            BackGroundColor: RGBA(246,252,255,1),
+            BorderColor: RGBA(228,228,228,0.8)
+        },
+        MaintenanceJobsStatus: {
+            Onprogress: {
+                OnProgress_Background: RGBA(254,243,231,1),
+                OnProgress_Border: RGBA(255,225,195,1),
+                Image: 'On-Progess'
+            }
+        },
+        Icons: {
+            Comment_Icon: Comments_Icon,
+            Comments_Icon_Background: RGBA(254,243,231,1),
+            Comments_Icon_Border: RGBA(255,225,195,1),
+            Comments_Icon_Color: RGBA(1,108,126,1)
+        },
+        Status: {
+            InProgress: {
+                Text: "Inprogress",
+                TextColor: ColorValue("#F68511"),
+                BorderColor: ColorValue("#FFE1C3"),
+                BackgroundColor: ColorValue("#FEF3E7"),
+                Image: 'On-Progess'
+            },
+            Complete: {
+                Text: "Completed",
+                TextColor: ColorValue("#18C07A"),
+                BorderColor: ColorValue("#ADE8CF"),
+                BackgroundColor: ColorValue("#E8F9F2"),
+                Image: Completed
+            },
+            Denied: {
+                Text: "On Hold",
+                TextColor: ColorValue("#EA3829"),
+                BorderColor: ColorValue("#FFD7D4"),
+                BackgroundColor: ColorValue("#FDEBEA"),
+                Image: Denied
+            }
+        },
+        PriorityDesign: {
+            Low: {
+                Text: "Low",
+                TextColor: ColorValue("#147AF3"),
+                BackgroundColor: ColorValue("#E7F2FE")
+            },
+            Medium: {
+                Text: "Medium",
+                TextColor: ColorValue("#F68511"),
+                BackgroundColor: ColorValue("#FEF3E7")
+            },
+            High: {
+                Text: "High",
+                TextColor: ColorValue("#E96161"),
+                BackgroundColor: ColorValue("#FFEEED")
+            }
+        }
+    }
+),
+Set(
+    EliteTheme,
+    With(
+        {
+            /* Base font sizes based on screen size */
+            BaseNormal: 25,
+            BaseHeading: 40,
+            BaseCaption: 15
+        },
+        {
+            /* ================= FONT SIZES ================= */
+            FontSizes: {
+                /* Body text */
+                Body: [
+                    {
+                        ScreenSize: ScreenSize.Small,
+                        FontSize: BaseNormal
+                    },
+                    {
+                        ScreenSize: ScreenSize.Medium,
+                        FontSize: BaseNormal + 10
+                    },
+                    {
+                        ScreenSize: ScreenSize.Large,
+                        FontSize: BaseNormal + 20
+                    },
+                    {
+                        ScreenSize: ScreenSize.ExtraLarge,
+                        FontSize: BaseNormal + 30
+                    }
+                ],
+                /* Headings */
+                Heading: [
+                    {
+                        ScreenSize: ScreenSize.Small,
+                        FontSize: BaseHeading
+                    },
+                    {
+                        ScreenSize: ScreenSize.Medium,
+                        FontSize: BaseHeading + 15
+                    },
+                    {
+                        ScreenSize: ScreenSize.Large,
+                        FontSize: BaseHeading + 30
+                    },
+                    {
+                        ScreenSize: ScreenSize.ExtraLarge,
+                        FontSize: BaseHeading + 45
+                    }
+                ],
+                /* Labels / captions */
+                Caption: [
+                    {
+                        ScreenSize: ScreenSize.Small,
+                        FontSize: BaseCaption
+                    },
+                    {
+                        ScreenSize: ScreenSize.Medium,
+                        FontSize: BaseCaption + 10
+                    },
+                    {
+                        ScreenSize: ScreenSize.Large,
+                        FontSize: BaseCaption + 20
+                    },
+                    {
+                        ScreenSize: ScreenSize.ExtraLarge,
+                        FontSize: BaseCaption + 30
+                    }
+                ]
+            },
+            /* ================= COLORS ================= */
+            Colors: {
+                /* Base UI */
+                Body_UI: {
+                    Primary: ColorValue("#008D84"),
+                    Secondary: ColorValue("#014F78"),
+                    Red_BG: ColorValue("#FFE2E2"),
+                    Red_Text: ColorValue("#FF4747"),
+                    White: ColorValue("#FFFFFF"),
+                    Black: ColorValue("#000000"),
+                    BackgroundLight: ColorValue("#F6FCFF"),
+                    TextPrimary: ColorValue("#1C1C1C"),
+                    TextSecondary: ColorValue("#A1A1A1"),
+                    BorderLight: ColorValue("#E4E4E4"),
+                    BorderLight_80: ColorValue("#E4E4E4CC"),
+                    Button_Primary: ColorValue("#007780"),
+                    Input_BG: ColorValue("#F9FAFB"),
+                    IconGray: ColorValue("#4A4A4A"),
+                    GlassButton_BG: ColorValue("#FFFFFF1A"),
+                    GlassButton_Border: ColorValue("#E5E5E533")
+                },
+                /* Status badges */
+                StatusBadge: {
+                    Info_BG: ColorValue("#E7F2FE"),
+                    Info_Border: ColorValue("#CFE3FD"),
+                    Info_Text: ColorValue("#147AF3"),
+                    Warning_BG: ColorValue("#FEF3E7"),
+                    Warning_Border: ColorValue("#FFEAD4"),
+                    Warning_Text: ColorValue("#F68511"),
+                    Warning_Image: 'On-Progess',
+                    Success_BG: ColorValue("#E8F9F2"),
+                    Success_Border: ColorValue("#ADE8CF"),
+                    Success_Text: ColorValue("#18C07A"),
+                    Success_Image: Completed,
+                    Error_BG: ColorValue("#FDEBEA"),
+                    Error_Border: ColorValue("#FFD7D4"),
+                    Error_Text: ColorValue("#EA3829"),
+                    Error_Image: Denied,
+                    Comment_BG: ColorValue("#E6F0F2"),
+                    Comment_Text: ColorValue("#016C7E")
+                },
+                /* Home screen colors */
+                Home: {
+                    SiteTasks_BG: ColorValue("#E2F7F4"),
+                    SiteTasks_Border: ColorValue("#A8D8D1"),
+                    SiteTasks_Text: ColorValue("#4C958B"),
+                    SafetyTests_BG: ColorValue("#FFEEE8"),
+                    SafetyTests_Border: ColorValue("#F3D3C8"),
+                    SafetyTests_Text: ColorValue("#D77353"),
+                    Maintenance_BG: ColorValue("#E9F2FF"),
+                    Maintenance_Border: ColorValue("#D0DBEB"),
+                    Maintenance_Text: ColorValue("#6486BC"),
+                    Services_BG: ColorValue("#FFE9F7"),
+                    Services_Border: ColorValue("#F6CEE8"),
+                    Services_Text: ColorValue("#B46A99"),
+                    Housekeeping_BG: ColorValue("#EBE3FB"),
+                    Housekeeping_Border: ColorValue("#D4C8ED"),
+                    Housekeeping_Text: ColorValue("#866FB5"),
+                    MeterReadings_BG: ColorValue("#E8F4F6"),
+                    MeterReadings_Border: ColorValue("#CCE3E6"),
+                    MeterReadings_Text: ColorValue("#55A2B5"),
+                    Inspection_BG: ColorValue("#DFF0DD"),
+                    Inspection_Border: ColorValue("#C4EBBF"),
+                    Inspection_Text: ColorValue("#68B260")
+                },
+                /* Dashboard */
+                TaskDashboard: {
+                    Tile_BG: ColorValue("#E9F2FF"),
+                    Tile_Border: ColorValue("#D0DBEB"),
+                    Tile_Text: ColorValue("#6486BC"),
+                    Toggle_BG: ColorValue("#F3FFFE"),
+                    Toggle_Border: ColorValue("#D6F2F0")
+                }
+            }
+        }
+    )
+);
+Set(
+    MenuList,
+    [
+        {
+            Name: "Site Tasks",
+            Image: Site_Task,
+            BorderColor: EliteTheme.Colors.Home.SiteTasks_Border,
+            Background: EliteTheme.Colors.Home.SiteTasks_BG,
+            TextColor: EliteTheme.Colors.Home.SiteTasks_Text,
+            menuid: "APP_TILE_SITE_TASK"
+        },
+        {
+            Name: "Safety Tests",
+            Image: 'Report Issue',
+            Background: EliteTheme.Colors.Home.SafetyTests_BG,
+            BorderColor: EliteTheme.Colors.Home.SafetyTests_Border,
+            TextColor: EliteTheme.Colors.Home.SafetyTests_Text,
+            menuid: "APP_TILE_SAFETY_TEST"
+        },
+        {
+            Name: "Maintenance Jobs",
+            Image: Maintenance,
+            Background: EliteTheme.Colors.Home.Maintenance_BG,
+            BorderColor: EliteTheme.Colors.Home.Maintenance_Border,
+            TextColor: EliteTheme.Colors.Home.Maintenance_Text,
+            menuid: "APP_TILE_MAINTENANCE"
+        },
+        {
+            Name: "Services",
+            Image: Services,
+            Background: EliteTheme.Colors.Home.Services_BG,
+            BorderColor: EliteTheme.Colors.Home.Services_Border,
+            TextColor: EliteTheme.Colors.Home.Services_Text,
+            menuid: "APP_TILE_SERVICE"
+        },
+        {
+            Name: "Housekeeping",
+            Image: Housekeeping,
+            Background: EliteTheme.Colors.Home.Housekeeping_BG,
+            BorderColor: EliteTheme.Colors.Home.Housekeeping_Border,
+            TextColor: EliteTheme.Colors.Home.Housekeeping_Text,
+            menuid: "APP_TILE_HOUSEKEEPING"
+        },
+        {
+            Name: "Meter Readings",
+            Image: 'Meter Reads',
+            Background: EliteTheme.Colors.Home.MeterReadings_BG,
+            BorderColor: EliteTheme.Colors.Home.MeterReadings_Border,
+            TextColor: EliteTheme.Colors.Home.MeterReadings_Text,
+            menuid: "APP_TILE_METER_READING"
+        },
+        {
+            Name: "Inspection",
+            Image: Inspection,
+            Background: EliteTheme.Colors.Home.Inspection_BG,
+            BorderColor: EliteTheme.Colors.Home.Inspection_Border,
+            TextColor: EliteTheme.Colors.Home.Inspection_Text,
+            menuid: "APP_TILE_INSPECTION"
+        }
+    ]
+),
+Set(
+    UserLanguage,
+    "English"
+),
+ClearCollect(
+    UserData,
+    Users
+),
+ClearCollect(
+    UserTeams,
+    {}
+);
+Clear(UserTeams),
+Set(
+    CurrentUser,
+    LookUp(
+        Users,
+        'Primary Email' = User().Email
+    )
+),
+ClearCollect(
+    LabelTranslations,
+    ForAll(
+        Filter(Languages, Status = 'Status (Languages)'.Active) As l,
+        {
+            Language : l.Name,
+            TranslatedLabels : ParseJSON("{"&Concat(Filter(Translations,ThisRecord.Language.Language = l.Language, ThisRecord.Status = 'Status (Translations)'.Active),JSON(
+                        Key,
+                        JSONFormat.IgnoreUnsupportedTypes
+                    ) & ":" & JSON(
+                        Value,
+                        JSONFormat.IgnoreUnsupportedTypes
+                    ),
+                    ",")&"}")
+        }
+    )
+)
+);
+Set(NoMenuWarningLabel , "");
+If(
+    Connection.Connected,
+    ClearCollect(
+        colMenusRaw,
+        ForAll(
+            ParseJSON(
+                'PowerAppV2->Listrows'.Run(
+                    LookUp(
+                        Users,
+                        'Primary Email' = User().Email
+                    ).User
+                ).permissiondata
+            ),
+            {menuid: Text(ThisRecord.elt_menukey)}
+        )
+    );
+    ClearCollect(
+        colTeamIds,
+        ForAll(
+            ParseJSON(
+                FindTeamsOfUser.Run(
+                    LookUp(
+                        Users,
+                        'Primary Email' = User().Email
+                    ).User
+                ).jsonresult
+            ),
+            {TeamId: GUID(ThisRecord.teamid)}
+        )
+    );
+    ClearCollect(
+        UserTeams,
+        Filter(
+            Teams,
+            Team in colTeamIds.TeamId
+        )
+    );
+    Set(
+        MenuFilteredFromPermission,
+        [
+            {
+                Name: "Site Tasks",
+                Image: Site_Task,
+                BorderColor: EliteTheme.Colors.Home.SiteTasks_Border,
+                Background: EliteTheme.Colors.Home.SiteTasks_BG,
+                TextColor: EliteTheme.Colors.Home.SiteTasks_Text,
+                menuid: "APP_TILE_SITE_TASK",
+                IsVisible: !IsBlank(
+                    LookUp(
+                        colMenusRaw,
+                        menuid = "APP_TILE_SITE_TASK"
+                    )
+                )
+            },
+            {
+                Name: "Safety Tests",
+                Image: 'Report Issue',
+                Background: EliteTheme.Colors.Home.SafetyTests_BG,
+                BorderColor: EliteTheme.Colors.Home.SafetyTests_Border,
+                TextColor: EliteTheme.Colors.Home.SafetyTests_Text,
+                menuid: "APP_TILE_SAFETY_TEST",
+                IsVisible: !IsBlank(
+                    LookUp(
+                        colMenusRaw,
+                        menuid = "APP_TILE_SAFETY_TEST"
+                    )
+                )
+            },
+            {
+                Name: "Maintenance Jobs",
+                Image: Maintenance,
+                Background: EliteTheme.Colors.Home.Maintenance_BG,
+                BorderColor: EliteTheme.Colors.Home.Maintenance_Border,
+                TextColor: EliteTheme.Colors.Home.Maintenance_Text,
+                menuid: "APP_TILE_MAINTENANCE",
+                IsVisible: !IsBlank(
+                    LookUp(
+                        colMenusRaw,
+                        menuid = "APP_TILE_MAINTENANCE"
+                    )
+                )
+            },
+            {
+                Name: "Services",
+                Image: Services,
+                Background: EliteTheme.Colors.Home.Services_BG,
+                BorderColor: EliteTheme.Colors.Home.Services_Border,
+                TextColor: EliteTheme.Colors.Home.Services_Text,
+                menuid: "APP_TILE_SERVICE",
+                IsVisible: !IsBlank(
+                    LookUp(
+                        colMenusRaw,
+                        menuid = "APP_TILE_SERVICE"
+                    )
+                )
+            },
+            {
+                Name: "Housekeeping",
+                Image: Housekeeping,
+                Background: EliteTheme.Colors.Home.Housekeeping_BG,
+                BorderColor: EliteTheme.Colors.Home.Housekeeping_Border,
+                TextColor: EliteTheme.Colors.Home.Housekeeping_Text,
+                menuid: "APP_TILE_HOUSEKEEPING",
+                IsVisible: !IsBlank(
+                    LookUp(
+                        colMenusRaw,
+                        menuid = "APP_TILE_HOUSEKEEPING"
+                    )
+                )
+            },
+            {
+                Name: "Meter Readings",
+                Image: 'Meter Reads',
+                Background: EliteTheme.Colors.Home.MeterReadings_BG,
+                BorderColor: EliteTheme.Colors.Home.MeterReadings_Border,
+                TextColor: EliteTheme.Colors.Home.MeterReadings_Text,
+                menuid: "APP_TILE_METER_READING",
+                IsVisible: !IsBlank(
+                    LookUp(
+                        colMenusRaw,
+                        menuid = "APP_TILE_METER_READING"
+                    )
+                )
+            },
+            {
+                Name: "Inspection",
+                Image: Inspection,
+                Background: EliteTheme.Colors.Home.Inspection_BG,
+                BorderColor: EliteTheme.Colors.Home.Inspection_Border,
+                TextColor: EliteTheme.Colors.Home.Inspection_Text,
+                menuid: "APP_TILE_INSPECTION",
+                IsVisible: !IsBlank(
+                    LookUp(
+                        colMenusRaw,
+                        menuid = "APP_TILE_INSPECTION"
+                    )
+                )
+            }
+        ]
+    ),
+    Notify(
+            Coalesce(Text(LookUp(LabelTranslations, Language = UserLanguage).TranslatedLabels.notifyOnstartError), "To Run the app first time sync will required"),
+        NotificationType.Information
+    )
+);
+Set(IsHomeScreenLoaderVisible,false);
+Set(NoMenuWarningLabel , Coalesce(Text(LookUp(LabelTranslations, Language = UserLanguage).TranslatedLabels.lblNoMenuPermission), "You don’t have any menu permissions."));
+
+------------------------------------------------------------------------------------------
+
+SizeBreakpoints:
+
+[1300, 1800, 2400]
+
+------------------------------------------------------------------------------------------
+
+StartScreen:
+
+HomeScreen
+
+------------------------------------------------------------------------------------------
+
+Theme that is set as default:
+
+Themes:
+  Elite Primary Theme:
+    Font: "'Lato', sans-serif"
+    BasePaletteColor: '#007780'
+    IsPrimaryColorLocked: true
+

@@ -1,0 +1,931 @@
+Screens:
+  TaskDashboardScreen:
+    Properties:
+      LoadingSpinnerColor: =EliteTheme.Colors.Body_UI.Primary
+      OnHidden: =Clear(TaskGalleryItems);
+      OnVisible: |+
+        =UpdateContext({IsSpinnerVisible : true});
+        ClearCollect(
+            TaskGalleryItems,
+            [
+            {
+                Name: "High Priority",
+                FilteredRecordsCount: Switch(
+                    SelectedMenu.Name,
+                    "Site Tasks", 
+                    If(
+                        TaskDashboard_TaskFilter_Toggle.Value,
+                        CountRows(Filter('Site Tasks', !IsBlank('Site Task') && Status = 'Status (Site Tasks)'.Active && 'Owning Team'.Team in UserTeams.Team && Priority = 1 && 'Task Status' <> 4 )),
+                        CountRows(Filter('Site Tasks', !IsBlank('Site Task') && Status = 'Status (Site Tasks)'.Active && 'Owning User'.User = CurrentUser.User && Priority = 1 && 'Task Status' <> 4))
+                    ),
+                    "Safety Tests",
+                    If(
+                        TaskDashboard_TaskFilter_Toggle.Value,
+                        CountRows(Filter('Safety Tests', !IsBlank('Safety Test'), 'Owning Team'.Team in UserTeams.Team && Priority = 1 && 'Task Status' <> 4 && Status = 'Status (Safety Tests)'.Active )),
+                        CountRows(Filter('Safety Tests', !IsBlank('Safety Test'), 'Owning User'.User = CurrentUser.User && Priority = 1 && 'Task Status' <> 4 && Status = 'Status (Safety Tests)'.Active))
+                    ), 
+                    "Maintenance Jobs",
+                    If(
+                        TaskDashboard_TaskFilter_Toggle.Value,
+                        CountRows(Filter('Maintenance Jobs', !IsBlank('Maintenance Job'), 'Owning Team'.Team in UserTeams.Team && Priority = 1 && 'Task Status' <> 4 && Status = 'Status (Maintenance Jobs)'.Active)),
+                        CountRows(Filter('Maintenance Jobs', !IsBlank('Maintenance Job'), 'Owning User'.User = CurrentUser.User && Priority = 1 && 'Task Status' <> 4 && Status = 'Status (Maintenance Jobs)'.Active))
+                    ),
+                    "Services",
+                    If(
+                        TaskDashboard_TaskFilter_Toggle.Value,
+                        CountRows(Filter('Services_1', !IsBlank(Service), 'Owning Team'.Team in UserTeams.Team && Priority = 1 && 'Task Status' <> 4 && Status = 'Status (Services_1)'.Active)),
+                        CountRows(Filter('Services_1', !IsBlank(Service), 'Owning User'.User = CurrentUser.User && Priority = 1 && 'Task Status' <> 4 && Status = 'Status (Services_1)'.Active))
+                    ),
+                    "Housekeeping",
+                    If(
+                        TaskDashboard_TaskFilter_Toggle.Value,
+                        CountRows(Filter('Housekeeping_1', !IsBlank(Housekeeping), 'Owning Team'.Team in UserTeams.Team && Priority = 1 && 'Task Status' <> 4 && Status = 'Status (Housekeeping_1)'.Active)),
+                        CountRows(Filter('Housekeeping_1', !IsBlank(Housekeeping), 'Owning User'.User = CurrentUser.User && Priority = 1 && 'Task Status' <> 4 && Status = 'Status (Housekeeping_1)'.Active))
+                    ),
+                    "Meter Readings",
+                    If(
+                        TaskDashboard_TaskFilter_Toggle.Value,
+                        CountRows(Filter('Meter Readings', !IsBlank('Meter Reading'), 'Owning Team'.Team in UserTeams.Team && Priority = 1 && 'Task Status' <> 4 && Status = 'Status (Meter Readings)'.Active)),
+                        CountRows(Filter('Meter Readings', !IsBlank('Meter Reading'), 'Owning User'.User = CurrentUser.User && Priority = 1 && 'Task Status' <> 4 && Status = 'Status (Meter Readings)'.Active))
+                    ),
+                    "Inspection",
+                    If(
+                        TaskDashboard_TaskFilter_Toggle.Value,
+                        CountRows(Filter('Inspections', !IsBlank(Inspection), 'Owning Team'.Team in UserTeams.Team && Priority = 1 && 'Task Status' <> 4 && Status = 'Status (Inspections)'.Active)),
+                        CountRows(Filter('Inspections', !IsBlank(Inspection), 'Owning User'.User = CurrentUser.User && Priority = 1 && 'Task Status' <> 4 && Status = 'Status (Inspections)'.Active))
+                    )
+                )
+            },
+            {
+                Name: "To Do",
+                FilteredRecordsCount: Switch(
+                    SelectedMenu.Name,
+                    "Site Tasks", 
+                    If(
+                        TaskDashboard_TaskFilter_Toggle.Value,
+                        CountRows(Filter('Site Tasks', !IsBlank('Due Date') && 'Due Date' <= DateAdd(Today(), 86399, TimeUnit.Seconds) && 'Task Status' <> 4 && Status = 'Status (Site Tasks)'.Active, 'Owning Team'.Team in UserTeams.Team)),
+                        CountRows(Filter('Site Tasks', !IsBlank('Due Date') && 'Due Date' <= DateAdd(Today(), 86399, TimeUnit.Seconds) && 'Task Status' <> 4 && Status = 'Status (Site Tasks)'.Active, 'Owning User'.User = CurrentUser.User))
+                    ),
+                    "Safety Tests",
+                    If(
+                        TaskDashboard_TaskFilter_Toggle.Value,
+                        CountRows(Filter('Safety Tests', !IsBlank('Test Date') && 'Test Date' <= DateAdd(Today(), 86399, TimeUnit.Seconds) && 'Task Status' <> 4 && Status = 'Status (Safety Tests)'.Active , 'Owning Team'.Team in UserTeams.Team)),
+                        CountRows(Filter('Safety Tests', !IsBlank('Test Date') && 'Test Date' <= DateAdd(Today(), 86399, TimeUnit.Seconds) && 'Task Status' <> 4 && Status = 'Status (Safety Tests)'.Active , 'Owning User'.User = CurrentUser.User))
+                    ),
+                    "Maintenance Jobs",
+                    If(
+                        TaskDashboard_TaskFilter_Toggle.Value,
+                        CountRows(Filter('Maintenance Jobs', !IsBlank('Due Date') && 'Due Date' <= DateAdd(Today(), 86399, TimeUnit.Seconds) && 'Task Status' <> 4  && Status = 'Status (Maintenance Jobs)'.Active, 'Owning Team'.Team in UserTeams.Team)),
+                        CountRows(Filter('Maintenance Jobs', !IsBlank('Due Date') && 'Due Date' <= DateAdd(Today(), 86399, TimeUnit.Seconds) && 'Task Status' <> 4  && Status = 'Status (Maintenance Jobs)'.Active, 'Owning User'.User = CurrentUser.User))
+                    ),
+                    "Services",
+                    If(
+                        TaskDashboard_TaskFilter_Toggle.Value,
+                        CountRows(Filter('Services_1', !IsBlank('Start Date') && 'Start Date' <= DateAdd(Today(), 86399, TimeUnit.Seconds) && 'Task Status' <> 4, 'Owning Team'.Team in UserTeams.Team && Status = 'Status (Services_1)'.Active)),
+                        CountRows(Filter('Services_1', !IsBlank('Start Date') && 'Start Date' <= DateAdd(Today(), 86399, TimeUnit.Seconds) && 'Task Status' <> 4, 'Owning User'.User = CurrentUser.User && Status = 'Status (Services_1)'.Active))
+                    ),
+                    "Housekeeping",
+                    If(
+                        TaskDashboard_TaskFilter_Toggle.Value,
+                        CountRows(Filter('Housekeeping_1', !IsBlank('Date ') && 'Date ' <= DateAdd(Today(), 86399, TimeUnit.Seconds) && 'Task Status' <> 4, 'Owning Team'.Team in UserTeams.Team && Status = 'Status (Housekeeping_1)'.Active)),
+                        CountRows(Filter('Housekeeping_1', !IsBlank('Date ') && 'Date ' <= DateAdd(Today(), 86399, TimeUnit.Seconds) && 'Task Status' <> 4, 'Owning User'.User = CurrentUser.User && Status = 'Status (Housekeeping_1)'.Active))
+                    ),
+                    "Meter Readings",
+                    If(
+                        TaskDashboard_TaskFilter_Toggle.Value,
+                        CountRows(Filter('Meter Readings', !IsBlank('Reading Date') && 'Reading Date' <= DateAdd(Today(), 86399, TimeUnit.Seconds) && 'Task Status' <> 4, 'Owning Team'.Team in UserTeams.Team && Status = 'Status (Meter Readings)'.Active)),
+                        CountRows(Filter('Meter Readings', !IsBlank('Reading Date') && 'Reading Date' <= DateAdd(Today(), 86399, TimeUnit.Seconds) && 'Task Status' <> 4, 'Owning User'.User = CurrentUser.User && Status = 'Status (Meter Readings)'.Active))
+                    ),
+                    "Inspection",
+                    If(
+                        TaskDashboard_TaskFilter_Toggle.Value,
+                        CountRows(Filter('Inspections', !IsBlank(Date) && Date <= DateAdd(Today(), 86399, TimeUnit.Seconds) && 'Task Status' <> 4, 'Owning Team'.Team in UserTeams.Team && Status = 'Status (Inspections)'.Active)),
+                        CountRows(Filter('Inspections', !IsBlank(Date) && Date <= DateAdd(Today(), 86399, TimeUnit.Seconds) && 'Task Status' <> 4, 'Owning User'.User = CurrentUser.User && Status = 'Status (Inspections)'.Active))
+                    )
+                )
+            },
+            {
+                Name: "Next 7 days",
+                FilteredRecordsCount: Switch(
+                    SelectedMenu.Name,
+                    "Site Tasks", 
+                    If(
+                        TaskDashboard_TaskFilter_Toggle.Value,
+                        CountRows(Filter('Site Tasks', !IsBlank('Due Date') && 'Due Date' >= DateAdd(Today(), 1) && 'Due Date' <= DateAdd(DateAdd(Today(), 7), 86399, TimeUnit.Seconds) && 'Task Status' <> 4 && Status = 'Status (Site Tasks)'.Active, 'Owning Team'.Team in UserTeams.Team)),
+                        CountRows(Filter('Site Tasks', !IsBlank('Due Date') && 'Due Date' >= DateAdd(Today(), 1) && 'Due Date' <= DateAdd(DateAdd(Today(), 7), 86399, TimeUnit.Seconds) && 'Task Status' <> 4 && Status = 'Status (Site Tasks)'.Active, 'Owning User'.User = CurrentUser.User))
+                    ),
+                    "Safety Tests",
+                    If(
+                        TaskDashboard_TaskFilter_Toggle.Value,
+                        CountRows(Filter('Safety Tests', !IsBlank('Test Date') && 'Test Date' >= DateAdd(Today(), 1) && 'Test Date' <= DateAdd(DateAdd(Today(), 7), 86399, TimeUnit.Seconds) && 'Task Status' <> 4 && Status = 'Status (Safety Tests)'.Active , 'Owning Team'.Team in UserTeams.Team)),
+                        CountRows(Filter('Safety Tests', !IsBlank('Test Date') && 'Test Date' >= DateAdd(Today(), 1) && 'Test Date' <= DateAdd(DateAdd(Today(), 7), 86399, TimeUnit.Seconds) && 'Task Status' <> 4 && Status = 'Status (Safety Tests)'.Active , 'Owning User'.User = CurrentUser.User))
+                    ),
+                    "Maintenance Jobs",
+                    If(
+                        TaskDashboard_TaskFilter_Toggle.Value,
+                        CountRows(Filter('Maintenance Jobs', !IsBlank('Due Date') && 'Due Date' >= DateAdd(Today(), 1) && 'Due Date' <= DateAdd(DateAdd(Today(), 7), 86399, TimeUnit.Seconds) && 'Task Status' <> 4  && Status = 'Status (Maintenance Jobs)'.Active, 'Owning Team'.Team in UserTeams.Team)),
+                        CountRows(Filter('Maintenance Jobs', !IsBlank('Due Date') && 'Due Date' >= DateAdd(Today(), 1) && 'Due Date' <= DateAdd(DateAdd(Today(), 7), 86399, TimeUnit.Seconds) && 'Task Status' <> 4  && Status = 'Status (Maintenance Jobs)'.Active, 'Owning User'.User = CurrentUser.User))
+                    ),
+                    "Services",
+                    If(
+                        TaskDashboard_TaskFilter_Toggle.Value,
+                        CountRows(Filter('Services_1', !IsBlank('Start Date') && 'Start Date' >= DateAdd(Today(), 1) && 'Start Date' <= DateAdd(DateAdd(Today(), 7), 86399, TimeUnit.Seconds) && 'Task Status' <> 4, 'Owning Team'.Team in UserTeams.Team && Status = 'Status (Services_1)'.Active)),
+                        CountRows(Filter('Services_1', !IsBlank('Start Date') && 'Start Date' >= DateAdd(Today(), 1) && 'Start Date' <= DateAdd(DateAdd(Today(), 7), 86399, TimeUnit.Seconds) && 'Task Status' <> 4, 'Owning User'.User = CurrentUser.User && Status = 'Status (Services_1)'.Active))
+                    ),
+                    "Housekeeping",
+                    If(
+                        TaskDashboard_TaskFilter_Toggle.Value,
+                        CountRows(Filter('Housekeeping_1', !IsBlank('Date ') && 'Date ' >= DateAdd(Today(), 1) && 'Date ' <= DateAdd(DateAdd(Today(), 7), 86399, TimeUnit.Seconds) && 'Task Status' <> 4, 'Owning Team'.Team in UserTeams.Team && Status = 'Status (Housekeeping_1)'.Active)),
+                        CountRows(Filter('Housekeeping_1', !IsBlank('Date ') && 'Date ' >= DateAdd(Today(), 1) && 'Date ' <= DateAdd(DateAdd(Today(), 7), 86399, TimeUnit.Seconds) && 'Task Status' <> 4, 'Owning User'.User = CurrentUser.User && Status = 'Status (Housekeeping_1)'.Active))
+                    ),
+                    "Meter Readings",
+                    If(
+                        TaskDashboard_TaskFilter_Toggle.Value,
+                        CountRows(Filter('Meter Readings', !IsBlank('Reading Date') && 'Reading Date' >= DateAdd(Today(), 1) && 'Reading Date' <= DateAdd(DateAdd(Today(), 7), 86399, TimeUnit.Seconds) && 'Task Status' <> 4, 'Owning Team'.Team in UserTeams.Team && Status = 'Status (Meter Readings)'.Active)),
+                        CountRows(Filter('Meter Readings', !IsBlank('Reading Date') && 'Reading Date' >= DateAdd(Today(), 1) && 'Reading Date' <= DateAdd(DateAdd(Today(), 7), 86399, TimeUnit.Seconds) && 'Task Status' <> 4, 'Owning User'.User = CurrentUser.User && Status = 'Status (Meter Readings)'.Active))
+                    ),
+                    "Inspection",
+                    If(
+                        TaskDashboard_TaskFilter_Toggle.Value,
+                        CountRows(Filter('Inspections', !IsBlank(Date) && Date >= DateAdd(Today(), 1) && Date <= DateAdd(DateAdd(Today(), 7), 86399, TimeUnit.Seconds) && 'Task Status' <> 4, 'Owning Team'.Team in UserTeams.Team && Status = 'Status (Inspections)'.Active)),
+                        CountRows(Filter('Inspections', !IsBlank(Date) && Date >= DateAdd(Today(), 1) && Date <= DateAdd(DateAdd(Today(), 7), 86399, TimeUnit.Seconds) && 'Task Status' <> 4, 'Owning User'.User = CurrentUser.User && Status = 'Status (Inspections)'.Active))
+                    )
+                )
+            },
+            {
+                Name: "Completed",
+                FilteredRecordsCount: Switch(
+                    SelectedMenu.Name,
+                    "Site Tasks", 
+                    If(
+                        TaskDashboard_TaskFilter_Toggle.Value,
+                        CountRows(Filter('Site Tasks', 'Task Status' = 4 && Status = 'Status (Site Tasks)'.Active && 'Owning Team'.Team in UserTeams.Team)),
+                        CountRows(Filter('Site Tasks', 'Task Status' = 4 && Status = 'Status (Site Tasks)'.Active && 'Owning User'.User = CurrentUser.User))
+                    ),
+                    "Safety Tests",
+                    If(
+                        TaskDashboard_TaskFilter_Toggle.Value,
+                        CountRows(Filter('Safety Tests', 'Task Status' = 4 && Status = 'Status (Safety Tests)'.Active && 'Owning Team'.Team in UserTeams.Team)),
+                        CountRows(Filter('Safety Tests', 'Task Status' = 4 && Status = 'Status (Safety Tests)'.Active && 'Owning User'.User = CurrentUser.User))
+                    ),
+                    "Maintenance Jobs",
+                    If(
+                        TaskDashboard_TaskFilter_Toggle.Value,
+                        CountRows(Filter('Maintenance Jobs', 'Task Status' = 4 && 'Owning Team'.Team in UserTeams.Team && Status = 'Status (Maintenance Jobs)'.Active)),
+                        CountRows(Filter('Maintenance Jobs', 'Task Status' = 4 && 'Owning User'.User = CurrentUser.User && Status = 'Status (Maintenance Jobs)'.Active))
+                    ),
+                    "Services",
+                    If(
+                        TaskDashboard_TaskFilter_Toggle.Value,
+                        CountRows(Filter('Services_1', 'Task Status' = 4 && 'Owning Team'.Team in UserTeams.Team && Status = 'Status (Services_1)'.Active)),
+                        CountRows(Filter('Services_1', 'Task Status' = 4 && 'Owning User'.User = CurrentUser.User && Status = 'Status (Services_1)'.Active))
+                    ),
+                    "Housekeeping",
+                    If(
+                        TaskDashboard_TaskFilter_Toggle.Value,
+                        CountRows(Filter('Housekeeping_1', 'Task Status' = 4 && 'Owning Team'.Team in UserTeams.Team && Status = 'Status (Housekeeping_1)'.Active)),
+                        CountRows(Filter('Housekeeping_1', 'Task Status' = 4 && 'Owning User'.User = CurrentUser.User && Status = 'Status (Housekeeping_1)'.Active))
+                    ),
+                    "Meter Readings",
+                    If(
+                        TaskDashboard_TaskFilter_Toggle.Value,
+                        CountRows(Filter('Meter Readings', 'Task Status' = 4 && 'Owning Team'.Team in UserTeams.Team && Status = 'Status (Meter Readings)'.Active)),
+                        CountRows(Filter('Meter Readings', 'Task Status' = 4 && 'Owning User'.User = CurrentUser.User && Status = 'Status (Meter Readings)'.Active))
+                    ),
+                    "Inspection",
+                    If(
+                        TaskDashboard_TaskFilter_Toggle.Value,
+                        CountRows(Filter('Inspections', 'Task Status' = 4 && 'Owning Team'.Team in UserTeams.Team && Status = 'Status (Inspections)'.Active)),
+                        CountRows(Filter('Inspections', 'Task Status' = 4 && 'Owning User'.User = CurrentUser.User && Status = 'Status (Inspections)'.Active))
+                    )
+                )
+            },
+            {
+                Name: "All",
+                FilteredRecordsCount: Switch(
+                    SelectedMenu.Name,
+                    "Site Tasks", 
+                    If(
+                        TaskDashboard_TaskFilter_Toggle.Value,
+                        CountRows(Filter('Site Tasks', 'Owning Team'.Team in UserTeams.Team && Status = 'Status (Site Tasks)'.Active && 'Task Status' <> 4)),
+                        CountRows(Filter('Site Tasks', 'Owning User'.User = CurrentUser.User && Status = 'Status (Site Tasks)'.Active && 'Task Status' <> 4))
+                    ),
+                    "Safety Tests",
+                    If(
+                        TaskDashboard_TaskFilter_Toggle.Value,
+                        CountRows(Filter('Safety Tests', 'Owning Team'.Team in UserTeams.Team && Status = 'Status (Safety Tests)'.Active && 'Task Status' <> 4)),
+                        CountRows(Filter('Safety Tests', 'Owning User'.User = CurrentUser.User && Status = 'Status (Safety Tests)'.Active && 'Task Status' <> 4))
+                    ),
+                    "Maintenance Jobs",
+                    If(
+                        TaskDashboard_TaskFilter_Toggle.Value,
+                        CountRows(Filter('Maintenance Jobs', 'Owning Team'.Team in UserTeams.Team && Status = 'Status (Maintenance Jobs)'.Active && 'Task Status' <> 4)),
+                        CountRows(Filter('Maintenance Jobs', 'Owning User'.User = CurrentUser.User && Status = 'Status (Maintenance Jobs)'.Active && 'Task Status' <> 4))
+                    ),
+                    "Services",
+                    If(
+                        TaskDashboard_TaskFilter_Toggle.Value,
+                        CountRows(Filter('Services_1', 'Owning Team'.Team in UserTeams.Team && Status = 'Status (Services_1)'.Active && 'Task Status' <> 4)),
+                        CountRows(Filter('Services_1', 'Owning User'.User = CurrentUser.User && Status = 'Status (Services_1)'.Active && 'Task Status' <> 4))
+                    ),
+                    "Housekeeping",
+                    If(
+                        TaskDashboard_TaskFilter_Toggle.Value,
+                        CountRows(Filter('Housekeeping_1', 'Owning Team'.Team in UserTeams.Team && Status = 'Status (Housekeeping_1)'.Active && 'Task Status' <> 4)),
+                        CountRows(Filter('Housekeeping_1', 'Owning User'.User = CurrentUser.User && Status = 'Status (Housekeeping_1)'.Active && 'Task Status' <> 4))
+                    ),
+                    "Meter Readings",
+                    If(
+                        TaskDashboard_TaskFilter_Toggle.Value,
+                        CountRows(Filter('Meter Readings', 'Owning Team'.Team in UserTeams.Team && Status = 'Status (Meter Readings)'.Active && 'Task Status' <> 4)),
+                        CountRows(Filter('Meter Readings', 'Owning User'.User = CurrentUser.User && Status = 'Status (Meter Readings)'.Active && 'Task Status' <> 4))
+                    ),
+                    "Inspection",
+                    If(
+                        TaskDashboard_TaskFilter_Toggle.Value,
+                        CountRows(Filter('Inspections', 'Owning Team'.Team in UserTeams.Team && Status = 'Status (Inspections)'.Active && 'Task Status' <> 4)),
+                        CountRows(Filter('Inspections', 'Owning User'.User = CurrentUser.User && Status = 'Status (Inspections)'.Active && 'Task Status' <> 4))
+                    )
+                )
+            }
+        ]
+        );
+        UpdateContext({IsSpinnerVisible : false});
+
+    Children:
+      - TaskDashBoard_Main_Container:
+          Control: GroupContainer@1.5.0
+          Variant: AutoLayout
+          Properties:
+            Fill: =EliteTheme.Colors.Body_UI.BackgroundLight
+            Height: =Parent.Height
+            LayoutAlignItems: =LayoutAlignItems.Center
+            LayoutDirection: =LayoutDirection.Vertical
+            Width: =Parent.Width
+          Children:
+            - TaskDashboard_Header_Container:
+                Control: GroupContainer@1.5.0
+                Variant: ManualLayout
+                Properties:
+                  FillPortions: =0
+                  Height: |-
+                    =//If (Home.Size <= ScreenSize.Small , Parent.Height*0.15 ,Home.Size <= ScreenSize.Large,Parent.Height*0.1,Parent.Height*0.1)
+                    Parent.Height*0.12
+                  RadiusBottomLeft: =40
+                  RadiusBottomRight: =40
+                  RadiusTopLeft: =
+                  Width: =Parent.Width
+                  X: =40
+                  Y: =40
+                Children:
+                  - TaskDashBoard_Header_BG-Gradient_Image:
+                      Control: Image@2.2.3
+                      Properties:
+                        BorderColor: =RGBA(0, 18, 107, 1)
+                        Height: =Parent.Height
+                        Image: ='BG 1'
+                        ImagePosition: =ImagePosition.Tile
+                        Width: =Parent.Width
+                  - TaskDashBoard_Header_Wrapper_Container:
+                      Control: GroupContainer@1.5.0
+                      Variant: ManualLayout
+                      Properties:
+                        DropShadow: =DropShadow.None
+                        Height: =Parent.Height
+                        Width: =Parent.Width
+                      Children:
+                        - TaskDashBoard_Header_Wrapper_Inner_Container:
+                            Control: GroupContainer@1.5.0
+                            Variant: AutoLayout
+                            Properties:
+                              Height: =Parent.Height
+                              LayoutAlignItems: =LayoutAlignItems.Center
+                              LayoutDirection: =LayoutDirection.Vertical
+                              LayoutGap: =If(HomeScreen.Size <= ScreenSize.Small ,10 ,HomeScreen.Size <= ScreenSize.Large,20,30)
+                              PaddingLeft: =8
+                              PaddingRight: =8
+                              Width: =Parent.Width
+                            Children:
+                              - TaskDashBoard_Header_Back/Title_Container:
+                                  Control: GroupContainer@1.5.0
+                                  Variant: AutoLayout
+                                  Properties:
+                                    DropShadow: =DropShadow.None
+                                    LayoutAlignItems: =LayoutAlignItems.Center
+                                    LayoutDirection: =LayoutDirection.Horizontal
+                                    PaddingLeft: =15
+                                    PaddingRight: =15
+                                    X: =40
+                                    Y: =40
+                                  Children:
+                                    - TaskDashBoard_BackBTN_Container:
+                                        Control: GroupContainer@1.5.0
+                                        Variant: ManualLayout
+                                        Properties:
+                                          AlignInContainer: =AlignInContainer.Center
+                                          BorderColor: =EliteTheme.Colors.Body_UI.GlassButton_Border
+                                          BorderThickness: =TaskDashboardScreen.Size+1
+                                          Fill: =EliteTheme.Colors.Body_UI.GlassButton_BG
+                                          FillPortions: =0
+                                          Height: =Self.Width
+                                          LayoutMinHeight: =16
+                                          LayoutMinWidth: =16
+                                          RadiusBottomLeft: =Self.RadiusTopLeft
+                                          RadiusBottomRight: =Self.RadiusTopLeft
+                                          RadiusTopLeft: =Self.Height*0.3
+                                          RadiusTopRight: =Self.RadiusTopLeft
+                                          Width: |+
+                                            =If (TaskDashboardScreen.Size <= ScreenSize.Small , 70 ,TaskDashboardScreen.Size <= ScreenSize.Medium,100,130)
+                                        Children:
+                                          - TaskDashBoard_BackBTN_Button:
+                                              Control: Button@0.0.45
+                                              Properties:
+                                                Align: =Align.Center
+                                                Appearance: ='ButtonCanvas.Appearance'.Transparent
+                                                BasePaletteColor: =RGBA(255, 255, 255, 1)
+                                                BorderColor: =RGBA(255,255,255,0.2)
+                                                BorderRadius: =Self.Height*0.3
+                                                BorderStyle: =BorderStyle.None
+                                                FontColor: =RGBA(255, 255, 255, 1)
+                                                FontSize: |+
+                                                  =//If (HomeScreen.Size <= ScreenSize.Small , 40 ,HomeScreen.Size <= ScreenSize.Medium,55,70)
+
+                                                  LookUp(EliteTheme.FontSizes.Heading, ScreenSize = TaskDashboardScreen.Size).FontSize
+                                                FontWeight: =FontWeight.Bold
+                                                Height: =Self.Width
+                                                Icon: ="ArrowLeft"
+                                                IconStyle: ='ButtonCanvas.IconStyle'.Filled
+                                                OnSelect: |-
+                                                  =//Notify("Back Initiated");
+                                                  Back()
+                                                Text: =
+                                                Width: =Parent.Width
+                                    - TaskDashBoard_Title_Container:
+                                        Control: GroupContainer@1.5.0
+                                        Variant: AutoLayout
+                                        Properties:
+                                          BorderColor: =RGBA(0, 0, 0, 0)
+                                          DropShadow: =DropShadow.None
+                                          LayoutAlignItems: =LayoutAlignItems.Center
+                                          LayoutDirection: =LayoutDirection.Vertical
+                                          LayoutJustifyContent: =LayoutJustifyContent.Center
+                                          LayoutMinHeight: =16
+                                          LayoutMinWidth: =16
+                                          Width: =Parent.Width*0.2
+                                        Children:
+                                          - TaskDashBoard_Title_Text:
+                                              Control: Text@0.0.51
+                                              Properties:
+                                                Align: ='TextCanvas.Align'.Center
+                                                AutoHeight: =true
+                                                Font: =Font.Lato
+                                                FontColor: =RGBA(255, 255, 255, 1)
+                                                Height: =Self.Size + 10
+                                                LayoutMinHeight: =16
+                                                LayoutMinWidth: =16
+                                                PaddingRight: =('TaskDashBoard_Header_Back/Title_Container'.Width-TaskDashBoard_BackBTN_Container.Width-Self.Width)
+                                                Size: |-
+                                                  =If(
+                                                      HomeScreen.Size <= ScreenSize.Small,
+                                                      45,
+                                                      HomeScreen.Size <= ScreenSize.Medium,
+                                                          70,
+                                                      90
+                                                  )
+                                                Text: |-
+                                                  =
+                                                      With(
+                                                      {
+                                                          labels: LookUp(LabelTranslations, Language = UserLanguage).TranslatedLabels
+                                                      },
+                                                      If(
+                                                          IsBlankOrError(SelectedMenu),
+                                                          "There is some Error",
+                                                          Switch(
+                                                              SelectedMenu.Name,
+                                                              "Housekeeping",Coalesce(Text(labels.lblHousekeeping), SelectedMenu.Name),
+                                                              "Inspection",Coalesce(Text(labels.lblInspection), SelectedMenu.Name),
+                                                              "Maintenance Jobs",Coalesce(Text(labels.lblMaintenanceJobs), SelectedMenu.Name),
+                                                              "Meter Readings",Coalesce(Text(labels.lblMeterReadings), SelectedMenu.Name),
+                                                              "Safety Tests",Coalesce(Text(labels.lblSafetyTests), SelectedMenu.Name),
+                                                              "Services",Coalesce(Text(labels.lblServices), SelectedMenu.Name),
+                                                              "Site Tasks",Coalesce(Text(labels.lblSiteTasks), SelectedMenu.Name),
+                                                              SelectedMenu.Name   // already text, so safe
+                                                          )
+                                                      )
+                                                  )
+                                                VerticalAlign: =VerticalAlign.Middle
+                                                Weight: ='TextCanvas.Weight'.Semibold
+                                                Width: =Parent.Width
+            - TaskDashboard_Body_Container:
+                Control: GroupContainer@1.5.0
+                Variant: ManualLayout
+                Properties:
+                  FillPortions: =0
+                  Height: =Parent.Height-TaskDashboard_Header_Container.Height
+                  LayoutMinHeight: =16
+                  LayoutMinWidth: =16
+                Children:
+                  - TaskDashboard_Data_Container:
+                      Control: GroupContainer@1.5.0
+                      Variant: AutoLayout
+                      Properties:
+                        DropShadow: =DropShadow.None
+                        Height: =Parent.Height
+                        LayoutAlignItems: =LayoutAlignItems.Center
+                        LayoutDirection: =LayoutDirection.Vertical
+                        PaddingLeft: =
+                        PaddingRight: =
+                        Width: =Parent.Width
+                        Y: |+
+                          =0
+                      Children:
+                        - TaskDashboard_Filter_Wrapper_Container:
+                            Control: GroupContainer@1.5.0
+                            Variant: ManualLayout
+                            Properties:
+                              DropShadow: =DropShadow.None
+                              FillPortions: =0
+                              Height: =Parent.Height*0.1
+                              LayoutMinHeight: =16
+                              LayoutMinWidth: =16
+                              X: =40
+                              Y: =40
+                            Children:
+                              - TaskDashboard_Filter_Container:
+                                  Control: GroupContainer@1.5.0
+                                  Variant: AutoLayout
+                                  Properties:
+                                    BorderColor: |-
+                                      =//Theme_OnStart.Colors.SecondaryColor_50
+                                      EliteTheme.Colors.TaskDashboard.Toggle_Border
+                                    BorderThickness: =TaskDashboardScreen.Size
+                                    DropShadow: =DropShadow.None
+                                    Fill: |-
+                                      =//Theme_OnStart.Colors.SecondaryColor_10
+                                      EliteTheme.Colors.TaskDashboard.Toggle_BG
+                                    Height: '=Switch(TaskDashboardScreen.Size,ScreenSize.Small,Parent.Height*0.6,ScreenSize.Medium,Parent.Height*0.5,Parent.Height*0.4) '
+                                    LayoutAlignItems: =LayoutAlignItems.Center
+                                    LayoutDirection: =LayoutDirection.Horizontal
+                                    LayoutGap: =15
+                                    PaddingBottom: =8
+                                    PaddingLeft: =8
+                                    PaddingRight: =8
+                                    PaddingTop: =8
+                                    RadiusBottomLeft: =Self.RadiusTopLeft
+                                    RadiusBottomRight: =Self.RadiusTopLeft
+                                    RadiusTopLeft: =Min(Self.Width,Self.Height)*0.4
+                                    RadiusTopRight: =Self.RadiusTopLeft
+                                    Width: =Parent.Width*0.75
+                                    X: =(Parent.Width-Self.Width)/2
+                                    Y: =(Parent.Height-Self.Height)/2
+                                  Children:
+                                    - TaskDashboard_MineFilter_Button:
+                                        Control: Button@0.0.45
+                                        Properties:
+                                          Align: =Align.Right
+                                          Appearance: ='ButtonCanvas.Appearance'.Outline
+                                          BorderStyle: =BorderStyle.None
+                                          DisplayMode: =If(TaskDashboard_TaskFilter_Toggle.Value,DisplayMode.View,DisplayMode.Edit)
+                                          FillPortions: =1
+                                          FontColor: |-
+                                            =//Theme_OnStart.Colors.PrimaryColor
+                                            EliteTheme.Colors.Body_UI.Button_Primary
+                                          FontSize: |-
+                                            =//If (Home.Size <= ScreenSize.Small , 25 ,Home.Size <= ScreenSize.Medium,40,55)
+                                            Parent.Height*0.4
+                                          Height: =If (HomeScreen.Size <= ScreenSize.Small , 35 ,HomeScreen.Size <= ScreenSize.Medium,50,65)
+                                          Icon: ="Person"
+                                          IconStyle: ='ButtonCanvas.IconStyle'.Filled
+                                          LayoutMinHeight: =16
+                                          LayoutMinWidth: =16
+                                          Text: =Coalesce(Text(LookUp(LabelTranslations, Language = UserLanguage).TranslatedLabels.lblMine),"Mine")
+                                    - TaskDashboard_TaskFilter_Toggle:
+                                        Control: Classic/Toggle@2.1.0
+                                        Properties:
+                                          BorderColor: =RGBA(0, 0, 0, 0)
+                                          BorderStyle: =BorderStyle.None
+                                          FalseFill: =EliteTheme.Colors.Body_UI.Button_Primary
+                                          Font: =Font.'Open Sans'
+                                          Height: =Parent.Height*0.65
+                                          LayoutMinHeight: =16
+                                          LayoutMinWidth: =16
+                                          OnChange: |-
+                                            =UpdateContext({IsSpinnerVisible : true});
+                                            ClearCollect(
+                                                TaskGalleryItems,
+                                                [
+                                                {
+                                                    Name: "High Priority",
+                                                    FilteredRecordsCount: Switch(
+                                                        SelectedMenu.Name,
+                                                        "Site Tasks", 
+                                                        If(
+                                                            Self.Value,
+                                                            CountRows(Filter('Site Tasks', !IsBlank('Site Task') && Status = 'Status (Site Tasks)'.Active && 'Owning Team'.Team in UserTeams.Team && Priority = 1 && 'Task Status' <> 4 )),
+                                                            CountRows(Filter('Site Tasks', !IsBlank('Site Task') && Status = 'Status (Site Tasks)'.Active && 'Owning User'.User = CurrentUser.User && Priority = 1 && 'Task Status' <> 4))
+                                                        ),
+                                                        "Safety Tests",
+                                                        If(
+                                                            Self.Value,
+                                                            CountRows(Filter('Safety Tests', !IsBlank('Safety Test'), 'Owning Team'.Team in UserTeams.Team && Priority = 1 && 'Task Status' <> 4 && Status = 'Status (Safety Tests)'.Active )),
+                                                            CountRows(Filter('Safety Tests', !IsBlank('Safety Test'), 'Owning User'.User = CurrentUser.User && Priority = 1 && 'Task Status' <> 4 && Status = 'Status (Safety Tests)'.Active))
+                                                        ),
+                                                        "Maintenance Jobs",
+                                                        If(
+                                                            Self.Value,
+                                                            CountRows(Filter('Maintenance Jobs', !IsBlank('Maintenance Job'), 'Owning Team'.Team in UserTeams.Team && Priority = 1 && 'Task Status' <> 4 && Status = 'Status (Maintenance Jobs)'.Active)),
+                                                            CountRows(Filter('Maintenance Jobs', !IsBlank('Maintenance Job'), 'Owning User'.User = CurrentUser.User && Priority = 1 && 'Task Status' <> 4 && Status = 'Status (Maintenance Jobs)'.Active))
+                                                        ),
+                                                        "Services",
+                                                        If(
+                                                            Self.Value,
+                                                            CountRows(Filter('Services_1', !IsBlank(Service), 'Owning Team'.Team in UserTeams.Team && Priority = 1 && 'Task Status' <> 4 && Status = 'Status (Services_1)'.Active)),
+                                                            CountRows(Filter('Services_1', !IsBlank(Service), 'Owning User'.User = CurrentUser.User && Priority = 1 && 'Task Status' <> 4 && Status = 'Status (Services_1)'.Active))
+                                                        ),
+                                                        "Housekeeping",
+                                                        If(
+                                                            Self.Value,
+                                                            CountRows(Filter('Housekeeping_1', !IsBlank(Housekeeping), 'Owning Team'.Team in UserTeams.Team && Priority = 1 && 'Task Status' <> 4 && Status = 'Status (Housekeeping_1)'.Active)),
+                                                            CountRows(Filter('Housekeeping_1', !IsBlank(Housekeeping), 'Owning User'.User = CurrentUser.User && Priority = 1 && 'Task Status' <> 4 && Status = 'Status (Housekeeping_1)'.Active))
+                                                        ),
+                                                        "Meter Readings",
+                                                        If(
+                                                            Self.Value,
+                                                            CountRows(Filter('Meter Readings', !IsBlank('Meter Reading'), 'Owning Team'.Team in UserTeams.Team && Priority = 1 && 'Task Status' <> 4 && Status = 'Status (Meter Readings)'.Active)),
+                                                            CountRows(Filter('Meter Readings', !IsBlank('Meter Reading'), 'Owning User'.User = CurrentUser.User && Priority = 1 && 'Task Status' <> 4 && Status = 'Status (Meter Readings)'.Active))
+                                                        ),
+                                                        "Inspection",
+                                                        If(
+                                                            Self.Value,
+                                                            CountRows(Filter('Inspections', !IsBlank(Inspection), 'Owning Team'.Team in UserTeams.Team && Priority = 1 && 'Task Status' <> 4 && Status = 'Status (Inspections)'.Active)),
+                                                            CountRows(Filter('Inspections', !IsBlank(Inspection), 'Owning User'.User = CurrentUser.User && Priority = 1 && 'Task Status' <> 4 && Status = 'Status (Inspections)'.Active))
+                                                        )
+                                                    )
+                                                },
+                                                {
+                                                    Name: "To Do",
+                                                    FilteredRecordsCount: Switch(
+                                                        SelectedMenu.Name,
+                                                        "Site Tasks", 
+                                                        If(
+                                                            Self.Value,
+                                                            CountRows(Filter('Site Tasks', !IsBlank('Due Date') && 'Due Date' <= DateAdd(Today(), 86399, TimeUnit.Seconds) && 'Task Status' <> 4 && Status = 'Status (Site Tasks)'.Active, 'Owning Team'.Team in UserTeams.Team)),
+                                                            CountRows(Filter('Site Tasks', !IsBlank('Due Date') && 'Due Date' <= DateAdd(Today(), 86399, TimeUnit.Seconds) && 'Task Status' <> 4 && Status = 'Status (Site Tasks)'.Active, 'Owning User'.User = CurrentUser.User))
+                                                        ),
+                                                        "Safety Tests",
+                                                        If(
+                                                            Self.Value,
+                                                            CountRows(Filter('Safety Tests', !IsBlank('Test Date') && 'Test Date' <= DateAdd(Today(), 86399, TimeUnit.Seconds) && 'Task Status' <> 4 && Status = 'Status (Safety Tests)'.Active , 'Owning Team'.Team in UserTeams.Team)),
+                                                            CountRows(Filter('Safety Tests', !IsBlank('Test Date') && 'Test Date' <= DateAdd(Today(), 86399, TimeUnit.Seconds) && 'Task Status' <> 4 && Status = 'Status (Safety Tests)'.Active , 'Owning User'.User = CurrentUser.User))
+                                                        ),
+                                                        "Maintenance Jobs",
+                                                        If(
+                                                            Self.Value,
+                                                            CountRows(Filter('Maintenance Jobs', !IsBlank('Due Date') && 'Due Date' <= DateAdd(Today(), 86399, TimeUnit.Seconds) && 'Task Status' <> 4  && Status = 'Status (Maintenance Jobs)'.Active, 'Owning Team'.Team in UserTeams.Team)),
+                                                            CountRows(Filter('Maintenance Jobs', !IsBlank('Due Date') && 'Due Date' <= DateAdd(Today(), 86399, TimeUnit.Seconds) && 'Task Status' <> 4  && Status = 'Status (Maintenance Jobs)'.Active, 'Owning User'.User = CurrentUser.User))
+                                                        ),
+                                                        "Services",
+                                                        If(
+                                                            Self.Value,
+                                                            CountRows(Filter('Services_1', !IsBlank('Start Date') && 'Start Date' <= DateAdd(Today(), 86399, TimeUnit.Seconds) && 'Task Status' <> 4, 'Owning Team'.Team in UserTeams.Team && Status = 'Status (Services_1)'.Active)),
+                                                            CountRows(Filter('Services_1', !IsBlank('Start Date') && 'Start Date' <= DateAdd(Today(), 86399, TimeUnit.Seconds) && 'Task Status' <> 4, 'Owning User'.User = CurrentUser.User && Status = 'Status (Services_1)'.Active))
+                                                        ),
+                                                        "Housekeeping",
+                                                        If(
+                                                            Self.Value,
+                                                            CountRows(Filter('Housekeeping_1', !IsBlank('Date ') && 'Date ' <= DateAdd(Today(), 86399, TimeUnit.Seconds) && 'Task Status' <> 4, 'Owning Team'.Team in UserTeams.Team && Status = 'Status (Housekeeping_1)'.Active)),
+                                                            CountRows(Filter('Housekeeping_1', !IsBlank('Date ') && 'Date ' <= DateAdd(Today(), 86399, TimeUnit.Seconds) && 'Task Status' <> 4, 'Owning User'.User = CurrentUser.User && Status = 'Status (Housekeeping_1)'.Active))
+                                                        ),
+                                                        "Meter Readings",
+                                                        If(
+                                                            Self.Value,
+                                                            CountRows(Filter('Meter Readings', !IsBlank('Reading Date') && 'Reading Date' <= DateAdd(Today(), 86399, TimeUnit.Seconds) && 'Task Status' <> 4, 'Owning Team'.Team in UserTeams.Team && Status = 'Status (Meter Readings)'.Active)),
+                                                            CountRows(Filter('Meter Readings', !IsBlank('Reading Date') && 'Reading Date' <= DateAdd(Today(), 86399, TimeUnit.Seconds) && 'Task Status' <> 4, 'Owning User'.User = CurrentUser.User && Status = 'Status (Meter Readings)'.Active))
+                                                        ),
+                                                        "Inspection",
+                                                        If(
+                                                            Self.Value,
+                                                            CountRows(Filter('Inspections', !IsBlank(Date) && Date <= DateAdd(Today(), 86399, TimeUnit.Seconds) && 'Task Status' <> 4, 'Owning Team'.Team in UserTeams.Team && Status = 'Status (Inspections)'.Active)),
+                                                            CountRows(Filter('Inspections', !IsBlank(Date) && Date <= DateAdd(Today(), 86399, TimeUnit.Seconds) && 'Task Status' <> 4, 'Owning User'.User = CurrentUser.User && Status = 'Status (Inspections)'.Active))
+                                                        )
+                                                    )
+                                                },
+                                                {
+                                                    Name: "Next 7 days",
+                                                    FilteredRecordsCount: Switch(
+                                                        SelectedMenu.Name,
+                                                        "Site Tasks", 
+                                                        If(
+                                                            Self.Value,
+                                                            CountRows(Filter('Site Tasks', !IsBlank('Due Date') && 'Due Date' >= DateAdd(Today(), 1) && 'Due Date' <= DateAdd(DateAdd(Today(), 7), 86399, TimeUnit.Seconds) && 'Task Status' <> 4 && Status = 'Status (Site Tasks)'.Active, 'Owning Team'.Team in UserTeams.Team)),
+                                                            CountRows(Filter('Site Tasks', !IsBlank('Due Date') && 'Due Date' >= DateAdd(Today(), 1) && 'Due Date' <= DateAdd(DateAdd(Today(), 7), 86399, TimeUnit.Seconds) && 'Task Status' <> 4 && Status = 'Status (Site Tasks)'.Active, 'Owning User'.User = CurrentUser.User))
+                                                        ),
+                                                        "Safety Tests",
+                                                        If(
+                                                            Self.Value,
+                                                            CountRows(Filter('Safety Tests', !IsBlank('Test Date') && 'Test Date' >= DateAdd(Today(), 1) && 'Test Date' <= DateAdd(DateAdd(Today(), 7), 86399, TimeUnit.Seconds) && 'Task Status' <> 4 && Status = 'Status (Safety Tests)'.Active , 'Owning Team'.Team in UserTeams.Team)),
+                                                            CountRows(Filter('Safety Tests', !IsBlank('Test Date') && 'Test Date' >= DateAdd(Today(), 1) && 'Test Date' <= DateAdd(DateAdd(Today(), 7), 86399, TimeUnit.Seconds) && 'Task Status' <> 4 && Status = 'Status (Safety Tests)'.Active , 'Owning User'.User = CurrentUser.User))
+                                                        ),
+                                                        "Maintenance Jobs",
+                                                        If(
+                                                            Self.Value,
+                                                            CountRows(Filter('Maintenance Jobs', !IsBlank('Due Date') && 'Due Date' >= DateAdd(Today(), 1) && 'Due Date' <= DateAdd(DateAdd(Today(), 7), 86399, TimeUnit.Seconds) && 'Task Status' <> 4  && Status = 'Status (Maintenance Jobs)'.Active, 'Owning Team'.Team in UserTeams.Team)),
+                                                            CountRows(Filter('Maintenance Jobs', !IsBlank('Due Date') && 'Due Date' >= DateAdd(Today(), 1) && 'Due Date' <= DateAdd(DateAdd(Today(), 7), 86399, TimeUnit.Seconds) && 'Task Status' <> 4  && Status = 'Status (Maintenance Jobs)'.Active, 'Owning User'.User = CurrentUser.User))
+                                                        ),
+                                                        "Services",
+                                                        If(
+                                                            Self.Value,
+                                                            CountRows(Filter('Services_1', !IsBlank('Start Date') && 'Start Date' >= DateAdd(Today(), 1) && 'Start Date' <= DateAdd(DateAdd(Today(), 7), 86399, TimeUnit.Seconds) && 'Task Status' <> 4, 'Owning Team'.Team in UserTeams.Team && Status = 'Status (Services_1)'.Active)),
+                                                            CountRows(Filter('Services_1', !IsBlank('Start Date') && 'Start Date' >= DateAdd(Today(), 1) && 'Start Date' <= DateAdd(DateAdd(Today(), 7), 86399, TimeUnit.Seconds) && 'Task Status' <> 4, 'Owning User'.User = CurrentUser.User && Status = 'Status (Services_1)'.Active))
+                                                        ),
+                                                        "Housekeeping",
+                                                        If(
+                                                            Self.Value,
+                                                            CountRows(Filter('Housekeeping_1', !IsBlank('Date ') && 'Date ' >= DateAdd(Today(), 1) && 'Date ' <= DateAdd(DateAdd(Today(), 7), 86399, TimeUnit.Seconds) && 'Task Status' <> 4, 'Owning Team'.Team in UserTeams.Team && Status = 'Status (Housekeeping_1)'.Active)),
+                                                            CountRows(Filter('Housekeeping_1', !IsBlank('Date ') && 'Date ' >= DateAdd(Today(), 1) && 'Date ' <= DateAdd(DateAdd(Today(), 7), 86399, TimeUnit.Seconds) && 'Task Status' <> 4, 'Owning User'.User = CurrentUser.User && Status = 'Status (Housekeeping_1)'.Active))
+                                                        ),
+                                                        "Meter Readings",
+                                                        If(
+                                                            Self.Value,
+                                                            CountRows(Filter('Meter Readings', !IsBlank('Reading Date') && 'Reading Date' >= DateAdd(Today(), 1) && 'Reading Date' <= DateAdd(DateAdd(Today(), 7), 86399, TimeUnit.Seconds) && 'Task Status' <> 4, 'Owning Team'.Team in UserTeams.Team && Status = 'Status (Meter Readings)'.Active)),
+                                                            CountRows(Filter('Meter Readings', !IsBlank('Reading Date') && 'Reading Date' >= DateAdd(Today(), 1) && 'Reading Date' <= DateAdd(DateAdd(Today(), 7), 86399, TimeUnit.Seconds) && 'Task Status' <> 4, 'Owning User'.User = CurrentUser.User && Status = 'Status (Meter Readings)'.Active))
+                                                        ),
+                                                        "Inspection",
+                                                        If(
+                                                            Self.Value,
+                                                            CountRows(Filter('Inspections', !IsBlank(Date) && Date >= DateAdd(Today(), 1) && Date <= DateAdd(DateAdd(Today(), 7), 86399, TimeUnit.Seconds) && 'Task Status' <> 4, 'Owning Team'.Team in UserTeams.Team && Status = 'Status (Inspections)'.Active)),
+                                                            CountRows(Filter('Inspections', !IsBlank(Date) && Date >= DateAdd(Today(), 1) && Date <= DateAdd(DateAdd(Today(), 7), 86399, TimeUnit.Seconds) && 'Task Status' <> 4, 'Owning User'.User = CurrentUser.User && Status = 'Status (Inspections)'.Active))
+                                                        )
+                                                    )
+                                                },
+                                                {
+                                                    Name: "Completed",
+                                                    FilteredRecordsCount: Switch(
+                                                        SelectedMenu.Name,
+                                                        "Site Tasks", 
+                                                        If(
+                                                            Self.Value,
+                                                            CountRows(Filter('Site Tasks', 'Task Status' = 4 && Status = 'Status (Site Tasks)'.Active && 'Owning Team'.Team in UserTeams.Team)),
+                                                            CountRows(Filter('Site Tasks', 'Task Status' = 4 && Status = 'Status (Site Tasks)'.Active && 'Owning User'.User = CurrentUser.User))
+                                                        ),
+                                                        "Safety Tests",
+                                                        If(
+                                                            Self.Value,
+                                                            CountRows(Filter('Safety Tests', 'Task Status' = 4 && Status = 'Status (Safety Tests)'.Active && 'Owning Team'.Team in UserTeams.Team)),
+                                                            CountRows(Filter('Safety Tests', 'Task Status' = 4 && Status = 'Status (Safety Tests)'.Active && 'Owning User'.User = CurrentUser.User))
+                                                        ),
+                                                        "Maintenance Jobs",
+                                                        If(
+                                                            Self.Value,
+                                                            CountRows(Filter('Maintenance Jobs', 'Task Status' = 4 && 'Owning Team'.Team in UserTeams.Team && Status = 'Status (Maintenance Jobs)'.Active)),
+                                                            CountRows(Filter('Maintenance Jobs', 'Task Status' = 4 && 'Owning User'.User = CurrentUser.User && Status = 'Status (Maintenance Jobs)'.Active))
+                                                        ),
+                                                        "Services",
+                                                        If(
+                                                            Self.Value,
+                                                            CountRows(Filter('Services_1', 'Task Status' = 4 && 'Owning Team'.Team in UserTeams.Team && Status = 'Status (Services_1)'.Active)),
+                                                            CountRows(Filter('Services_1', 'Task Status' = 4 && 'Owning User'.User = CurrentUser.User && Status = 'Status (Services_1)'.Active))
+                                                        ),
+                                                        "Housekeeping",
+                                                        If(
+                                                            Self.Value,
+                                                            CountRows(Filter('Housekeeping_1', 'Task Status' = 4 && 'Owning Team'.Team in UserTeams.Team && Status = 'Status (Housekeeping_1)'.Active)),
+                                                            CountRows(Filter('Housekeeping_1', 'Task Status' = 4 && 'Owning User'.User = CurrentUser.User && Status = 'Status (Housekeeping_1)'.Active))
+                                                        ),
+                                                        "Meter Readings",
+                                                        If(
+                                                            Self.Value,
+                                                            CountRows(Filter('Meter Readings', 'Task Status' = 4 && 'Owning Team'.Team in UserTeams.Team && Status = 'Status (Meter Readings)'.Active)),
+                                                            CountRows(Filter('Meter Readings', 'Task Status' = 4 && 'Owning User'.User = CurrentUser.User && Status = 'Status (Meter Readings)'.Active))
+                                                        ),
+                                                        "Inspection",
+                                                        If(
+                                                            Self.Value,
+                                                            CountRows(Filter('Inspections', 'Task Status' = 4 && 'Owning Team'.Team in UserTeams.Team && Status = 'Status (Inspections)'.Active)),
+                                                            CountRows(Filter('Inspections', 'Task Status' = 4 && 'Owning User'.User = CurrentUser.User && Status = 'Status (Inspections)'.Active))
+                                                        )
+                                                    )
+                                                },
+                                                {
+                                                    Name: "All",
+                                                    FilteredRecordsCount: Switch(
+                                                        SelectedMenu.Name,
+                                                        "Site Tasks", 
+                                                        If(
+                                                            Self.Value,
+                                                            CountRows(Filter('Site Tasks', 'Owning Team'.Team in UserTeams.Team && Status = 'Status (Site Tasks)'.Active && 'Task Status' <> 4)),
+                                                            CountRows(Filter('Site Tasks', 'Owning User'.User = CurrentUser.User && Status = 'Status (Site Tasks)'.Active && 'Task Status' <> 4))
+                                                        ),
+                                                        "Safety Tests",
+                                                        If(
+                                                            Self.Value,
+                                                            CountRows(Filter('Safety Tests', 'Owning Team'.Team in UserTeams.Team && Status = 'Status (Safety Tests)'.Active && 'Task Status' <> 4)),
+                                                            CountRows(Filter('Safety Tests', 'Owning User'.User = CurrentUser.User && Status = 'Status (Safety Tests)'.Active && 'Task Status' <> 4))
+                                                        ),
+                                                        "Maintenance Jobs",
+                                                        If(
+                                                            Self.Value,
+                                                            CountRows(Filter('Maintenance Jobs', 'Owning Team'.Team in UserTeams.Team && Status = 'Status (Maintenance Jobs)'.Active && 'Task Status' <> 4)),
+                                                            CountRows(Filter('Maintenance Jobs', 'Owning User'.User = CurrentUser.User && Status = 'Status (Maintenance Jobs)'.Active && 'Task Status' <> 4))
+                                                        ),
+                                                        "Services",
+                                                        If(
+                                                            Self.Value,
+                                                            CountRows(Filter('Services_1', 'Owning Team'.Team in UserTeams.Team && Status = 'Status (Services_1)'.Active && 'Task Status' <> 4)),
+                                                            CountRows(Filter('Services_1', 'Owning User'.User = CurrentUser.User && Status = 'Status (Services_1)'.Active && 'Task Status' <> 4))
+                                                        ),
+                                                        "Housekeeping",
+                                                        If(
+                                                            Self.Value,
+                                                            CountRows(Filter('Housekeeping_1', 'Owning Team'.Team in UserTeams.Team && Status = 'Status (Housekeeping_1)'.Active && 'Task Status' <> 4)),
+                                                            CountRows(Filter('Housekeeping_1', 'Owning User'.User = CurrentUser.User && Status = 'Status (Housekeeping_1)'.Active && 'Task Status' <> 4))
+                                                        ),
+                                                        "Meter Readings",
+                                                        If(
+                                                            Self.Value,
+                                                            CountRows(Filter('Meter Readings', 'Owning Team'.Team in UserTeams.Team && Status = 'Status (Meter Readings)'.Active && 'Task Status' <> 4)),
+                                                            CountRows(Filter('Meter Readings', 'Owning User'.User = CurrentUser.User && Status = 'Status (Meter Readings)'.Active && 'Task Status' <> 4))
+                                                        ),
+                                                        "Inspection",
+                                                        If(
+                                                            Self.Value,
+                                                            CountRows(Filter('Inspections', 'Owning Team'.Team in UserTeams.Team && Status = 'Status (Inspections)'.Active && 'Task Status' <> 4)),
+                                                            CountRows(Filter('Inspections', 'Owning User'.User = CurrentUser.User && Status = 'Status (Inspections)'.Active && 'Task Status' <> 4))
+                                                        )
+                                                    )
+                                                }
+                                            ]
+                                            );
+                                            UpdateContext({IsSpinnerVisible : false});
+                                          ShowLabel: =false
+                                          Size: =20
+                                          TrueFill: =EliteTheme.Colors.Body_UI.Button_Primary
+                                          Width: =Self.Height*1.8
+                                    - TaskDashboard_TeamFilter_Button:
+                                        Control: Button@0.0.45
+                                        Properties:
+                                          Align: =Align.Left
+                                          Appearance: ='ButtonCanvas.Appearance'.Outline
+                                          BorderStyle: =BorderStyle.None
+                                          DisplayMode: =If(TaskDashboard_TaskFilter_Toggle.Value,DisplayMode.Edit,DisplayMode.View)
+                                          FillPortions: =1
+                                          FontColor: =EliteTheme.Colors.Body_UI.Button_Primary
+                                          FontSize: |-
+                                            =//If (Home.Size <= ScreenSize.Small , 25 ,Home.Size <= ScreenSize.Medium,40,55)
+                                            Parent.Height*0.4
+                                          Height: =If (HomeScreen.Size <= ScreenSize.Small , 40 ,HomeScreen.Size <= ScreenSize.Medium,55,70)
+                                          Icon: ="People"
+                                          IconStyle: ='ButtonCanvas.IconStyle'.Filled
+                                          LayoutMinHeight: =16
+                                          LayoutMinWidth: =16
+                                          Text: =Coalesce(Text(LookUp(LabelTranslations, Language = UserLanguage).TranslatedLabels.lblTeam),"Team")
+                        - TaskDashboard_MainDataTiles_Container:
+                            Control: GroupContainer@1.5.0
+                            Variant: ManualLayout
+                            Properties:
+                              AlignInContainer: =AlignInContainer.Center
+                              DropShadow: =DropShadow.None
+                              FillPortions: =0
+                              Height: =Parent.Height-TaskDashboard_Filter_Wrapper_Container.Height
+                              LayoutMinHeight: =16
+                              LayoutMinWidth: =16
+                              RadiusBottomLeft: =0
+                              RadiusBottomRight: =0
+                              RadiusTopLeft: =0
+                              RadiusTopRight: =0
+                              Width: =Parent.Width*0.9
+                            Children:
+                              - TaskDashboard_DataTiles_Gallery:
+                                  Control: Gallery@2.15.0
+                                  Variant: BrowseLayout_Vertical_TwoTextOneImageVariant_ver5.0
+                                  Properties:
+                                    BorderColor: |-
+                                      =//RGBA(0, 18, 107, 1)
+
+                                      EliteTheme.Colors.TaskDashboard.Tile_Border
+                                    FocusedBorderThickness: =0
+                                    Height: =Parent.Height
+                                    Items: |-
+                                      =
+                                      If(
+                                          SelectedMenu.Name <> "Maintenance Jobs",
+                                          Filter(TaskGalleryItems, Name <> "High Priority"),
+                                          TaskGalleryItems
+                                      )
+                                    LoadingSpinnerColor: =EliteTheme.Colors.Body_UI.Primary
+                                    ShowScrollbar: =false
+                                    TemplateSize: =Parent.Width/If (HomeScreen.Size <= ScreenSize.Small , 2 ,3)
+                                    Width: =Parent.Width
+                                    WrapCount: =If (HomeScreen.Size <= ScreenSize.Small , 2 ,3)
+                                    Y: =1
+                                  Children:
+                                    - TaskDashboard_DataTiles_container:
+                                        Control: GroupContainer@1.5.0
+                                        Variant: AutoLayout
+                                        Properties:
+                                          BorderColor: |-
+                                            =//Theme_OnStart.Colors.TaskCategoryColor_50
+                                            EliteTheme.Colors.TaskDashboard.Tile_Border
+                                          BorderThickness: =2
+                                          DropShadow: =DropShadow.None
+                                          Fill: |-
+                                            =//Theme_OnStart.Colors.TaskCategoryColor_10
+                                            EliteTheme.Colors.TaskDashboard.Tile_BG
+                                          Height: =Self.Width
+                                          LayoutAlignItems: =LayoutAlignItems.Stretch
+                                          LayoutDirection: =LayoutDirection.Vertical
+                                          LayoutJustifyContent: =LayoutJustifyContent.Center
+                                          RadiusBottomLeft: =Self.RadiusTopLeft
+                                          RadiusBottomRight: =Self.RadiusTopLeft
+                                          RadiusTopLeft: =Self.Width*0.1
+                                          RadiusTopRight: =Self.RadiusTopLeft
+                                          Width: =Parent.TemplateWidth*0.95
+                                          X: =(Parent.TemplateWidth-Self.Width)/2
+                                          Y: =(Parent.TemplateHeight-Self.Height)/2
+                                        Children:
+                                          - TaskDashboard_TaskCount:
+                                              Control: Text@0.0.51
+                                              Properties:
+                                                Align: ='TextCanvas.Align'.Center
+                                                Font: =Font.Lato
+                                                FontColor: |-
+                                                  =//Theme_OnStart.Colors.TaskCategoryColor
+                                                  EliteTheme.Colors.TaskDashboard.Tile_Text
+                                                Height: =Self.Size*1.5
+                                                LayoutMinHeight: =16
+                                                LayoutMinWidth: =16
+                                                Size: =TaskDashboard_TaskCategory.Size*2.25
+                                                Text: =ThisItem.FilteredRecordsCount
+                                                VerticalAlign: =VerticalAlign.Top
+                                                Weight: ='TextCanvas.Weight'.Bold
+                                                Width: =Parent.Width
+                                          - TaskDashboard_TaskCategory:
+                                              Control: Text@0.0.51
+                                              Properties:
+                                                Align: ='TextCanvas.Align'.Center
+                                                Font: =Font.Lato
+                                                FontColor: |-
+                                                  =//Theme_OnStart.Colors.TaskCategoryColor
+                                                  EliteTheme.Colors.TaskDashboard.Tile_Text
+                                                Height: =Self.Size*2.25
+                                                LayoutMinHeight: =16
+                                                LayoutMinWidth: =16
+                                                Size: |+
+                                                  =If (TaskDashboardScreen.Size <= ScreenSize.Small , 30 ,TaskDashboardScreen.Size <= ScreenSize.Medium,50,70)
+
+                                                Text: |-
+                                                  =With(
+                                                      {
+                                                          labels: LookUp(LabelTranslations, Language = UserLanguage).TranslatedLabels
+                                                      },
+                                                      Switch(
+                                                          ThisItem.Name,
+                                                          "High Priority", Coalesce(Text(labels.lblHighPriority),ThisItem.Name),
+                                                          "Next 7 days", Coalesce(Text(labels.lblNext7Days),ThisItem.Name),
+                                                          "To Do", Coalesce(Text(labels.lblToDo),ThisItem.Name),
+                                                          "Completed", Coalesce(Text(labels.lblCompleted),ThisItem.Name),
+                                                          "All", Coalesce(Text(labels.lblAll),ThisItem.Name),
+                                                          ThisItem.Name   // already text, so safe
+                                                      )
+                                                  )
+                                                VerticalAlign: =VerticalAlign.Bottom
+                                                Weight: ='TextCanvas.Weight'.Semibold
+                                                Width: =Parent.Width
+                                    - TaskDashBoard_Nevigation_Button:
+                                        Control: Button@0.0.45
+                                        Properties:
+                                          Appearance: ='ButtonCanvas.Appearance'.Transparent
+                                          Height: =TaskDashboard_DataTiles_container.Height
+                                          OnSelect: |-
+                                            =If(
+                                                Value(ThisItem.FilteredRecordsCount)<=0,
+                                                Notify(Coalesce(Text(LookUp(LabelTranslations, Language = UserLanguage).TranslatedLabels.notifyNoTasksToDisplay), "There are currently no tasks to display."), NotificationType.Warning),
+                                                Set(Filter,ThisItem.Name);
+                                                Navigate(MaintenanceScreen, ScreenTransition.Fade);
+
+                                            );
+                                          Text: =
+                                          Width: =TaskDashboard_DataTiles_container.Width
+                                          X: =TaskDashboard_DataTiles_container.X
+                                          Y: =TaskDashboard_DataTiles_container.Y
+      - Housekeeping_Loader_Container_3:
+          Control: GroupContainer@1.5.0
+          Variant: ManualLayout
+          Properties:
+            Fill: =RGBA(0, 0, 0, 0.7)
+            Height: =Parent.Height
+            Visible: =IsSpinnerVisible
+            Width: =Parent.Width
+          Children:
+            - Spinner1_7:
+                Control: Spinner@1.4.6
+                Properties:
+                  BasePaletteColor: =Theme_OnStart.Colors.PrimaryColor
+                  FontColor: =RGBA(255, 255, 255, 1)
+                  FontSize: =If (HomeScreen.Size <= ScreenSize.Small , 50 ,HomeScreen.Size <= ScreenSize.Medium,65,80)
+                  Height: =Parent.Height
+                  Label: =    Coalesce(Text(LookUp(LabelTranslations, Language = UserLanguage).TranslatedLabels.lblPleaseWait), "Please Wait...")
+                  LabelPosition: ='Spinner.LabelPosition'.Below
+                  SpinnerSize: ='Spinner.SpinnerSize'.Huge
+                  Width: =Parent.Width
