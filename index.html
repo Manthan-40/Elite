@@ -148,14 +148,14 @@
             <!-- Section 1: Overview -->
             <section id="overview" class="doc-section active" role="tabpanel">
                 <h1>Elite Screens Application Overview</h1>
-                <p><strong>Elite Screens</strong> is a mobile and tablet-optimized Power Apps Canvas Application designed for field workers, engineers, and supervisors. It enables swift, on-site operations for logging maintenance jobs, safety inspections, cleaning tasks, meter readings, and raising work requests.</p>
+                <p><strong>Elite Screens</strong> is a mobile and tablet-optimized Power Apps Canvas Application designed for users to view and interact with operations data. It enables swift, on-site interactions for viewing maintenance tasks, safety tests, cleaning schedules, meter readings, and raising work requests.</p>
 
                 <div class="info-card">
                     <div class="info-card-title"><i class="fa-solid fa-circle-info"></i> Project Information at a Glance</div>
                     <p>The system comprises three major components:</p>
                     <ul>
-                        <li><strong>Canvas Mobile App (Power Apps)</strong>: The front-end interface used by field operators, engineered to work seamlessly in **Offline Mode**.</li>
-                        <li><strong>Dynamics CRM (Model-Driven App - "Elite Site Operations")</strong>: Used by supervisors and administrators to manage permissions, translate menus, track logs, and verify work.</li>
+                        <li><strong>Canvas Mobile App (Power Apps)</strong>: The front-end interface used by the user, engineered to work seamlessly in **Offline Mode**.</li>
+                        <li><strong>Dynamics CRM (Model-Driven App - "Elite Site Operations")</strong>: Used to manage permissions, translate menus, track logs, and verify records.</li>
                         <li><strong>Dataverse Database</strong>: Serves as the primary data repository, integrating tables and relationships.</li>
                     </ul>
                 </div>
@@ -204,14 +204,14 @@
 
                     <div class="info-card">
                         <div class="info-card-title"><i class="fa-solid fa-pen-to-square"></i> Bidirectional / Write-Back Tables</div>
-                        <p>The mobile user is only authorized to write data to a subset of transactional tables. These are the **only** tables patched or collected from the front-end:</p>
+                        <p>The user is only authorized to write data to a subset of transactional tables. These are the **only** tables patched or collected from the front-end:</p>
                         <ul>
                             <li><strong>Comments</strong>: Attached to records for feedback.</li>
                             <li><strong>Requests</strong>: Submitted incidents, work orders, or quotes.</li>
-                            <li><strong>Time Entries</strong>: Logged durations representing engineering labor.</li>
+                            <li><strong>Time Entries</strong>: Logged durations representing the user's log entries.</li>
                         </ul>
                         <div class="badge badge-success">Calculated Fields</div>
-                        <p style="margin-top: 8px; font-size: 13px;">Among these tables, only <strong>Time Entries</strong> trigger calculation logic inside the app to measure actual work duration.</p>
+                        <p style="margin-top: 8px; font-size: 13px;">Among these tables, only <strong>Time Entries</strong> trigger calculation logic inside the app to measure actual elapsed duration.</p>
                     </div>
                 </div>
 
@@ -450,9 +450,9 @@ ClearCollect(
                 <div class="code-explanation">
                     <h3>Why this logic was used & Integration Specification:</h3>
                     <ul>
-                        <li><strong>Dataverse Relationship (N-to-N)</strong>: The permission flow queries a custom Dataverse table named <strong>menu</strong>, which has an N-to-N relationship with the <strong>systemuser</strong> table. This relationship model allows assigning multiple modules to multiple users securely.</li>
-                        <li><strong>Flow Trigger</strong>: The flow accepts the current user's GUID and queries the intersecting relationship tables on the server side, returning a serialized JSON list of authorized menu keys (e.g. <code>APP_TILE_SITE_TASK</code>). This minimizes client-side query complexity and secures internal database queries.</li>
-                        <li><strong>Team Context Loading</strong>: The `FindTeamsOfUser` flow returns the GUIDs of all operational teams the user belongs to. Storing this inside the local collection `UserTeams` is critical for filtering transactional logs on subsequent pages (letting workers view team tasks or toggle to their personal view).</li>
+                        <li><strong>Dataverse Relationship (N-to-N)</strong>: The permission flow queries a custom Dataverse table named <strong>menu</strong>, which has an N-to-N relationship with the <strong>systemuser</strong> table. This relationship model allows assigning multiple modules to users securely.</li>
+                        <li><strong>Flow Trigger</strong>: The flow accepts the user GUID and queries the intersecting relationship tables on the server side, returning a serialized JSON list of authorized menu keys (e.g. <code>APP_TILE_SITE_TASK</code>). This minimizes client-side query complexity and secures internal database queries.</li>
+                        <li><strong>Team Context Loading</strong>: The `FindTeamsOfUser` flow returns the GUIDs of all operational teams the user belongs to. Storing this inside the local collection `UserTeams` is critical for filtering transactional logs on subsequent pages (letting the user view team tasks or toggle to their personal view).</li>
                     </ul>
                 </div>
 
@@ -559,8 +559,8 @@ ClearCollect(
 
             <!-- Section 8: Home Screen -->
             <section id="screen-home" class="doc-section" role="tabpanel">
-                <h1>Home Screen Breakdown</h1>
-                <p>The <strong>Home Screen</strong> serves as the central hub. It provides quick access to individual inspection and services logs while displaying the logged-in user profile.</p>
+                <h1>Home Screen</h1>
+                <p>The <strong>Home Screen</strong> displays the main menu grid and quick action menu options. It references user details, the menu permission collection, languages, and translation labels.</p>
 
                 <div class="grid-2">
                     <div class="screenshot-container">
@@ -581,7 +581,7 @@ ClearCollect(
                         <li><strong>RBAC Checked Menus</strong>: The central gallery (<code>MainMenuGallery</code>) binds to the collection <code>MenuFilteredFromPermission</code>. If a user doesn't have permissions for any menus, it renders the <code>NoMenuWarningLabel</code> (e.g., "You don't have any menu permissions.") and hides the gallery.</li>
                         <li><strong>Hamburger Option Menu</strong>: Tapping the hamburger button on the top-right opens the quick actions panel (setting <code>IsHomeSelectionOptionsVisible = true</code>). It contains four options:
                             <ul>
-                                <li><strong>Home</strong>: Standard redirection.</li>
+                                <li><strong>Home</strong>: Redirection back to the Home Screen.</li>
                                 <li><strong>Sync</strong>: Forces an offline cache synchronization (calls `ShowHostInfo(HostInfo.OfflineSync)`).</li>
                                 <li><strong>Requests</strong>: Navigates to the Requests Screen for logging user issues.</li>
                                 <li><strong>Language</strong>: Activates a language overlay (setting `IslanguageOptionSelection = true`) which lists active languages. Tapping a language updates `UserLanguage`, changing translated text labels.</li>
@@ -605,7 +605,7 @@ ClearCollect(
             <!-- Section 9: Task Dashboard -->
             <section id="screen-dashboard" class="doc-section" role="tabpanel">
                 <h1>Task Dashboard Screen</h1>
-                <p>The <strong>Task Dashboard Screen</strong> displays a summary of tasks for the selected module. It allows managers and workers to quickly see what is pending, what is high-priority, and what is already completed.</p>
+                <p>The <strong>Task Dashboard Screen</strong> displays task counts grouped into status buckets. It references the active menu, the user teams collection, and toggles filters between user and team views.</p>
 
                 <div class="grid-2">
                     <div class="screenshot-container">
@@ -631,7 +631,7 @@ ClearCollect(
                         <tbody>
                             <tr>
                                 <td><strong>High Priority</strong></td>
-                                <td>Counts uncompleted active tasks where <code>Priority = 1</code> and <code>Task Status &lt;&gt; 4</code> (Not Completed). Note: This card is visually rendered <strong>only</strong> when Maintenance Jobs is selected.</td>
+                                <td>Counts active tasks where <code>Priority = 1</code> and <code>Task Status &lt;&gt; 4</code> (Not Completed). Note: This card is visually rendered <strong>only</strong> when Maintenance Jobs is selected.</td>
                             </tr>
                             <tr>
                                 <td><strong>To Do</strong></td>
@@ -659,7 +659,7 @@ ClearCollect(
             <!-- Section 10: Maintenance List Screen & Polymorphism -->
             <section id="screen-listing" class="doc-section" role="tabpanel">
                 <h1>Polymorphic Gallery & Listing Screen</h1>
-                <p>The <code>MaintenanceScreen</code> serves as a master-list browser. What makes it technically interesting is that rather than having separate listing controls or screens for each operational module, it uses a **single polymorphic gallery** mapping different tables into a unified schema.</p>
+                <p>The <strong>Maintenance / List Screen</strong> displays list records of the selected category. It contains search fields and sorting options, and navigates to the respective detail screens.</p>
 
                 <div class="grid-2">
                     <div class="screenshot-container">
@@ -682,7 +682,7 @@ ClearCollect(
                         <li><strong>Sorting Controls</strong>: Tapping the sort options button opens a drop-down allowing ordering by:
                             <ul>
                                 <li><strong>Job No</strong>: Orders alphabetically by the job key.</li>
-                                <li><strong>Walk Order</strong>: Orders by the geographic walk order sequence mapped on Dataverse Plots.</li>
+                                <li><strong>Walk Order</strong>: Orders by the walk order sequence.</li>
                                 <li><strong>Plot Number</strong>: Orders numerically by the plot identifier.</li>
                             </ul>
                         </li>
@@ -735,7 +735,7 @@ ClearCollect(
             <!-- Section 11: Site Tasks Detail -->
             <section id="detail-sitetasks" class="doc-section" role="tabpanel">
                 <h1>Site Tasks Detail Screen</h1>
-                <p>Displays all details related to site tasks. Field workers use this to review requirements, access action logs, or submit status updates.</p>
+                <p>The <strong>Site Tasks Detail Screen</strong> displays records of the <code>Site Tasks</code> table, displaying walkorder, due date, key no, description, and status details.</p>
 
                 <div class="grid-2">
                     <div class="screenshot-container">
@@ -754,7 +754,7 @@ ClearCollect(
                     <ul>
                         <li><strong>Operational Fields</strong>: Renders fields including Location Code, Priority rating, Target Date, and Description. Permission to enter is displayed as a read-only field synced from Dataverse.</li>
                         <li><strong>Complete Task Popup</strong>: Clicking the complete action button triggers `IsVisibleConfirmPopupForm = true`. Confirming patches the site task status to Completed. A success toast message appears confirming completion.</li>
-                        <li><strong>Option Panel</strong>: Tapping the option button in the header triggers a slide-up panel offering:
+                        <li><strong>Option Button</strong>: Tapping the option button in the header triggers a slide-up panel offering:
                             <ul>
                                 <li><strong>More Information</strong>: Opens an information overlay outlining task requirements.</li>
                                 <li><strong>Add Request</strong>: Direct link to log a service request regarding this site task.</li>
@@ -778,7 +778,7 @@ ClearCollect(
             <!-- Section 12: Safety Tests Detail -->
             <section id="detail-safety" class="doc-section" role="tabpanel">
                 <h1>Safety Tests Detail Screen</h1>
-                <p>Used to verify equipment safety compliance. Displays checklist procedures, compliance dates, inspector metadata, and safety certificates.</p>
+                <p>The <strong>Safety Tests Detail Screen</strong> displays records of the <code>Safety Tests</code> table, displaying test date, tester name, safety type, and status details.</p>
 
                 <div class="grid-2">
                     <div class="screenshot-container">
@@ -793,7 +793,7 @@ ClearCollect(
 
                 <h2>Operational Walkthrough</h2>
                 <div class="info-card">
-                    <p>Operators verify equipment safety benchmarks using this layout:</p>
+                    <p>Users verify equipment safety benchmarks using this layout:</p>
                     <ul>
                         <li><strong>Compliance Fields</strong>: Displays Test Date, Certificate Details, Next Due Date, and Status badges.</li>
                         <li><strong>Verification Completion</strong>: The Complete button opens a confirmation popup. When updated, the safety test status is patched to Complete and a success checkmark toast notification is rendered.</li>
@@ -804,7 +804,7 @@ ClearCollect(
             <!-- Section 13: Maintenance Jobs Detail -->
             <section id="detail-jobs" class="doc-section" role="tabpanel">
                 <h1>Maintenance Jobs Detail Screen</h1>
-                <p>This screen is designed to manage work orders and log engineering labor hours. It includes a built-in time-entry logging system.</p>
+                <p>The <strong>Maintenance Jobs Detail Screen</strong> displays records of the <code>Maintenance Jobs</code> table, displaying job no, status, time entries, and description details.</p>
 
                 <div class="grid-2">
                     <div class="screenshot-container">
@@ -819,15 +819,15 @@ ClearCollect(
 
                 <h2>Operational Walkthrough & Time Entries Calculations</h2>
                 <div class="info-card">
-                    <p>Field engineers interact with maintenance tickets by reviewing instructions and logging hours:</p>
+                    <p>Users interact with maintenance tickets by reviewing instructions and logging hours:</p>
                     <ul>
-                        <li><strong>Labor Hours Logging (Calculated Time Entries)</strong>: Time tracking creates records in the <code>Time Entries</code> table. When the user starts the timer, a record is added with <code>Status Reason = Current</code> and <code>Start Time = Now()</code>. Pausing the timer patches that record, setting `End Time` to `Now()` and status to `Past`.</li>
+                        <li><strong>Log Entry (Calculated Time Entries)</strong>: Time tracking creates records in the <code>Time Entries</code> table. When the user starts the timer, a record is added with <code>Status Reason = Current</code> and <code>Start Time = Now()</code>. Pausing the timer patches that record, setting `End Time` to `Now()` and status to `Past`.</li>
                         <li><strong>Job Status Configuration</strong>: The Status dropdown options populate from the <code>Job Statuses</code> table (filtered to show only active statuses mapped to Maintenance Jobs). Selecting a status and tapping Update modifies the job's main status field.</li>
                     </ul>
                 </div>
 
                 <h2>Labor Hours Logging (Timer Logic)</h2>
-                <p>When a worker begins the job, they start a timer. The application tracks active time logs and past durations using an SQL/Dataverse <code>Time Entries</code> table:</p>
+                <p>When a user begins the job, they start a timer. The application tracks active time logs and past durations using an SQL/Dataverse <code>Time Entries</code> table:</p>
 
                 <div class="code-spec-container">
                     <div class="code-spec-header">
@@ -868,8 +868,8 @@ UpdateContext({
 
             <!-- Section 14: Services Detail & Timer Calculations -->
             <section id="detail-services" class="doc-section" role="tabpanel">
-                <h1>Services Detail & Labor Tracking</h1>
-                <p>The Service screen features dynamic time logging controls. These buttons perform write-backs directly to the <code>Time Entries</code> table to track on-site labor hours.</p>
+                <h1>Services Detail Screen</h1>
+                <p>The <strong>Services Detail Screen</strong> displays records of the <code>Services_1</code> table, displaying service ID, start date, checklist status, and duration details.</p>
 
                 <div class="grid-2">
                     <div class="screenshot-container">
@@ -954,8 +954,8 @@ Patch(
 
             <!-- Section 15: Housekeeping Detail -->
             <section id="detail-housekeeping" class="doc-section" role="tabpanel">
-                <h1>Housekeeping Activity Screen</h1>
-                <p>Tracks cleaning, safety walks, and compliance logs inside the facility. Integrates sub-task checklist controls.</p>
+                <h1>Housekeeping Detail Screen</h1>
+                <p>The <strong>Housekeeping Detail Screen</strong> displays records of the <code>Housekeeping_1</code> table, displaying housekeeping ID, date, status, checklist status, and duration details.</p>
 
                 <div class="grid-2">
                     <div class="screenshot-container">
@@ -972,8 +972,8 @@ Patch(
                 <div class="info-card">
                     <p>Housekeeping tasks track facility sanitation schedules:</p>
                     <ul>
-                        <li><strong>Checklist Blocking Rule</strong>: Just like in Services, operators must complete all checklist sub-tasks on the task list screen before clicking Complete.</li>
-                        <li><strong>Timer Operations</strong>: Integrates the standard <code>colHousekeepingTimeEntries</code> collection, logging labor durations spent cleaning. It pulls available active status categories from <code>Job Statuses</code> table (filtered by <code>'Is Visible For Housekeeping?'</code>).</li>
+                        <li><strong>Checklist Blocking Rule</strong>: Just like in Services, users must complete all checklist sub-tasks on the task list screen before clicking Complete.</li>
+                        <li><strong>Timer Operations</strong>: Integrates the standard <code>colHousekeepingTimeEntries</code> collection, logging durations spent on the task. It pulls available active status categories from <code>Job Statuses</code> table (filtered by <code>'Is Visible For Housekeeping?'</code>).</li>
                     </ul>
                 </div>
             </section>
@@ -981,7 +981,7 @@ Patch(
             <!-- Section 16: Meter Readings Detail -->
             <section id="detail-meters" class="doc-section" role="tabpanel">
                 <h1>Meter Readings Detail Screen</h1>
-                <p>Captures physical telemetry data. Field engineers record numeric values (e.g. pressure, running hours, power logs) which are validated on submission.</p>
+                <p>The <strong>Meter Readings Detail Screen</strong> displays records of the <code>Meter Readings</code> table, displaying meter ID, reading date, telemetry value, and status details.</p>
 
                 <div class="grid-2">
                     <div class="screenshot-container">
@@ -1004,10 +1004,10 @@ Patch(
                 </div>
             </section>
 
-            <!-- Section 17: Inspections Detail -->
+            <!-- Section 17: Inspections Detail & Swipe Quick Pass -->
             <section id="detail-inspections" class="doc-section" role="tabpanel">
                 <h1>Inspections Detail Screen</h1>
-                <p>Facilitates equipment and facility inspection operations. Allows inspectors to verify mooring status, input reason codes, and swipe checklist tasks.</p>
+                <p>The <strong>Inspections Detail Screen</strong> displays records of the <code>Inspections</code> table, displaying inspection ID, mooring status (choices IN/OUT), reason code, date, and swipe pass control details.</p>
 
                 <div class="grid-2">
                     <div class="screenshot-container">
@@ -1020,15 +1020,17 @@ Patch(
                     </div>
                 </div>
 
-                <h2>Key Features & SWIPE Gestures</h2>
+                <h2>Quick Pass Slider Integration Specifications</h2>
                 <div class="info-card">
-                    <p>Inspection details facilitate checks and quick passes:</p>
+                    <p>The Quick Pass swiping gesture is designed to let users quickly pass inspections without filling out forms. Here is how this mechanic is technically built:</p>
                     <ul>
-                        <li><strong>Mooring Status Dropdown</strong>: Configured as a choices field. It parses <code>Choices('Mooring Status (Inspections)')</code>, which resolves to two options: <code>IN</code> and <code>OUT</code>.</li>
-                        <li><strong>Reason Codes lookup</strong>: The list of reasons code available dynamically filters based on active inspection type code:
-                            <br><code>Filter('Reason Codes', 'Type Code' = CurrentMaintanenceRecord.'Type Code')</code>
+                        <li><strong>Slider Control Overlay (Slider2)</strong>: A standard Power Apps Slider control is custom-styled with fully transparent backgrounds (handle active fill, rail fill, value hover fill). It is positioned directly over the "Swipe to Quick Pass" card.</li>
+                        <li><strong>Swipe Trigger Threshold</strong>: Dragging the slider handle all the way to the right triggers the slider's <code>OnChange</code> formula when <code>Slider2.Value = Slider2.Max</code>.</li>
+                        <li><strong>Config Validation</strong>: When swiped, it verifies if a valid Quick Pass reason code is configured in the <code>Reason Codes</code> master table for the active inspection's <code>Type Code</code>:
+                            <br><code>LookUp('Reason Codes', 'Type Code' = ThisItem.elt_typecode, 'Is Quick Pass?')</code>
                         </li>
-                        <li><strong>Quick Pass Swipe Action</strong>: A special contextual swiping gesture is active. Sweeping right on the inspection card immediately passes the inspection and marks the task as completed. This bypasses the checklist checks and forms, saving significant time for field workers verifying standard operational items.</li>
+                        <li><strong>Action Block</strong>: If no reason code exists, it triggers a warning notification (e.g. "Unable to proceed with the quick pass.") and calls <code>Reset(Slider2)</code>. If confirmed, it opens a confirmation dialog.</li>
+                        <li><strong>Write-Back Confirmation</strong>: Confirming the prompt updates the inspection record directly, setting <code>'Reason Code QuickPass?' = true</code>, marking the status as Completed, and bypassing checklists.</li>
                     </ul>
                 </div>
 
@@ -1075,7 +1077,7 @@ ClearCollect(
             <!-- Section 18: Comment Screen -->
             <section id="utility-comments" class="doc-section" role="tabpanel">
                 <h1>Shared Comments Screen</h1>
-                <p>The Comments overlay provides a single, shared canvas for writing feedback, reading comments logs, and attaching photos. It automatically loads comments depending on which screen initiated the session.</p>
+                <p>The <strong>Comment Screen</strong> displays comments and notes records linked by regarding ID. It allows uploading images and typing descriptions.</p>
 
                 <div class="grid-2">
                     <div class="screenshot-container">
@@ -1092,7 +1094,7 @@ ClearCollect(
                 <div class="info-card">
                     <p>Comments are contextual and read-only once saved:</p>
                     <ul>
-                        <li><strong>Write-Once Constraint</strong>: Comments can only be created. To prevent unauthorized history editing in field reports, no edit or delete option is available.</li>
+                        <li><strong>Write-Once Constraint</strong>: Comments can only be created. To prevent unauthorized history editing in reports, no edit or delete option is available.</li>
                         <li><strong>Database Mapping</strong>: Comments records are linked to the parent record using a regarding ID GUID column in Dataverse matching the active screen module (e.g. <code>elt_sitetaskid</code> for Site Tasks).</li>
                     </ul>
                 </div>
@@ -1122,7 +1124,7 @@ ClearCollect(
             <!-- Section 19: Requests Screen -->
             <section id="utility-requests" class="doc-section" role="tabpanel">
                 <h1>Requests Screen</h1>
-                <p>Allows users to raise incident requests. It can be invoked globally from the Home screen or linked to a specific task.</p>
+                <p>The <strong>Requests Screen</strong> displays requests records. It filters by request types and allows attaching images.</p>
 
                 <div class="grid-2">
                     <div class="screenshot-container">
@@ -1137,7 +1139,7 @@ ClearCollect(
 
                 <h2>Operational Capabilities</h2>
                 <div class="info-card">
-                    <p>Incident requests capture anomalies noted by field engineers:</p>
+                    <p>Incident requests capture anomalies noted by the user:</p>
                     <ul>
                         <li><strong>Redirection Contexts</strong>:
                             <ul>
@@ -1164,7 +1166,7 @@ ClearCollect(
             <!-- Section 20: Task List Screen -->
             <section id="utility-tasklist" class="doc-section" role="tabpanel">
                 <h1>TaskList Checklist Screen</h1>
-                <p>Used by Services, Housekeeping, and Inspections modules to show sub-tasks or step-by-step checklists that need verification before completing the job.</p>
+                <p>The <strong>Task List Screen</strong> displays sub-tasks checklist records linked by regarding ID.</p>
 
                 <div class="screenshot-container" style="max-width: 600px; margin: 0 auto 24px auto;">
                     <img src="./SnapShots/TaskList(Subtasks)_list(for service,housekeeping and inspection).png" class="screenshot-img" alt="Checklist Screen">
@@ -1173,7 +1175,7 @@ ClearCollect(
 
                 <div class="info-card">
                     <div class="info-card-title"><i class="fa-solid fa-check-double"></i> Checklist Blocking Specification</div>
-                    <p>To ensure high compliance standards, the application implements a checklist blocker rule: <strong>workers are prevented from marking a parent activity as completed unless all items in the sub-task Checklist (TaskList) are fully checked off.</strong></p>
+                    <p>To ensure high compliance standards, the application implements a checklist blocker rule: <strong>users are prevented from marking a parent activity as completed unless all items in the sub-task Checklist (TaskList) are fully checked off.</strong></p>
                     <p>The checklist items populate from the <code>Task</code> table filtered by the current record context (e.g. <code>Filter(TasksData, Regarding = RecordOfTasks)</code>).</p>
                 </div>
             </section>
@@ -1206,6 +1208,10 @@ ClearCollect(
                         <tr>
                             <td><code>Site Tasks</code></td>
                             <td>Transactional data representing site tasks. Contains priority values and dates.</td>
+                        </tr>
+                        <tr>
+                            <td><code>Safety Tests</code></td>
+                            <td>Transactional data representing safety tests.</td>
                         </tr>
                         <tr>
                             <td><code>Maintenance Jobs</code></td>
@@ -1289,7 +1295,7 @@ ClearCollect(
                     <div class="qa-answer-bar">
                         <strong>Question:</strong> The inspection screen filters reason codes based on <code>'Type Code' = CurrentMaintanenceRecord.'Type Code'</code>. What business rule connects these two?
                         <br><br>
-                        <strong>Answer:</strong> There is no server-side business rule linking these. The reason codes reside in a lookup table. Because this is a custom status, inspectors can modify the reason code multiple times until they mark the inspection record as completed. This logic defines the default selection filter.
+                        <strong>Answer:</strong> There is no server-side business rule linking these. The reason codes reside in a lookup table. Because this is a custom status, users can modify the reason code multiple times until they mark the inspection record as completed. This logic defines the default selection filter.
                     </div>
                 </div>
 
