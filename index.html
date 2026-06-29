@@ -1,16 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Elite Screens - Developer Documentation</title>
-    <meta name="description" content="Detailed technical and functional documentation for the Elite Screens Power Apps Canvas Application, detailing data integration, screen structures, coding specifications, and variables.">
+    <title>EliteApps - Developer Documentation</title>
+    <meta name="description"
+        content="Detailed technical and functional documentation for the EliteApps Power Apps Canvas Application, detailing data integration, screen structures, coding specifications, and variables.">
     <!-- Google Font & FontAwesome Icon Library -->
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Local Styling -->
     <link rel="stylesheet" href="index.css">
 </head>
+
 <body>
 
     <!-- Sidebar Navigation -->
@@ -18,14 +23,15 @@
         <div class="sidebar-header">
             <div class="sidebar-title">
                 <i class="fa-solid fa-mobile-screen-button"></i>
-                <span>Elite Screens</span>
+                <span>EliteApps</span>
             </div>
-            <div class="sidebar-subtitle">Developer Portal</div>
+            <div class="sidebar-subtitle">Technical Documentation</div>
         </div>
 
         <div class="search-box">
             <i class="fa-solid fa-magnifying-glass search-icon"></i>
-            <input type="text" id="sidebarSearch" class="search-input" placeholder="Search topics..." aria-label="Search Documentation">
+            <input type="text" id="sidebarSearch" class="search-input" placeholder="Search topics..."
+                aria-label="Search Documentation">
         </div>
 
         <div class="sidebar-menu">
@@ -118,12 +124,12 @@
             </div>
 
             <!-- Group 6: Questions & Answers -->
-            <div class="menu-section">
+            <!-- <div class="menu-section">
                 <div class="menu-section-title">Feedback & QA</div>
                 <a class="menu-item" data-target="questions-panel" role="tab" aria-selected="false">
                     <i class="fa-solid fa-clipboard-question"></i><span>Questions & Answers</span>
                 </a>
-            </div>
+            </div> -->
         </div>
     </nav>
 
@@ -132,14 +138,20 @@
         <!-- Top Bar Header -->
         <header class="top-bar">
             <div class="top-bar-title">App Overview</div>
-            <div class="color-badge-container">
-                <span class="color-badge" style="background-color: #008D84;" data-hex="#008D84" data-tooltip="Primary: #008D84"></span>
-                <span class="color-badge" style="background-color: #014F78;" data-hex="#014F78" data-tooltip="Secondary: #014F78"></span>
-                <span class="color-badge" style="background-color: #007780;" data-hex="#007780" data-tooltip="Button Primary: #007780"></span>
-                <span class="color-badge" style="background-color: #FFE2E2;" data-hex="#FFE2E2" data-tooltip="Red BG: #FFE2E2"></span>
-                <span class="color-badge" style="background-color: #FF4747;" data-hex="#FF4747" data-tooltip="Red Text: #FF4747"></span>
-                <span class="color-badge" style="background-color: #F6FCFF;" data-hex="#F6FCFF" data-tooltip="BG Light: #F6FCFF"></span>
-            </div>
+            <!-- <div class="color-badge-container">
+                <span class="color-badge" style="background-color: #008D84;" data-hex="#008D84"
+                    data-tooltip="Primary: #008D84"></span>
+                <span class="color-badge" style="background-color: #014F78;" data-hex="#014F78"
+                    data-tooltip="Secondary: #014F78"></span>
+                <span class="color-badge" style="background-color: #007780;" data-hex="#007780"
+                    data-tooltip="Button Primary: #007780"></span>
+                <span class="color-badge" style="background-color: #FFE2E2;" data-hex="#FFE2E2"
+                    data-tooltip="Red BG: #FFE2E2"></span>
+                <span class="color-badge" style="background-color: #FF4747;" data-hex="#FF4747"
+                    data-tooltip="Red Text: #FF4747"></span>
+                <span class="color-badge" style="background-color: #F6FCFF;" data-hex="#F6FCFF"
+                    data-tooltip="BG Light: #F6FCFF"></span>
+            </div> -->
         </header>
 
         <!-- Dynamic Content Window -->
@@ -147,16 +159,23 @@
 
             <!-- Section 1: Overview -->
             <section id="overview" class="doc-section active" role="tabpanel">
-                <h1>Elite Screens Application Overview</h1>
-                <p><strong>Elite Screens</strong> is a mobile and tablet-optimized Power Apps Canvas Application designed for users to view and interact with operations data. It enables swift, on-site interactions for viewing maintenance tasks, safety tests, cleaning schedules, meter readings, and raising work requests.</p>
+                <h1>EliteApps Application Overview</h1>
+                <p><strong>EliteApps</strong> is a mobile and tablet-optimized Power Apps Canvas Application designed
+                    for users to view and interact with operations data. It enables swift, on-site interactions for
+                    viewing maintenance tasks, safety tests, cleaning schedules, meter readings, and raising work
+                    requests.</p>
 
                 <div class="info-card">
-                    <div class="info-card-title"><i class="fa-solid fa-circle-info"></i> Project Information at a Glance</div>
+                    <div class="info-card-title"><i class="fa-solid fa-circle-info"></i> Project Information at a Glance
+                    </div>
                     <p>The system comprises three major components:</p>
                     <ul>
-                        <li><strong>Canvas Mobile App (Power Apps)</strong>: The front-end interface used by the user, engineered to work seamlessly in **Offline Mode**.</li>
-                        <li><strong>Dynamics CRM (Model-Driven App - "Elite Site Operations")</strong>: Used to manage permissions, translate menus, track logs, and verify records.</li>
-                        <li><strong>Dataverse Database</strong>: Serves as the primary data repository, integrating tables and relationships.</li>
+                        <li><strong>Canvas Mobile App (Power Apps)</strong>: The front-end interface used by the user,
+                            engineered to work seamlessly in <strong>Offline Mode</strong>.</li>
+                        <li><strong>Dynamics CRM (Model-Driven App - "Elite Site Operations")</strong>: Used to manage
+                            permissions, translate menus, track logs, and verify records.</li>
+                        <li><strong>Dataverse Database</strong>: Serves as the primary data repository, integrating
+                            tables and relationships.</li>
                     </ul>
                 </div>
 
@@ -173,13 +192,17 @@
                     <tbody>
                         <tr>
                             <td><strong>Development (DEV)</strong></td>
-                            <td><a href="https://eliteappsdev.crm11.dynamics.com/" target="_blank">eliteappsdev.crm11.dynamics.com</a></td>
-                            <td><a href="https://make.powerapps.com/environments/be1a2f74-2acf-e258-9a07-22b5687c6fa9/apps" target="_blank">PowerApps DEV Workspace</a></td>
+                            <td><a href="https://eliteappsdev.crm11.dynamics.com/"
+                                    target="_blank">eliteappsdev.crm11.dynamics.com</a></td>
+                            <td><a href="https://make.powerapps.com/environments/be1a2f74-2acf-e258-9a07-22b5687c6fa9/apps"
+                                    target="_blank">PowerApps DEV Workspace</a></td>
                         </tr>
                         <tr>
                             <td><strong>Testing (UAT)</strong></td>
-                            <td><a href="https://development4-uat.crm11.dynamics.com/" target="_blank">development4-uat.crm11.dynamics.com</a></td>
-                            <td><a href="https://make.powerapps.com/environments/dec9410f-9c2f-e9c9-acc1-4049995a23ab/apps" target="_blank">PowerApps UAT Workspace</a></td>
+                            <td><a href="https://development4-uat.crm11.dynamics.com/"
+                                    target="_blank">development4-uat.crm11.dynamics.com</a></td>
+                            <td><a href="https://make.powerapps.com/environments/dec9410f-9c2f-e9c9-acc1-4049995a23ab/apps"
+                                    target="_blank">PowerApps UAT Workspace</a></td>
                         </tr>
                     </tbody>
                 </table>
@@ -189,45 +212,83 @@
             <section id="bc-sync" class="doc-section" role="tabpanel">
                 <h1>Data Integration & Write-Back Rules</h1>
                 <div class="badge badge-warning" style="margin-bottom: 16px;">Core Architecture</div>
-                <p>A crucial technical design choice of the Elite Screens ecosystem is the integration with **Microsoft Dynamics 365 Business Central (BC)**. Understanding this data flow is key for any developer modifying the codebase.</p>
+                <p>A crucial technical design choice of the EliteApps ecosystem is the integration with
+                    <strong>Microsoft
+                        Dynamics 365 Business Central (BC)</strong>. Understanding this data flow is key for any
+                    developer
+                    modifying the codebase.
+                </p>
 
                 <div class="grid-2">
                     <div class="info-card">
-                        <div class="info-card-title"><i class="fa-solid fa-cloud-arrow-down"></i> Unidirectional Sync (Read-Only Tables)</div>
-                        <p>Most master tables and core operational lists are synchronized unidirectionally from Business Central. The mobile app cannot insert, modify, or delete records in these tables. They are strictly **Read-Only** from the front-end:</p>
+                        <div class="info-card-title"><i class="fa-solid fa-cloud-arrow-down"></i> Unidirectional Sync
+                            (Read-Only Tables)</div>
+                        <p>Most master tables and core operational lists are synchronized unidirectionally from Business
+                            Central. The mobile app cannot insert, modify, or delete records in these tables. They are
+                            strictly <strong>Read-Only</strong> from the front-end:</p>
                         <ul>
-                            <li><strong>Master Entities</strong>: <code>Parks</code>, <code>Plots</code>, <code>Units</code>, and <code>Unit Fields</code>.</li>
-                            <li><strong>Core Configurations</strong>: <code>Request Types</code>, <code>Reason Codes</code>, and <code>Job Statuses</code>.</li>
-                            <li><strong>Primary 7 Tables</strong>: <code>Site Tasks</code>, <code>Safety Tests</code>, <code>Maintenance Jobs</code>, <code>Services_1</code>, <code>Housekeeping_1</code>, <code>Meter Readings</code>, and <code>Inspections</code>.</li>
+                            <li><strong>Master Entities</strong>: <code>Parks</code>, <code>Plots</code>,
+                                <code>Units</code>, and <code>Unit Fields</code>.
+                            </li>
+                            <li><strong>Core Configurations</strong>: <code>Request Types</code>,
+                                <code>Reason Codes</code>, and <code>Job Statuses</code>.
+                            </li>
+                            <li><strong>Primary 7 Tables</strong>: <code>Site Tasks</code>, <code>Safety Tests</code>,
+                                <code>Maintenance Jobs</code>, <code>Services_1</code>, <code>Housekeeping_1</code>,
+                                <code>Meter Readings</code>, and <code>Inspections</code>.
+                            </li>
                         </ul>
                     </div>
 
                     <div class="info-card">
-                        <div class="info-card-title"><i class="fa-solid fa-pen-to-square"></i> Bidirectional / Write-Back Tables</div>
-                        <p>The user is only authorized to write data to a subset of transactional tables. These are the **only** tables patched or collected from the front-end:</p>
+                        <div class="info-card-title"><i class="fa-solid fa-pen-to-square"></i> Bidirectional /
+                            Write-Back Tables</div>
+                        <p>The user is only authorized to write data to a subset of transactional tables. These are the
+                            <strong>only</strong> tables patched or collected from the front-end:
+                        </p>
                         <ul>
                             <li><strong>Comments</strong>: Attached to records for feedback.</li>
-                            <li><strong>Requests</strong>: Submitted incidents, work orders, or quotes.</li>
-                            <li><strong>Time Entries</strong>: Logged durations representing the user's log entries.</li>
+                            <li><strong>Requests</strong>: Queries regarding to any task or general queries from user.
+                            </li>
+                            <li><strong>Time Entries</strong>: Logged durations representing the user time log.</li>
                         </ul>
                         <div class="badge badge-success">Calculated Fields</div>
-                        <p style="margin-top: 8px; font-size: 13px;">Among these tables, only <strong>Time Entries</strong> trigger calculation logic inside the app to measure actual elapsed duration.</p>
+                        <p style="margin-top: 8px; font-size: 13px;">Among these tables, only <strong>Time
+                                Entries</strong> trigger calculation logic inside the app to measure actual user
+                            duration.</p>
                     </div>
                 </div>
 
-                <div class="screenshot-container" style="max-width: 600px; margin: 0 auto;">
-                    <img src="./SnapShots/Elite%20Site%20Operations%20(model%20driven%20app)%20(More%20Info).png" class="screenshot-img" alt="CRM More Info Section Displaying Synchronized Tables">
-                    <div class="screenshot-caption"><i class="fa-solid fa-image"></i> Business Central Synced Tables in CRM (More Info Panel)</div>
+                <div class="grid-2">
+
+                    <div class="screenshot-container" style="max-width: 600px; margin: 0 auto;">
+                        <img src="./SnapShots/Elite Site Operations (model driven app) (App Details).png"
+                            class="screenshot-img" alt="CRM More Info Section Displaying Synchronized Tables">
+                        <div class="screenshot-caption"><i class="fa-solid fa-image"></i> Elite Site Operations Model
+                            Driven
+                            App (App Details Panel)</div>
+                    </div>
+                    <div class="screenshot-container" style="max-width: 600px; margin: 0 auto;">
+                        <img src="./SnapShots/Elite%20Site%20Operations%20(model%20driven%20app)%20(More%20Info).png"
+                            class="screenshot-img" alt="CRM More Info Section Displaying Synchronized Tables">
+                        <div class="screenshot-caption"><i class="fa-solid fa-image"></i> Elite Site Operations Model
+                            Driven
+                            App (More Info Panel)</div>
+                    </div>
                 </div>
             </section>
 
             <!-- Section 3: App Initialization -->
             <section id="initialization" class="doc-section" role="tabpanel">
                 <h1>Application Initialization</h1>
-                <p>When the application launches, the root <code>OnStart</code> script in <a href="file:///c:/Users/sit432/Downloads/Elite%20Screens/1.App.txt">1.App.txt</a> runs, configuring default themes, menu options, user profiles, translations, and permission lists.</p>
+                <p>When the application launches, the root <code>OnStart</code> script in <a
+                        href="file:///c:/Users/sit432/Downloads/Elite%20Screens/1.App.txt">1.App.txt</a> runs,
+                    configuring default themes, menu options, user profiles, translations, and permission lists.</p>
 
                 <h2>App Theme & Fonts Loading</h2>
-                <p>A global design system configuration variable (<code>EliteTheme</code>) is instantiated. It defines color models and sizes. It dynamically sets size values based on the physical device screen category to ensure font scaling:</p>
+                <p>A global design system configuration variable (<code>EliteTheme</code>) is instantiated. It defines
+                    color models and sizes. It dynamically sets size values based on the physical device screen category
+                    to ensure font scaling:</p>
 
                 <div class="code-spec-container">
                     <div class="code-spec-header">
@@ -276,8 +337,15 @@
                 <div class="code-explanation">
                     <h3>Why this logic was used:</h3>
                     <ul>
-                        <li><strong>Device Responsiveness</strong>: Setting font sizes inside an array of screen sizes allows individual text labels on the screens to easily bind their <code>Size</code> property (e.g. <code>LookUp(EliteTheme.FontSizes.Heading, ScreenSize = Screen.Size).FontSize</code>). This prevents overlapping text on small mobile screens.</li>
-                        <li><strong>Maintainability</strong>: Declaring standard colors inside <code>EliteTheme.Colors</code> ensures that developers do not hardcode colors on individual components. If the corporate brand colors change, updating a single property in <code>App.OnStart</code> updates the entire application's UI.</li>
+                        <li><strong>Device Responsiveness</strong>: Setting font sizes inside an array of screen sizes
+                            allows individual text labels on the screens to easily bind their <code>Size</code> property
+                            (e.g. <code>LookUp(EliteTheme.FontSizes.Heading, ScreenSize = Screen.Size).FontSize</code>).
+                            This prevents overlapping text on small mobile screens.</li>
+                        <li><strong>Maintainability</strong>: Declaring standard colors inside
+                            <code>EliteTheme.Colors</code> ensures that developers do not hardcode colors on individual
+                            components. If the corporate brand colors change, updating a single property in
+                            <code>App.OnStart</code> updates the entire application's UI.
+                        </li>
                     </ul>
                 </div>
             </section>
@@ -285,7 +353,8 @@
             <!-- Section 4: Variables Reference -->
             <section id="variables" class="doc-section" role="tabpanel">
                 <h1>Variables Reference Guide</h1>
-                <p>Below is a dictionary of all global variables (initialized with <code>Set</code>) and context variables (initialized with <code>UpdateContext</code>) used across the application screens.</p>
+                <p>Below is a dictionary of all global variables (initialized with <code>Set</code>) and context
+                    variables (initialized with <code>UpdateContext</code>) used across the application screens.</p>
 
                 <h2>Global Variables (Global Scope)</h2>
                 <table class="schema-table" aria-label="Global Variables Reference">
@@ -300,42 +369,50 @@
                         <tr>
                             <td><code>EliteTheme</code></td>
                             <td>Record</td>
-                            <td>Holds the global UI stylesheet definition, containing responsive font size arrays and hex color strings.</td>
+                            <td>Holds the global UI stylesheet definition, containing responsive font size arrays and
+                                hex color strings.</td>
                         </tr>
                         <tr>
                             <td><code>MenuList</code></td>
                             <td>Table / Collection</td>
-                            <td>Static array defining menu tiles (Name, Image, Background color, text color, and target menu keys).</td>
+                            <td>Static array defining menu tiles (Name, Image, Background color, text color, and target
+                                menu keys).</td>
                         </tr>
                         <tr>
                             <td><code>MenuFilteredFromPermission</code></td>
                             <td>Table / Collection</td>
-                            <td>Filtered version of <code>MenuList</code> matching user-authorized menu keys. Displays tiles dynamically.</td>
+                            <td>Filtered version of <code>MenuList</code> matching user-authorized menu keys. Displays
+                                tiles dynamically.</td>
                         </tr>
                         <tr>
                             <td><code>LabelTranslations</code></td>
                             <td>Table / Collection</td>
-                            <td>Nested JSON translations table containing dynamic localizations compiled on app startup.</td>
+                            <td>Nested JSON translations table containing dynamic localizations compiled on app startup.
+                            </td>
                         </tr>
                         <tr>
                             <td><code>CurrentUser</code></td>
                             <td>Record</td>
-                            <td>Stores user record details (User GUID, Primary Email, Name) retrieved from Dataverse table on start.</td>
+                            <td>Stores user record details (User GUID, Primary Email, Name) retrieved from Dataverse
+                                table on start.</td>
                         </tr>
                         <tr>
                             <td><code>UserLanguage</code></td>
                             <td>String</td>
-                            <td>Active UI language key (defaults to <code>"English"</code>). Modifies translated lookups.</td>
+                            <td>Active UI language key (defaults to <code>"English"</code>). Modifies translated
+                                lookups.</td>
                         </tr>
                         <tr>
                             <td><code>SelectedMenu</code></td>
                             <td>Record</td>
-                            <td>Stores the selected module card (e.g. Site Tasks) clicked on the Home screen to filter dashboard metrics.</td>
+                            <td>Stores the selected module card (e.g. Site Tasks) clicked on the Home screen to filter
+                                dashboard metrics.</td>
                         </tr>
                         <tr>
                             <td><code>NoMenuWarningLabel</code></td>
                             <td>String</td>
-                            <td>Stores a localized warning label string displayed if user authorization lists are empty.</td>
+                            <td>Stores a localized warning label string displayed if user authorization lists are empty.
+                            </td>
                         </tr>
                     </tbody>
                 </table>
@@ -353,7 +430,8 @@
                         <tr>
                             <td><code>IsHomeScreenLoaderVisible</code></td>
                             <td>Home</td>
-                            <td>Controls visibility of loading screens during start permissions/translations fetching.</td>
+                            <td>Controls visibility of loading screens during start permissions/translations fetching.
+                            </td>
                         </tr>
                         <tr>
                             <td><code>IsHomeSelectionOptionsVisible</code></td>
@@ -368,22 +446,27 @@
                         <tr>
                             <td><code>CurrentRecord</code></td>
                             <td>Maintenance (List), Detail Screens</td>
-                            <td>Stores the unique GUID ID of the record selected in the list gallery. Used to populate detail views.</td>
+                            <td>Stores the unique GUID ID of the record selected in the list gallery. Used to populate
+                                detail views.</td>
                         </tr>
                         <tr>
                             <td><code>CurrentMaintanenceRecord</code></td>
                             <td>Detail Screens</td>
-                            <td>Stores the resolved Dataverse record loaded via a <code>LookUp</code> matching <code>CurrentRecord</code>.</td>
+                            <td>Stores the resolved Dataverse record loaded via a <code>LookUp</code> matching
+                                <code>CurrentRecord</code>.
+                            </td>
                         </tr>
                         <tr>
                             <td><code>IsTimerStart</code></td>
                             <td>Detail Screens (Jobs, Services, Housekeeping)</td>
-                            <td>Flags whether the work timer is running (switches buttons and runs millisecond counters).</td>
+                            <td>Flags whether the work timer is running (switches buttons and runs millisecond
+                                counters).</td>
                         </tr>
                         <tr>
                             <td><code>TimerDefaultValue</code></td>
                             <td>Detail Screens (Jobs, Services, Housekeeping)</td>
-                            <td>Accumulated time entries duration in milliseconds. Used to set the initial timer starting value.</td>
+                            <td>Accumulated time entries duration in milliseconds. Used to set the initial timer
+                                starting value.</td>
                         </tr>
                         <tr>
                             <td><code>CanAccessStart</code>, <code>CanAccessPause</code></td>
@@ -407,10 +490,13 @@
             <!-- Section 5: Security & Permissions -->
             <section id="security" class="doc-section" role="tabpanel">
                 <h1>Security & Permissions Management</h1>
-                <p>To secure access to operation files and tools, the application evaluates user groups and permission logs on startup. Rather than relying on simple client-side checks, it runs a background Power Automate flow to retrieve allowed menu keys.</p>
+                <p>To secure access to operation files and tools, the application evaluates user groups and permission
+                    logs on startup. Rather than relying on simple client-side checks, it runs a background Power
+                    Automate flow to retrieve allowed menu keys.</p>
 
                 <h2>Role Permission Script</h2>
-                <p>The initialization code runs a Power Automate flow and loads allowed screens based on the current user's email address:</p>
+                <p>The initialization code runs a Power Automate flow and loads allowed screens based on the current
+                    user's email address:</p>
 
                 <div class="code-spec-container">
                     <div class="code-spec-header">
@@ -450,20 +536,34 @@ ClearCollect(
                 <div class="code-explanation">
                     <h3>Why this logic was used & Integration Specification:</h3>
                     <ul>
-                        <li><strong>Dataverse Relationship (N-to-N)</strong>: The permission flow queries a custom Dataverse table named <strong>menu</strong>, which has an N-to-N relationship with the <strong>systemuser</strong> table. This relationship model allows assigning multiple modules to users securely.</li>
-                        <li><strong>Flow Trigger</strong>: The flow accepts the user GUID and queries the intersecting relationship tables on the server side, returning a serialized JSON list of authorized menu keys (e.g. <code>APP_TILE_SITE_TASK</code>). This minimizes client-side query complexity and secures internal database queries.</li>
-                        <li><strong>Team Context Loading</strong>: The `FindTeamsOfUser` flow returns the GUIDs of all operational teams the user belongs to. Storing this inside the local collection `UserTeams` is critical for filtering transactional logs on subsequent pages (letting the user view team tasks or toggle to their personal view).</li>
+                        <li><strong>Dataverse Relationship (N-to-N)</strong>: The permission flow queries a custom
+                            Dataverse table named <strong>menu</strong>, which has an N-to-N relationship with the
+                            <strong>systemuser</strong> table. This relationship model allows assigning multiple modules
+                            to users securely.
+                        </li>
+                        <li><strong>Flow Trigger</strong>: The flow accepts the user GUID and queries the intersecting
+                            relationship tables on the server side, returning a serialized JSON list of authorized menu
+                            keys (e.g. <code>APP_TILE_SITE_TASK</code>). This minimizes client-side query complexity and
+                            secures internal database queries.</li>
+                        <li><strong>Team Context Loading</strong>: The `FindTeamsOfUser` flow returns the GUIDs of all
+                            operational teams the user belongs to. Storing this inside the local collection `UserTeams`
+                            is critical for filtering transactional logs on subsequent pages (letting the user view team
+                            tasks or toggle to their personal view).</li>
                     </ul>
                 </div>
 
                 <div class="grid-2">
                     <div class="screenshot-container">
-                        <img src="./SnapShots/Get%20User%20Permissions%20for%20App%20Menu%20(flow).png" class="screenshot-img" alt="User Permission Menu Flow Diagram">
-                        <div class="screenshot-caption"><i class="fa-solid fa-image"></i> Flow Structure: Fetch Menu Permission</div>
+                        <img src="./SnapShots/Get%20User%20Permissions%20for%20App%20Menu%20(flow).png"
+                            class="screenshot-img" alt="User Permission Menu Flow Diagram">
+                        <div class="screenshot-caption"><i class="fa-solid fa-image"></i> Flow Structure: Fetch Menu
+                            Permission</div>
                     </div>
                     <div class="screenshot-container">
-                        <img src="./SnapShots/Find%20teams%20of%20user%20(flow%20with%20it's%20logic%20to%20get%20team%20from%20dataverse%20using%20teammembership%20table).png" class="screenshot-img" alt="Find User Teams Flow">
-                        <div class="screenshot-caption"><i class="fa-solid fa-image"></i> Flow Structure: Retrieve User Teams</div>
+                        <img src="./SnapShots/Find%20teams%20of%20user%20(flow%20with%20it's%20logic%20to%20get%20team%20from%20dataverse%20using%20teammembership%20table).png"
+                            class="screenshot-img" alt="Find User Teams Flow">
+                        <div class="screenshot-caption"><i class="fa-solid fa-image"></i> Flow Structure: Retrieve User
+                            Teams</div>
                     </div>
                 </div>
             </section>
@@ -471,7 +571,9 @@ ClearCollect(
             <!-- Section 6: Localization -->
             <section id="localization" class="doc-section" role="tabpanel">
                 <h1>Localization & Dynamic Translation</h1>
-                <p>The application supports globalization by utilizing a dynamic translations database. All text labels, alerts, and notifications on every screen reference a single localization model, allowing rapid changes across different language settings.</p>
+                <p>The application supports globalization by utilizing a dynamic translations database. All text labels,
+                    alerts, and notifications on every screen reference a single localization model, allowing rapid
+                    changes across different language settings.</p>
 
                 <h2>Label Translations Fetch Code</h2>
                 <div class="code-spec-container">
@@ -503,10 +605,16 @@ ClearCollect(
                 <div class="code-explanation">
                     <h3>Why this logic was used:</h3>
                     <ul>
-                        <li><strong>Performance Optimization</strong>: Compiling translations into a single nested JSON object per active language allows quick lookup operations. By executing `ParseJSON` on startup, individual screen elements can resolve translations instantly using a formula like:
+                        <li><strong>Performance Optimization</strong>: Compiling translations into a single nested JSON
+                            object per active language allows quick lookup operations. By executing `ParseJSON` on
+                            startup, individual screen elements can resolve translations instantly using a formula like:
                             <br><code>Coalesce(Text(LookUp(LabelTranslations, Language = UserLanguage).TranslatedLabels.lblHome), "Home")</code>
                         </li>
-                        <li><strong>Concatenation Loop</strong>: Power Apps lacks native dynamic dictionary map initializers. Concatenating key-value columns from the translations database into a single string (formatted as <code>{"key":"value","key2":"value2"}</code>) and wrapping it with `ParseJSON` is a highly creative workaround to create a lightning-fast memory dictionary.</li>
+                        <li><strong>Concatenation Loop</strong>: Power Apps lacks native dynamic dictionary map
+                            initializers. Concatenating key-value columns from the translations database into a single
+                            string (formatted as <code>{"key":"value","key2":"value2"}</code>) and wrapping it with
+                            `ParseJSON` is a highly creative workaround to create a lightning-fast memory dictionary.
+                        </li>
                     </ul>
                 </div>
             </section>
@@ -514,41 +622,54 @@ ClearCollect(
             <!-- Section 7: Navigation Map -->
             <section id="navigation-map" class="doc-section" role="tabpanel">
                 <h1>App Navigation Architecture</h1>
-                <p>The diagram below displays the user navigation paths between different screens. Major transactional screens link directly to shared utilities (Comments, Requests, Checklists) to keep the app footprint lightweight.</p>
+                <p>The diagram below displays the user navigation paths between different screens. Major transactional
+                    screens link directly to shared utilities (Comments, Requests, Checklists) to keep the app footprint
+                    lightweight.</p>
 
                 <!-- Navigation Map Visual Diagram Placeholder -->
-                <div class="chart-container" style="background-color: white; border: 1px solid var(--border-light); border-radius: 12px; padding: 20px;">
-                    <div style="font-family: inherit; font-size: 14px; text-align: center; color: var(--secondary); margin-bottom: 20px;">
-                        <i class="fa-solid fa-circle-info"></i> Below is the detailed navigation matrix of the app screens. Clicking on a module links to details, and detail views connect to shared utility overlays.
+                <div class="chart-container"
+                    style="background-color: white; border: 1px solid var(--border-light); border-radius: 12px; padding: 20px;">
+                    <div
+                        style="font-family: inherit; font-size: 14px; text-align: center; color: var(--secondary); margin-bottom: 20px;">
+                        <i class="fa-solid fa-circle-info"></i> Below is the detailed navigation matrix of the app
+                        screens. Clicking on a module links to details, and detail views connect to shared utility
+                        overlays.
                     </div>
-                    
+
                     <!-- SVG Navigation Map -->
                     <div style="overflow-x: auto; text-align: center; padding: 20px;">
-                        <svg width="100%" height="320" viewBox="0 0 900 320" style="max-width: 800px; display: inline-block;">
+                        <svg width="100%" height="320" viewBox="0 0 900 320"
+                            style="max-width: 800px; display: inline-block;">
                             <rect x="360" y="10" width="180" height="50" rx="8" fill="#014F78" />
-                            <text x="450" y="40" fill="white" font-weight="bold" font-size="13" text-anchor="middle">App Start (1.App.txt)</text>
-                            
+                            <text x="450" y="40" fill="white" font-weight="bold" font-size="13" text-anchor="middle">App
+                                Start (1.App.txt)</text>
+
                             <rect x="360" y="90" width="180" height="50" rx="8" fill="#008D84" />
-                            <text x="450" y="120" fill="white" font-weight="bold" font-size="13" text-anchor="middle">Home Screen (2.Home)</text>
-                            
+                            <text x="450" y="120" fill="white" font-weight="bold" font-size="13"
+                                text-anchor="middle">Home Screen (2.Home)</text>
+
                             <path d="M 450 60 L 450 90" stroke="#007780" stroke-width="2" marker-end="url(#arrow)" />
-                            
+
                             <rect x="120" y="180" width="180" height="50" rx="8" fill="#007780" />
-                            <text x="210" y="210" fill="white" font-weight="semibold" font-size="12" text-anchor="middle">Task Dashboard (3.Dash)</text>
-                            
+                            <text x="210" y="210" fill="white" font-weight="semibold" font-size="12"
+                                text-anchor="middle">Task Dashboard (3.Dash)</text>
+
                             <rect x="600" y="180" width="180" height="50" rx="8" fill="#007780" />
-                            <text x="690" y="210" fill="white" font-weight="semibold" font-size="12" text-anchor="middle">Requests Screen (13.Req)</text>
-                            
+                            <text x="690" y="210" fill="white" font-weight="semibold" font-size="12"
+                                text-anchor="middle">Requests Screen (13.Req)</text>
+
                             <path d="M 360 115 L 210 115 L 210 180" fill="none" stroke="#A1A1A1" stroke-width="2" />
                             <path d="M 540 115 L 690 115 L 690 180" fill="none" stroke="#A1A1A1" stroke-width="2" />
-                            
+
                             <rect x="120" y="260" width="180" height="50" rx="8" fill="#007780" />
-                            <text x="210" y="290" fill="white" font-weight="semibold" font-size="12" text-anchor="middle">Maintenance List (4.Maint)</text>
-                            
+                            <text x="210" y="290" fill="white" font-weight="semibold" font-size="12"
+                                text-anchor="middle">Maintenance List (4.Maint)</text>
+
                             <path d="M 210 230 L 210 260" stroke="#007780" stroke-width="2" />
-                            
+
                             <defs>
-                                <marker id="arrow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                                <marker id="arrow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6"
+                                    markerHeight="6" orient="auto-start-reverse">
                                     <path d="M 0 0 L 10 5 L 0 10 z" fill="#007780" />
                                 </marker>
                             </defs>
@@ -560,12 +681,14 @@ ClearCollect(
             <!-- Section 8: Home Screen -->
             <section id="screen-home" class="doc-section" role="tabpanel">
                 <h1>Home Screen</h1>
-                <p>The <strong>Home Screen</strong> displays the main menu grid and quick action menu options. It references user details, the menu permission collection, languages, and translation labels.</p>
+                <p>The <strong>Home Screen</strong> displays the main menu grid and quick action menu options. It
+                    references user details, the menu permission collection, languages, and translation labels.</p>
 
                 <div class="grid-2">
                     <div class="screenshot-container">
                         <img src="./SnapShots/Home.png" class="screenshot-img" alt="Home Screen View">
-                        <div class="screenshot-caption"><i class="fa-solid fa-image"></i> Home Screen Grid Landing Page</div>
+                        <div class="screenshot-caption"><i class="fa-solid fa-image"></i> Home Screen Grid Landing Page
+                        </div>
                     </div>
                     <div class="screenshot-container">
                         <img src="./SnapShots/Home_Menuopen.png" class="screenshot-img" alt="Home Quick Actions Menu">
@@ -575,16 +698,28 @@ ClearCollect(
 
                 <h2>Key Capabilities & Interactivity Details</h2>
                 <div class="info-card">
-                    <p>The Home page acts as the main entry portal. When a user lands here, the following mechanisms are active:</p>
+                    <p>The Home page acts as the main entry portal. When a user lands here, the following mechanisms are
+                        active:</p>
                     <ul>
-                        <li><strong>User Details</strong>: Retrieves <code>User().FullName</code> and <code>User().Image</code>. It renders a friendly greeting and profile picture.</li>
-                        <li><strong>RBAC Checked Menus</strong>: The central gallery (<code>MainMenuGallery</code>) binds to the collection <code>MenuFilteredFromPermission</code>. If a user doesn't have permissions for any menus, it renders the <code>NoMenuWarningLabel</code> (e.g., "You don't have any menu permissions.") and hides the gallery.</li>
-                        <li><strong>Hamburger Option Menu</strong>: Tapping the hamburger button on the top-right opens the quick actions panel (setting <code>IsHomeSelectionOptionsVisible = true</code>). It contains four options:
+                        <li><strong>User Details</strong>: Retrieves <code>User().FullName</code> and
+                            <code>User().Image</code>. It renders a friendly greeting and profile picture.
+                        </li>
+                        <li><strong>RBAC Checked Menus</strong>: The central gallery (<code>MainMenuGallery</code>)
+                            binds to the collection <code>MenuFilteredFromPermission</code>. If a user doesn't have
+                            permissions for any menus, it renders the <code>NoMenuWarningLabel</code> (e.g., "You don't
+                            have any menu permissions.") and hides the gallery.</li>
+                        <li><strong>Hamburger Option Menu</strong>: Tapping the hamburger button on the top-right opens
+                            the quick actions panel (setting <code>IsHomeSelectionOptionsVisible = true</code>). It
+                            contains four options:
                             <ul>
                                 <li><strong>Home</strong>: Redirection back to the Home Screen.</li>
-                                <li><strong>Sync</strong>: Forces an offline cache synchronization (calls `ShowHostInfo(HostInfo.OfflineSync)`).</li>
-                                <li><strong>Requests</strong>: Navigates to the Requests Screen for logging user issues.</li>
-                                <li><strong>Language</strong>: Activates a language overlay (setting `IslanguageOptionSelection = true`) which lists active languages. Tapping a language updates `UserLanguage`, changing translated text labels.</li>
+                                <li><strong>Sync</strong>: Forces an offline cache synchronization (calls
+                                    `ShowHostInfo(HostInfo.OfflineSync)`).</li>
+                                <li><strong>Requests</strong>: Navigates to the Requests Screen for logging user issues.
+                                </li>
+                                <li><strong>Language</strong>: Activates a language overlay (setting
+                                    `IslanguageOptionSelection = true`) which lists active languages. Tapping a language
+                                    updates `UserLanguage`, changing translated text labels.</li>
                             </ul>
                         </li>
                     </ul>
@@ -592,12 +727,15 @@ ClearCollect(
 
                 <div class="grid-2">
                     <div class="screenshot-container">
-                        <img src="./SnapShots/Home_languagemenu_open.png" class="screenshot-img" alt="Language Menu Open">
-                        <div class="screenshot-caption"><i class="fa-solid fa-image"></i> Language Dropdown Selector</div>
+                        <img src="./SnapShots/Home_languagemenu_open.png" class="screenshot-img"
+                            alt="Language Menu Open">
+                        <div class="screenshot-caption"><i class="fa-solid fa-image"></i> Language Dropdown Selector
+                        </div>
                     </div>
                     <div class="screenshot-container">
                         <img src="./SnapShots/Home_language_change.png" class="screenshot-img" alt="Language Switched">
-                        <div class="screenshot-caption"><i class="fa-solid fa-image"></i> Translated UI View (English/Localized)</div>
+                        <div class="screenshot-caption"><i class="fa-solid fa-image"></i> Translated UI View
+                            (English/Localized)</div>
                     </div>
                 </div>
             </section>
@@ -605,22 +743,28 @@ ClearCollect(
             <!-- Section 9: Task Dashboard -->
             <section id="screen-dashboard" class="doc-section" role="tabpanel">
                 <h1>Task Dashboard Screen</h1>
-                <p>The <strong>Task Dashboard Screen</strong> displays task counts grouped into status buckets. It references the active menu, the user teams collection, and toggles filters between user and team views.</p>
+                <p>The <strong>Task Dashboard Screen</strong> displays task counts grouped into status buckets. It
+                    references the active menu, the user teams collection, and toggles filters between user and team
+                    views.</p>
 
                 <div class="grid-2">
                     <div class="screenshot-container">
-                        <img src="./SnapShots/TaskDashboard_user.png" class="screenshot-img" alt="Task Dashboard Personal View">
-                        <div class="screenshot-caption"><i class="fa-solid fa-image"></i> Personal Tasks Summary View ("Mine")</div>
+                        <img src="./SnapShots/TaskDashboard_user.png" class="screenshot-img"
+                            alt="Task Dashboard Personal View">
+                        <div class="screenshot-caption"><i class="fa-solid fa-image"></i> Personal Tasks Summary View
+                            ("Mine")</div>
                     </div>
                     <div class="screenshot-container">
-                        <img src="./SnapShots/TaskDashboard_Team.png" class="screenshot-img" alt="Task Dashboard Team View">
+                        <img src="./SnapShots/TaskDashboard_Team.png" class="screenshot-img"
+                            alt="Task Dashboard Team View">
                         <div class="screenshot-caption"><i class="fa-solid fa-image"></i> Team Tasks Summary View</div>
                     </div>
                 </div>
 
                 <h2>Technical Counting & State Specifications</h2>
                 <div class="info-card">
-                    <p>The dashboard renders 5 primary filter cards. Each card computes task counts dynamically based on the chosen module (e.g. Services, Housekeeping):</p>
+                    <p>The dashboard renders 5 primary filter cards. Each card computes task counts dynamically based on
+                        the chosen module (e.g. Services, Housekeeping):</p>
                     <table class="schema-table" aria-label="Dashboard Cards Reference">
                         <thead>
                             <tr>
@@ -631,15 +775,22 @@ ClearCollect(
                         <tbody>
                             <tr>
                                 <td><strong>High Priority</strong></td>
-                                <td>Counts active tasks where <code>Priority = 1</code> and <code>Task Status &lt;&gt; 4</code> (Not Completed). Note: This card is visually rendered <strong>only</strong> when Maintenance Jobs is selected.</td>
+                                <td>Counts active tasks where <code>Priority = 1</code> and
+                                    <code>Task Status &lt;&gt; 4</code> (Not Completed). Note: This card is visually
+                                    rendered <strong>only</strong> when Maintenance Jobs is selected.
+                                </td>
                             </tr>
                             <tr>
                                 <td><strong>To Do</strong></td>
-                                <td>Counts uncompleted tasks whose due date (or test date, start date depending on module) is on or before 11:59:59 PM of the current date (today). Formula matches: <code>'Due Date' &lt;= DateAdd(Today(), 86399, TimeUnit.Seconds)</code>.</td>
+                                <td>Counts uncompleted tasks whose due date (or test date, start date depending on
+                                    module) is on or before 11:59:59 PM of the current date (today). Formula matches:
+                                    <code>'Due Date' &lt;= DateAdd(Today(), 86399, TimeUnit.Seconds)</code>.
+                                </td>
                             </tr>
                             <tr>
                                 <td><strong>Next 7 days</strong></td>
-                                <td>Counts active tasks due within the upcoming week: starting tomorrow up to 7 calendar days out.</td>
+                                <td>Counts active tasks due within the upcoming week: starting tomorrow up to 7 calendar
+                                    days out.</td>
                             </tr>
                             <tr>
                                 <td><strong>Completed</strong></td>
@@ -652,23 +803,33 @@ ClearCollect(
                         </tbody>
                     </table>
 
-                    <p style="margin-top: 16px;"><strong>Mine vs Team Toggle</strong>: Toggling <code>TaskDashboard_TaskFilter_Toggle</code> shifts queries. If enabled (Team mode), the database is filtered against the user's groups (<code>'Owning Team'.Team in UserTeams.Team</code>). If disabled (Mine mode), it filters directly against the user GUID (<code>'Owning User'.User = CurrentUser.User</code>).</p>
+                    <p style="margin-top: 16px;"><strong>Mine vs Team Toggle</strong>: Toggling
+                        <code>TaskDashboard_TaskFilter_Toggle</code> shifts queries. If enabled (Team mode), the
+                        database is filtered against the user's groups
+                        (<code>'Owning Team'.Team in UserTeams.Team</code>). If disabled (Mine mode), it filters
+                        directly against the user GUID (<code>'Owning User'.User = CurrentUser.User</code>).
+                    </p>
                 </div>
             </section>
 
             <!-- Section 10: Maintenance List Screen & Polymorphism -->
             <section id="screen-listing" class="doc-section" role="tabpanel">
                 <h1>Polymorphic Gallery & Listing Screen</h1>
-                <p>The <strong>Maintenance / List Screen</strong> displays list records of the selected category. It contains search fields and sorting options, and navigates to the respective detail screens.</p>
+                <p>The <strong>Maintenance / List Screen</strong> displays list records of the selected category. It
+                    contains search fields and sorting options, and navigates to the respective detail screens.</p>
 
                 <div class="grid-2">
                     <div class="screenshot-container">
-                        <img src="./SnapShots/TaskCardDetailScreen(maintanencescreen).png" class="screenshot-img" alt="Task Card List">
-                        <div class="screenshot-caption"><i class="fa-solid fa-image"></i> Unified Task Card List Grid</div>
+                        <img src="./SnapShots/TaskCardDetailScreen(maintanencescreen).png" class="screenshot-img"
+                            alt="Task Card List">
+                        <div class="screenshot-caption"><i class="fa-solid fa-image"></i> Unified Task Card List Grid
+                        </div>
                     </div>
                     <div class="screenshot-container">
-                        <img src="./SnapShots/TaskCardDetailScreen(maintanencescreen)_sorting.png" class="screenshot-img" alt="Task List Sorting">
-                        <div class="screenshot-caption"><i class="fa-solid fa-image"></i> Sort Options (Job No, Walk Order, Plot Number)</div>
+                        <img src="./SnapShots/TaskCardDetailScreen(maintanencescreen)_sorting.png"
+                            class="screenshot-img" alt="Task List Sorting">
+                        <div class="screenshot-caption"><i class="fa-solid fa-image"></i> Sort Options (Job No, Walk
+                            Order, Plot Number)</div>
                     </div>
                 </div>
 
@@ -676,22 +837,32 @@ ClearCollect(
                 <div class="info-card">
                     <p>The Listing page is highly interactive and provides three main developer mechanics:</p>
                     <ul>
-                        <li><strong>Text Keywords Search</strong>: Type inputs in <code>TextInputCanvas3</code> filter list rows dynamically. The search runs on multiple fields: description, park code, plot number, and unit number:
+                        <li><strong>Text Keywords Search</strong>: Type inputs in <code>TextInputCanvas3</code>
+                            (Searchbar at the top of screen) filter
+                            list rows dynamically. The search runs on multiple fields: description, park code, plot
+                            number, and unit number:
                             <br><code>Filter(..., TextInputCanvas3.Value in elt_description || TextInputCanvas3.Value in elt_Park.'Park Code' || TextInputCanvas3.Value in elt_Plot.'Plot No' || TextInputCanvas3.Value in elt_Unit.'Unit No')</code>
                         </li>
-                        <li><strong>Sorting Controls</strong>: Tapping the sort options button opens a drop-down allowing ordering by:
+                        <li><strong>Sorting Controls</strong>: Tapping the sort options button opens a drop-down
+                            allowing ordering by:
                             <ul>
-                                <li><strong>Job No</strong>: Orders alphabetically by the job key.</li>
+                                <li><strong>Job No</strong>: Orders alphabetically by the job key. <i>(This sorting
+                                        works only for Maintenance Job records, as only these records contain the Job
+                                        No. field.)</i></li>
                                 <li><strong>Walk Order</strong>: Orders by the walk order sequence.</li>
                                 <li><strong>Plot Number</strong>: Orders numerically by the plot identifier.</li>
                             </ul>
                         </li>
-                        <li><strong>No Records Toast Message</strong>: If the resolved items query returns empty, a toast dialog notification is displayed on screen stating there are no tasks matching the filter.</li>
+                        <li><strong>No Records Toast Message</strong>: If the resolved items query returns empty, a
+                            toast dialog notification is displayed on screen stating there are no tasks matching the
+                            filter.</li>
                     </ul>
                 </div>
 
                 <h2>Polymorphic Data Binding Specification</h2>
-                <p>To load the gallery dynamically without duplicating screens, the <code>Items</code> property uses a formula that appends matching virtual column headers to all tables using <code>AddColumns</code>. This shapes them into a single schema for the gallery bindings:</p>
+                <p>To load the gallery dynamically without duplicating screens, the <code>Items</code> property uses a
+                    formula that appends matching virtual column headers to all tables using <code>AddColumns</code>.
+                    This shapes them into a single schema for the gallery bindings:</p>
 
                 <div class="code-spec-container">
                     <div class="code-spec-header">
@@ -726,8 +897,17 @@ ClearCollect(
                 <div class="code-explanation">
                     <h3>Why this logic was used:</h3>
                     <ul>
-                        <li><strong>Avoid Local Collection Delegation Limits</strong>: Intermediate local collections (like `ClearCollect`) have a strict delegation limit in Power Apps (max 2,000 rows). Feeding database tables directly into the gallery <code>Items</code> using `AddColumns` preserves **direct server delegation**. Dataverse handles paging and filtering on the server, allowing the app to process millions of records cleanly.</li>
-                        <li><strong>Prevents Application Bloat</strong>: Without this pattern, developers would have to build 7 different listing screens or hide/show 7 separate galleries. That would slow down the app, increase memory consumption, and double the size of exported YAML files. Normalizing the columns dynamically lets one gallery handle all 7 tables.</li>
+                        <li><strong>Avoid Local Collection Delegation Limits</strong>: Intermediate local collections
+                            (like `ClearCollect`) have a strict delegation limit in Power Apps (max 2,000 rows). Feeding
+                            database tables directly into the gallery <code>Items</code> using `AddColumns` preserves
+                            <strong>direct server delegation</strong>. Dataverse handles paging and filtering on the
+                            server, allowing
+                            the app to process millions of records cleanly.
+                        </li>
+                        <li><strong>Prevents Application Bloat</strong>: Without this pattern, developers would have to
+                            build 7 different listing screens or hide/show 7 separate galleries. That would slow down
+                            the app, increase memory consumption, and double the size of exported YAML files.
+                            Normalizing the columns dynamically lets one gallery handle all 7 tables.</li>
                     </ul>
                 </div>
             </section>
@@ -735,7 +915,8 @@ ClearCollect(
             <!-- Section 11: Site Tasks Detail -->
             <section id="detail-sitetasks" class="doc-section" role="tabpanel">
                 <h1>Site Tasks Detail Screen</h1>
-                <p>The <strong>Site Tasks Detail Screen</strong> displays records of the <code>Site Tasks</code> table, displaying walkorder, due date, key no, description, and status details.</p>
+                <p>The <strong>Site Tasks Detail Screen</strong> displays records of the <code>Site Tasks</code> table,
+                    displaying walkorder, due date, key no, description, and status details.</p>
 
                 <div class="grid-2">
                     <div class="screenshot-container">
@@ -743,8 +924,10 @@ ClearCollect(
                         <div class="screenshot-caption"><i class="fa-solid fa-image"></i> Site Task Info Card View</div>
                     </div>
                     <div class="screenshot-container">
-                        <img src="./SnapShots/Sitetask_more_information_popup.png" class="screenshot-img" alt="Site Task More Info Popup">
-                        <div class="screenshot-caption"><i class="fa-solid fa-image"></i> More Information Modal Overlay</div>
+                        <img src="./SnapShots/Sitetask_more_information_popup.png" class="screenshot-img"
+                            alt="Site Task More Info Popup">
+                        <div class="screenshot-caption"><i class="fa-solid fa-image"></i> More Information Modal Overlay
+                        </div>
                     </div>
                 </div>
 
@@ -752,12 +935,19 @@ ClearCollect(
                 <div class="info-card">
                     <p>The Site Tasks detail page enables reviewing tasks and modifying statuses:</p>
                     <ul>
-                        <li><strong>Operational Fields</strong>: Renders fields including Location Code, Priority rating, Target Date, and Description. Permission to enter is displayed as a read-only field synced from Dataverse.</li>
-                        <li><strong>Complete Task Popup</strong>: Clicking the complete action button triggers `IsVisibleConfirmPopupForm = true`. Confirming patches the site task status to Completed. A success toast message appears confirming completion.</li>
-                        <li><strong>Option Button</strong>: Tapping the option button in the header triggers a slide-up panel offering:
+                        <li><strong>Operational Fields</strong>: Renders fields including Location Code, Priority
+                            rating, Target Date, and Description. Permission to enter is displayed as a read-only field
+                            synced from Dataverse.</li>
+                        <li><strong>Complete Task Popup</strong>: Clicking the complete action button triggers
+                            `IsVisibleConfirmPopupForm = true`. Confirming patches the site task status to Completed. A
+                            success toast message appears confirming completion.</li>
+                        <li><strong>Option Button</strong>: Tapping the option button in the header triggers a slide-up
+                            panel offering:
                             <ul>
-                                <li><strong>More Information</strong>: Opens an information overlay outlining task requirements.</li>
-                                <li><strong>Add Request</strong>: Direct link to log a service request regarding this site task.</li>
+                                <li><strong>More Information</strong>: Opens an information overlay outlining task
+                                    requirements.</li>
+                                <li><strong>Add Request</strong>: Direct link to log a service request regarding this
+                                    site task.</li>
                             </ul>
                         </li>
                     </ul>
@@ -765,12 +955,15 @@ ClearCollect(
 
                 <div class="grid-2">
                     <div class="screenshot-container">
-                        <img src="./SnapShots/Sitetask_optionsbutton.png" class="screenshot-img" alt="Site Task Options Trigger">
+                        <img src="./SnapShots/Sitetask_optionsbutton.png" class="screenshot-img"
+                            alt="Site Task Options Trigger">
                         <div class="screenshot-caption"><i class="fa-solid fa-image"></i> Options Slide-up Panel</div>
                     </div>
                     <div class="screenshot-container">
-                        <img src="./SnapShots/Sitetask_complete%20popup.png" class="screenshot-img" alt="Site Task Completion Dialog">
-                        <div class="screenshot-caption"><i class="fa-solid fa-image"></i> Job Completion Prompt Dialog</div>
+                        <img src="./SnapShots/Sitetask_complete%20popup.png" class="screenshot-img"
+                            alt="Site Task Completion Dialog">
+                        <div class="screenshot-caption"><i class="fa-solid fa-image"></i> Job Completion Prompt Dialog
+                        </div>
                     </div>
                 </div>
             </section>
@@ -778,25 +971,33 @@ ClearCollect(
             <!-- Section 12: Safety Tests Detail -->
             <section id="detail-safety" class="doc-section" role="tabpanel">
                 <h1>Safety Tests Detail Screen</h1>
-                <p>The <strong>Safety Tests Detail Screen</strong> displays records of the <code>Safety Tests</code> table, displaying test date, tester name, safety type, and status details.</p>
+                <p>The <strong>Safety Tests Detail Screen</strong> displays records of the <code>Safety Tests</code>
+                    table, displaying test date, tester name, safety type, and status details.</p>
 
                 <div class="grid-2">
                     <div class="screenshot-container">
-                        <img src="./SnapShots/SafetyTest_details.png" class="screenshot-img" alt="Safety Test Details View">
-                        <div class="screenshot-caption"><i class="fa-solid fa-image"></i> Safety Test Compliance Log Page</div>
+                        <img src="./SnapShots/SafetyTest_details.png" class="screenshot-img"
+                            alt="Safety Test Details View">
+                        <div class="screenshot-caption"><i class="fa-solid fa-image"></i> Safety Test Compliance Log
+                            Page</div>
                     </div>
                     <div class="screenshot-container">
-                        <img src="./SnapShots/SafetyTest_more_information.png" class="screenshot-img" alt="Safety Test More Info Modal">
-                        <div class="screenshot-caption"><i class="fa-solid fa-image"></i> Safety Test Protocols & Metadata</div>
+                        <img src="./SnapShots/SafetyTest_more_information.png" class="screenshot-img"
+                            alt="Safety Test More Info Modal">
+                        <div class="screenshot-caption"><i class="fa-solid fa-image"></i> Safety Test Protocols &
+                            Metadata</div>
                     </div>
                 </div>
 
                 <h2>Operational Walkthrough</h2>
                 <div class="info-card">
-                    <p>Users verify equipment safety benchmarks using this layout:</p>
+                    <p>Users verify safety benchmarks using this layout:</p>
                     <ul>
-                        <li><strong>Compliance Fields</strong>: Displays Test Date, Certificate Details, Next Due Date, and Status badges.</li>
-                        <li><strong>Verification Completion</strong>: The Complete button opens a confirmation popup. When updated, the safety test status is patched to Complete and a success checkmark toast notification is rendered.</li>
+                        <li><strong>Compliance Fields</strong>: Displays Test Date, Certificate Details, Next Due Date,
+                            and Status badges.</li>
+                        <li><strong>Verification Completion</strong>: The Complete button opens a confirmation popup.
+                            When updated, the safety test status is patched to Complete and a success checkmark toast
+                            notification is rendered.</li>
                     </ul>
                 </div>
             </section>
@@ -804,15 +1005,21 @@ ClearCollect(
             <!-- Section 13: Maintenance Jobs Detail -->
             <section id="detail-jobs" class="doc-section" role="tabpanel">
                 <h1>Maintenance Jobs Detail Screen</h1>
-                <p>The <strong>Maintenance Jobs Detail Screen</strong> displays records of the <code>Maintenance Jobs</code> table, displaying job no, status, time entries, and description details.</p>
+                <p>The <strong>Maintenance Jobs Detail Screen</strong> displays records of the
+                    <code>Maintenance Jobs</code> table, displaying job no, status, time entries, and description
+                    details.
+                </p>
 
                 <div class="grid-2">
                     <div class="screenshot-container">
-                        <img src="./SnapShots/MaintenanceJob_detail.png" class="screenshot-img" alt="Maintenance Job details">
-                        <div class="screenshot-caption"><i class="fa-solid fa-image"></i> Job Work-Order Details Card</div>
+                        <img src="./SnapShots/MaintenanceJob_detail.png" class="screenshot-img"
+                            alt="Maintenance Job details">
+                        <div class="screenshot-caption"><i class="fa-solid fa-image"></i> Job Work-Order Details Card
+                        </div>
                     </div>
                     <div class="screenshot-container">
-                        <img src="./SnapShots/MaintenanceJob_update_status_popup.png" class="screenshot-img" alt="Maintenance Job status change">
+                        <img src="./SnapShots/MaintenanceJob_update_status_popup.png" class="screenshot-img"
+                            alt="Maintenance Job status change">
                         <div class="screenshot-caption"><i class="fa-solid fa-image"></i> Update Job Status Picker</div>
                     </div>
                 </div>
@@ -821,13 +1028,21 @@ ClearCollect(
                 <div class="info-card">
                     <p>Users interact with maintenance tickets by reviewing instructions and logging hours:</p>
                     <ul>
-                        <li><strong>Log Entry (Calculated Time Entries)</strong>: Time tracking creates records in the <code>Time Entries</code> table. When the user starts the timer, a record is added with <code>Status Reason = Current</code> and <code>Start Time = Now()</code>. Pausing the timer patches that record, setting `End Time` to `Now()` and status to `Past`.</li>
-                        <li><strong>Job Status Configuration</strong>: The Status dropdown options populate from the <code>Job Statuses</code> table (filtered to show only active statuses mapped to Maintenance Jobs). Selecting a status and tapping Update modifies the job's main status field.</li>
+                        <li><strong>Log Entry (Calculated Time Entries)</strong>: Time tracking creates records in the
+                            <code>Time Entries</code> table. When the user starts the timer, a record is added with
+                            <code>Status Reason = Current</code> and <code>Start Time = Now()</code>. Pausing the timer
+                            patches that record, setting `End Time` to `Now()` and status to `Past`.
+                        </li>
+                        <li><strong>Job Status Configuration</strong>: The Status dropdown options populate from the
+                            <code>Job Statuses</code> table (filtered to show only active statuses mapped to Maintenance
+                            Jobs). Selecting a status and tapping Update modifies the job's main status field.
+                        </li>
                     </ul>
                 </div>
 
-                <h2>Labor Hours Logging (Timer Logic)</h2>
-                <p>When a user begins the job, they start a timer. The application tracks active time logs and past durations using an SQL/Dataverse <code>Time Entries</code> table:</p>
+                <h2>User Hours Logging (Timer Logic)</h2>
+                <p>When a user begins the job, they start a timer. The application tracks active time logs and past
+                    durations using a Dataverse <code>Time Entries</code> table:</p>
 
                 <div class="code-spec-container">
                     <div class="code-spec-header">
@@ -860,8 +1075,12 @@ UpdateContext({
                 <div class="code-explanation">
                     <h3>Why this logic was used:</h3>
                     <ul>
-                        <li><strong>State Persistence</strong>: If a user navigates away from the screen or closes the application, the timer state is preserved on the server. Summing the duration of all related <code>Time Entries</code> ensures the correct accumulated time is rendered upon returning.</li>
-                        <li><strong>Accurate Logging</strong>: Subtracting 1000ms from ended logs compensates for transaction latency when communicating with the database.</li>
+                        <li><strong>State Persistence</strong>: If a user navigates away from the screen or closes the
+                            application, the timer state is preserved on the server. Summing the duration of all related
+                            <code>Time Entries</code> ensures the correct accumulated time is rendered upon returning.
+                        </li>
+                        <li><strong>Accurate Logging</strong>: Subtracting 1000ms from ended logs compensates for
+                            transaction latency when communicating with the database.</li>
                     </ul>
                 </div>
             </section>
@@ -869,16 +1088,20 @@ UpdateContext({
             <!-- Section 14: Services Detail & Timer Calculations -->
             <section id="detail-services" class="doc-section" role="tabpanel">
                 <h1>Services Detail Screen</h1>
-                <p>The <strong>Services Detail Screen</strong> displays records of the <code>Services_1</code> table, displaying service ID, start date, checklist status, and duration details.</p>
+                <p>The <strong>Services Detail Screen</strong> displays records of the <code>Services_1</code> table,
+                    displaying service ID, start date, checklist status, and duration details.</p>
 
                 <div class="grid-2">
                     <div class="screenshot-container">
                         <img src="./SnapShots/Service_detail.png" class="screenshot-img" alt="Service Detail View">
-                        <div class="screenshot-caption"><i class="fa-solid fa-image"></i> Service Job Details Screen</div>
+                        <div class="screenshot-caption"><i class="fa-solid fa-image"></i> Service Job Details Screen
+                        </div>
                     </div>
                     <div class="screenshot-container">
-                        <img src="./SnapShots/Service_more_information.png" class="screenshot-img" alt="Service More Info Modal">
-                        <div class="screenshot-caption"><i class="fa-solid fa-image"></i> Service Specification Overlay</div>
+                        <img src="./SnapShots/Service_more_information.png" class="screenshot-img"
+                            alt="Service More Info Modal">
+                        <div class="screenshot-caption"><i class="fa-solid fa-image"></i> Service Specification Overlay
+                        </div>
                     </div>
                 </div>
 
@@ -886,13 +1109,20 @@ UpdateContext({
                 <div class="info-card">
                     <p>Service logs manage servicing checklists and hours:</p>
                     <ul>
-                        <li><strong>Sub-task Checklist Blockers</strong>: Tapping the Complete button is disabled unless the user has verified all sub-tasks in the checklist. Checking all checklist rows unlocks the Complete state.</li>
-                        <li><strong>Timer State Controls</strong>: The UI disables/enables buttons using <code>CanAccessStart</code>, <code>CanAccessPause</code>, and <code>CanAccessComplete</code> to prevent conflicts (e.g. starting a timer that is already running).</li>
+                        <li><strong>Sub-task Checklist Blockers</strong>: Tapping the Complete button is disabled unless
+                            the user has verified all sub-tasks in the checklist. Checking all checklist rows unlocks
+                            the Complete state.</li>
+                        <li><strong>Timer State Controls</strong>: The UI disables/enables buttons using
+                            <code>CanAccessStart</code>, <code>CanAccessPause</code>, and <code>CanAccessComplete</code>
+                            to prevent conflicts (e.g. starting a timer that is already running).
+                        </li>
                     </ul>
                 </div>
 
-                <h2>Labor Log Calculations (Time Log Details)</h2>
-                <p>The application tracks active, paused, and completed sessions. When a worker selects Start, it inserts a new running log. Pausing the timer writes back the End Time and computes the millisecond duration:</p>
+                <h2>User Log Calculations (Time Log Details)</h2>
+                <p>The application tracks active, paused, and completed sessions. When a user selects Start, it inserts
+                    a new running log. Pausing the timer writes back the End Time and computes the millisecond duration:
+                </p>
 
                 <div class="code-spec-container">
                     <div class="code-spec-header">
@@ -943,9 +1173,15 @@ Patch(
                 <div class="code-explanation">
                     <h3>Technical Calculation Specifications:</h3>
                     <ul>
-                        <li><strong>Start Timestamp</strong>: Triggers a new record in the <code>Time Entries</code> database. It captures <code>Start Time = Now()</code> and sets the status to <code>Current</code>.</li>
-                        <li><strong>Pause Write-Back</strong>: Locates the active time log record (where status reason is <code>Current</code>) and updates it by adding <code>End Time = Now()</code> and resetting the status reason to <code>Past</code>.</li>
-                        <li><strong>Total Duration Calculation</strong>: When the screen loads, the timer initializes using the sum of millisecond differences:
+                        <li><strong>Start Timestamp</strong>: Triggers a new record in the <code>Time Entries</code>
+                            database. It captures <code>Start Time = Now()</code> and sets the status to
+                            <code>Current</code>.
+                        </li>
+                        <li><strong>Pause Write-Back</strong>: Locates the active time log record (where status reason
+                            is <code>Current</code>) and updates it by adding <code>End Time = Now()</code> and
+                            resetting the status reason to <code>Past</code>.</li>
+                        <li><strong>Total Duration Calculation</strong>: When the screen loads, the timer initializes
+                            using the sum of millisecond differences:
                             <br><code>Sum(colServiceTimeEntries, If('Status Reason' = 'Status (Time Entries)'.Past, DateDiff('Start Time', 'End Time', TimeUnit.Milliseconds), DateDiff('Start Time', Now(), TimeUnit.Milliseconds)))</code>
                         </li>
                     </ul>
@@ -955,16 +1191,21 @@ Patch(
             <!-- Section 15: Housekeeping Detail -->
             <section id="detail-housekeeping" class="doc-section" role="tabpanel">
                 <h1>Housekeeping Detail Screen</h1>
-                <p>The <strong>Housekeeping Detail Screen</strong> displays records of the <code>Housekeeping_1</code> table, displaying housekeeping ID, date, status, checklist status, and duration details.</p>
+                <p>The <strong>Housekeeping Detail Screen</strong> displays records of the <code>Housekeeping_1</code>
+                    table, displaying housekeeping ID, date, status, checklist status, and duration details.</p>
 
                 <div class="grid-2">
                     <div class="screenshot-container">
-                        <img src="./SnapShots/Housekeeping_detail.png" class="screenshot-img" alt="Housekeeping detail screen">
-                        <div class="screenshot-caption"><i class="fa-solid fa-image"></i> Housekeeping Overview View</div>
+                        <img src="./SnapShots/Housekeeping_detail.png" class="screenshot-img"
+                            alt="Housekeeping detail screen">
+                        <div class="screenshot-caption"><i class="fa-solid fa-image"></i> Housekeeping Overview View
+                        </div>
                     </div>
                     <div class="screenshot-container">
-                        <img src="./SnapShots/Housekeeping_more_information.png" class="screenshot-img" alt="Housekeeping more info modal">
-                        <div class="screenshot-caption"><i class="fa-solid fa-image"></i> Cleaning Protocols Detail</div>
+                        <img src="./SnapShots/Housekeeping_more_information.png" class="screenshot-img"
+                            alt="Housekeeping more info modal">
+                        <div class="screenshot-caption"><i class="fa-solid fa-image"></i> Cleaning Protocols Detail
+                        </div>
                     </div>
                 </div>
 
@@ -972,8 +1213,13 @@ Patch(
                 <div class="info-card">
                     <p>Housekeeping tasks track facility sanitation schedules:</p>
                     <ul>
-                        <li><strong>Checklist Blocking Rule</strong>: Just like in Services, users must complete all checklist sub-tasks on the task list screen before clicking Complete.</li>
-                        <li><strong>Timer Operations</strong>: Integrates the standard <code>colHousekeepingTimeEntries</code> collection, logging durations spent on the task. It pulls available active status categories from <code>Job Statuses</code> table (filtered by <code>'Is Visible For Housekeeping?'</code>).</li>
+                        <li><strong>Checklist Blocking Rule</strong>: Just like in Services, users must complete all
+                            checklist sub-tasks on the task list screen before clicking Complete.</li>
+                        <li><strong>Timer Operations</strong>: Integrates the standard
+                            <code>colHousekeepingTimeEntries</code> collection, logging durations spent on the task. It
+                            pulls available active status categories from <code>Job Statuses</code> table (filtered by
+                            <code>'Is Visible For Housekeeping?'</code>).
+                        </li>
                     </ul>
                 </div>
             </section>
@@ -981,16 +1227,20 @@ Patch(
             <!-- Section 16: Meter Readings Detail -->
             <section id="detail-meters" class="doc-section" role="tabpanel">
                 <h1>Meter Readings Detail Screen</h1>
-                <p>The <strong>Meter Readings Detail Screen</strong> displays records of the <code>Meter Readings</code> table, displaying meter ID, reading date, telemetry value, and status details.</p>
+                <p>The <strong>Meter Readings Detail Screen</strong> displays records of the <code>Meter Readings</code>
+                    table, displaying meter ID, reading date, telemetry value, and status details.</p>
 
                 <div class="grid-2">
                     <div class="screenshot-container">
-                        <img src="./SnapShots/MeterReading_detail.png" class="screenshot-img" alt="Meter Reading Detail View">
+                        <img src="./SnapShots/MeterReading_detail.png" class="screenshot-img"
+                            alt="Meter Reading Detail View">
                         <div class="screenshot-caption"><i class="fa-solid fa-image"></i> Meter Log Form</div>
                     </div>
                     <div class="screenshot-container">
-                        <img src="./SnapShots/MeterReading_submit_meterreading_popup.png" class="screenshot-img" alt="Meter Submit Success popup">
-                        <div class="screenshot-caption"><i class="fa-solid fa-image"></i> Submission Confirmation Dialog</div>
+                        <img src="./SnapShots/MeterReading_submit_meterreading_popup.png" class="screenshot-img"
+                            alt="Meter Submit Success popup">
+                        <div class="screenshot-caption"><i class="fa-solid fa-image"></i> Submission Confirmation Dialog
+                        </div>
                     </div>
                 </div>
 
@@ -998,8 +1248,11 @@ Patch(
                 <div class="info-card">
                     <p>Telemetry forms enforce strict data validation rules:</p>
                     <ul>
-                        <li><strong>Numeric Input Verification</strong>: The text input field checks if the value is non-blank and holds a valid number. Tapping Submit triggers validation: if empty, an error notification is shown requesting input.</li>
-                        <li><strong>Success Flow</strong>: Confirming the submit modal updates the meter record, setting status to Complete, and triggering a success popup dialog.</li>
+                        <li><strong>Numeric Input Verification</strong>: The text input field checks if the value is
+                            non-blank and holds a valid number. Tapping Submit triggers validation: if empty, an error
+                            notification is shown requesting input.</li>
+                        <li><strong>Success Flow</strong>: Confirming the submit modal updates the meter record, setting
+                            status to Complete, and triggering a success popup dialog.</li>
                     </ul>
                 </div>
             </section>
@@ -1007,35 +1260,54 @@ Patch(
             <!-- Section 17: Inspections Detail & Swipe Quick Pass -->
             <section id="detail-inspections" class="doc-section" role="tabpanel">
                 <h1>Inspections Detail Screen</h1>
-                <p>The <strong>Inspections Detail Screen</strong> displays records of the <code>Inspections</code> table, displaying inspection ID, mooring status (choices IN/OUT), reason code, date, and swipe pass control details.</p>
+                <p>The <strong>Inspections Detail Screen</strong> displays records of the <code>Inspections</code>
+                    table, displaying inspection ID, mooring status (choices IN/OUT), reason code, date, and swipe pass
+                    control details.</p>
 
                 <div class="grid-2">
                     <div class="screenshot-container">
-                        <img src="./SnapShots/inspection_detail.png" class="screenshot-img" alt="Inspection Details screen">
-                        <div class="screenshot-caption"><i class="fa-solid fa-image"></i> Mooring Inspection Log Form</div>
+                        <img src="./SnapShots/inspection_detail.png" class="screenshot-img"
+                            alt="Inspection Details screen">
+                        <div class="screenshot-caption"><i class="fa-solid fa-image"></i> Mooring Inspection Log Form
+                        </div>
                     </div>
                     <div class="screenshot-container">
-                        <img src="./SnapShots/inspection_card_swipe_feature_for_quickpass.png" class="screenshot-img" alt="Checklist Swipe Option">
-                        <div class="screenshot-caption"><i class="fa-solid fa-image"></i> Swipe Right for Quick Pass Checklist Feature</div>
+                        <img src="./SnapShots/inspection_card_swipe_feature_for_quickpass.png" class="screenshot-img"
+                            alt="Checklist Swipe Option">
+                        <div class="screenshot-caption"><i class="fa-solid fa-image"></i> Swipe Right for Quick Pass
+                            Checklist Feature</div>
                     </div>
                 </div>
 
                 <h2>Quick Pass Slider Integration Specifications</h2>
                 <div class="info-card">
-                    <p>The Quick Pass swiping gesture is designed to let users quickly pass inspections without filling out forms. Here is how this mechanic is technically built:</p>
+                    <p>The Quick Pass swiping gesture is designed to let users quickly pass inspections without filling
+                        out forms. Here is how this mechanic is technically built:</p>
                     <ul>
-                        <li><strong>Slider Control Overlay (Slider2)</strong>: A standard Power Apps Slider control is custom-styled with fully transparent backgrounds (handle active fill, rail fill, value hover fill). It is positioned directly over the "Swipe to Quick Pass" card.</li>
-                        <li><strong>Swipe Trigger Threshold</strong>: Dragging the slider handle all the way to the right triggers the slider's <code>OnChange</code> formula when <code>Slider2.Value = Slider2.Max</code>.</li>
-                        <li><strong>Config Validation</strong>: When swiped, it verifies if a valid Quick Pass reason code is configured in the <code>Reason Codes</code> master table for the active inspection's <code>Type Code</code>:
+                        <li><strong>Slider Control Overlay (Slider2)</strong>: A standard Power Apps Slider control is
+                            custom-styled with fully transparent backgrounds (handle active fill, rail fill, value hover
+                            fill). It is positioned directly over the "Swipe to Quick Pass" card.</li>
+                        <li><strong>Swipe Trigger Threshold</strong>: Dragging the slider handle all the way to the
+                            right triggers the slider's <code>OnChange</code> formula when
+                            <code>Slider2.Value = Slider2.Max</code>.
+                        </li>
+                        <li><strong>Config Validation</strong>: When swiped, it verifies if a valid Quick Pass reason
+                            code is configured in the <code>Reason Codes</code> master table for the active inspection's
+                            <code>Type Code</code>:
                             <br><code>LookUp('Reason Codes', 'Type Code' = ThisItem.elt_typecode, 'Is Quick Pass?')</code>
                         </li>
-                        <li><strong>Action Block</strong>: If no reason code exists, it triggers a warning notification (e.g. "Unable to proceed with the quick pass.") and calls <code>Reset(Slider2)</code>. If confirmed, it opens a confirmation dialog.</li>
-                        <li><strong>Write-Back Confirmation</strong>: Confirming the prompt updates the inspection record directly, setting <code>'Reason Code QuickPass?' = true</code>, marking the status as Completed, and bypassing checklists.</li>
+                        <li><strong>Action Block</strong>: If no reason code exists, it triggers a warning notification
+                            (e.g. "Unable to proceed with the quick pass.") and calls <code>Reset(Slider2)</code>. If
+                            confirmed, it opens a confirmation dialog.</li>
+                        <li><strong>Write-Back Confirmation</strong>: Confirming the prompt updates the inspection
+                            record directly, setting <code>'Reason Code QuickPass?' = true</code>, marking the status as
+                            Completed, and bypassing checklists.</li>
                     </ul>
                 </div>
 
                 <h2>Reason Code and Choice Filters</h2>
-                <p>Choice properties are dynamically parsed on load. The screen fetches active mooring choices and filters reason codes by the inspection type code:</p>
+                <p>Choice properties are dynamically parsed on load. The screen fetches active mooring choices and
+                    filters reason codes by the inspection type code:</p>
 
                 <div class="code-spec-container">
                     <div class="code-spec-header">
@@ -1068,8 +1340,14 @@ ClearCollect(
                 <div class="code-explanation">
                     <h3>Why this logic was used:</h3>
                     <ul>
-                        <li><strong>Dataverse choice sets</strong>: Choice values in Dataverse (such as Mooring Status) are loaded as key-value pairs (the display text vs. the backend integer index). The <code>ForAll</code> collection resolves both columns to populate custom drop-down selectors.</li>
-                        <li><strong>Default Selection Logic</strong>: The inspection screen links dynamically to a lookup table for reason codes. Until the user marks the records complete, they can change the reason codes multiple times. Filtering reason codes on startup based on the active record's <code>Type Code</code> speeds up forms by loading only related codes.</li>
+                        <li><strong>Dataverse choice sets</strong>: Choice values in Dataverse (such as Mooring Status)
+                            are loaded as key-value pairs (the display text vs. the backend integer index). The
+                            <code>ForAll</code> collection resolves both columns to populate custom drop-down selectors.
+                        </li>
+                        <li><strong>Default Selection Logic</strong>: The inspection screen links dynamically to a
+                            lookup table for reason codes. Until the user marks the records complete, they can change
+                            the reason codes multiple times. Filtering reason codes on startup based on the active
+                            record's <code>Type Code</code> speeds up forms by loading only related codes.</li>
                     </ul>
                 </div>
             </section>
@@ -1077,15 +1355,19 @@ ClearCollect(
             <!-- Section 18: Comment Screen -->
             <section id="utility-comments" class="doc-section" role="tabpanel">
                 <h1>Shared Comments Screen</h1>
-                <p>The <strong>Comment Screen</strong> displays comments and notes records linked by regarding ID. It allows uploading images and typing descriptions.</p>
+                <p>The <strong>Comment Screen</strong> displays comments and notes records linked by regarding ID. It
+                    allows uploading images and typing descriptions.</p>
 
                 <div class="grid-2">
                     <div class="screenshot-container">
-                        <img src="./SnapShots/Comments(related_to_task).png" class="screenshot-img" alt="Comment list view">
-                        <div class="screenshot-caption"><i class="fa-solid fa-image"></i> Contextual Comments Log List</div>
+                        <img src="./SnapShots/Comments(related_to_task).png" class="screenshot-img"
+                            alt="Comment list view">
+                        <div class="screenshot-caption"><i class="fa-solid fa-image"></i> Contextual Comments Log List
+                        </div>
                     </div>
                     <div class="screenshot-container">
-                        <img src="./SnapShots/comment_add_comment_popup.png" class="screenshot-img" alt="Add Comment Prompt">
+                        <img src="./SnapShots/comment_add_comment_popup.png" class="screenshot-img"
+                            alt="Add Comment Prompt">
                         <div class="screenshot-caption"><i class="fa-solid fa-image"></i> New Comment Modal Prompt</div>
                     </div>
                 </div>
@@ -1094,13 +1376,18 @@ ClearCollect(
                 <div class="info-card">
                     <p>Comments are contextual and read-only once saved:</p>
                     <ul>
-                        <li><strong>Write-Once Constraint</strong>: Comments can only be created. To prevent unauthorized history editing in reports, no edit or delete option is available.</li>
-                        <li><strong>Database Mapping</strong>: Comments records are linked to the parent record using a regarding ID GUID column in Dataverse matching the active screen module (e.g. <code>elt_sitetaskid</code> for Site Tasks).</li>
+                        <li><strong>Write-Once Constraint</strong>: Comments can only be created. To prevent
+                            unauthorized history editing in reports, no edit or delete option is available.</li>
+                        <li><strong>Database Mapping</strong>: Comments records are linked to the parent record using a
+                            regarding ID GUID column in Dataverse matching the active screen module (e.g.
+                            <code>elt_sitetaskid</code> for Site Tasks).
+                        </li>
                     </ul>
                 </div>
 
                 <h2>Context-Aware Filtering</h2>
-                <p>On visible, the screen identifies the parent container using a switch and populates `FilteredComments`:</p>
+                <p>On visible, the screen identifies the parent container using a switch and populates
+                    `FilteredComments`:</p>
 
                 <div class="code-spec-container">
                     <div class="code-spec-header">
@@ -1124,16 +1411,21 @@ ClearCollect(
             <!-- Section 19: Requests Screen -->
             <section id="utility-requests" class="doc-section" role="tabpanel">
                 <h1>Requests Screen</h1>
-                <p>The <strong>Requests Screen</strong> displays requests records. It filters by request types and allows attaching images.</p>
+                <p>The <strong>Requests Screen</strong> displays requests records. It filters by request types and
+                    allows attaching images.</p>
 
                 <div class="grid-2">
                     <div class="screenshot-container">
-                        <img src="./SnapShots/Request_add_request_popup.png" class="screenshot-img" alt="Add Request Dialog">
-                        <div class="screenshot-caption"><i class="fa-solid fa-image"></i> Add Incident / Work Request Dialog</div>
+                        <img src="./SnapShots/Request_add_request_popup.png" class="screenshot-img"
+                            alt="Add Request Dialog">
+                        <div class="screenshot-caption"><i class="fa-solid fa-image"></i> Add Incident / Work Request
+                            Dialog</div>
                     </div>
                     <div class="screenshot-container">
-                        <img src="./SnapShots/Request_from_task(related_to_task).png" class="screenshot-img" alt="Linked Request list">
-                        <div class="screenshot-caption"><i class="fa-solid fa-image"></i> Request logs linked to selected task</div>
+                        <img src="./SnapShots/Request_from_task(related_to_task).png" class="screenshot-img"
+                            alt="Linked Request list">
+                        <div class="screenshot-caption"><i class="fa-solid fa-image"></i> Request logs linked to
+                            selected task</div>
                     </div>
                 </div>
 
@@ -1143,22 +1435,30 @@ ClearCollect(
                     <ul>
                         <li><strong>Redirection Contexts</strong>:
                             <ul>
-                                <li><strong>From Home Page</strong>: Tapping Requests in the quick actions menu displays a list of all requests created by the current user. It filters out requests from other users.</li>
-                                <li><strong>From Detail Page</strong>: Opening Requests from a task detail page displays only the requests associated with that specific record ID.</li>
+                                <li><strong>From Home Page</strong>: Tapping Requests in the quick actions menu displays
+                                    a list of all requests created by the current user. It filters out requests from
+                                    other users.</li>
+                                <li><strong>From Detail Page</strong>: Opening Requests from a task detail page displays
+                                    only the requests associated with that specific record ID.</li>
                             </ul>
                         </li>
-                        <li><strong>Media Attachments</strong>: Users can capture and attach photos using the camera control. An upload size limit check is built-in; exceeding the upload limit renders an error toast message (e.g. "Upload limit exceeded").</li>
+                        <li><strong>Media Attachments</strong>: Users can capture and attach photos using the camera
+                            control. An upload size limit check is built-in; exceeding the upload limit renders an error
+                            toast message (e.g. "Upload limit exceeded").</li>
                     </ul>
                 </div>
 
                 <div class="grid-2">
                     <div class="screenshot-container">
-                        <img src="./SnapShots/Request_photo_popup.png" class="screenshot-img" alt="Request photo capture modal">
+                        <img src="./SnapShots/Request_photo_popup.png" class="screenshot-img"
+                            alt="Request photo capture modal">
                         <div class="screenshot-caption"><i class="fa-solid fa-image"></i> Photo Attachment Viewer</div>
                     </div>
                     <div class="screenshot-container">
-                        <img src="./SnapShots/Request_upload_photo_limit_exceed_error_toast.png" class="screenshot-img" alt="Upload limit error toast">
-                        <div class="screenshot-caption"><i class="fa-solid fa-image"></i> Upload Limit Exceeded Alert Toast</div>
+                        <img src="./SnapShots/Request_upload_photo_limit_exceed_error_toast.png" class="screenshot-img"
+                            alt="Upload limit error toast">
+                        <div class="screenshot-caption"><i class="fa-solid fa-image"></i> Upload Limit Exceeded Alert
+                            Toast</div>
                     </div>
                 </div>
             </section>
@@ -1166,24 +1466,32 @@ ClearCollect(
             <!-- Section 20: Task List Screen -->
             <section id="utility-tasklist" class="doc-section" role="tabpanel">
                 <h1>TaskList Checklist Screen</h1>
-                <p>The <strong>Task List Screen</strong> displays sub-tasks checklist records linked by regarding ID.</p>
+                <p>The <strong>Task List Screen</strong> displays sub-tasks checklist records linked by regarding ID.
+                </p>
 
                 <div class="screenshot-container" style="max-width: 600px; margin: 0 auto 24px auto;">
-                    <img src="./SnapShots/TaskList(Subtasks)_list(for service,housekeeping and inspection).png" class="screenshot-img" alt="Checklist Screen">
+                    <img src="./SnapShots/TaskList(Subtasks)_list(for service,housekeeping and inspection).png"
+                        class="screenshot-img" alt="Checklist Screen">
                     <div class="screenshot-caption"><i class="fa-solid fa-image"></i> Task Checklist Grid View</div>
                 </div>
 
                 <div class="info-card">
-                    <div class="info-card-title"><i class="fa-solid fa-check-double"></i> Checklist Blocking Specification</div>
-                    <p>To ensure high compliance standards, the application implements a checklist blocker rule: <strong>users are prevented from marking a parent activity as completed unless all items in the sub-task Checklist (TaskList) are fully checked off.</strong></p>
-                    <p>The checklist items populate from the <code>Task</code> table filtered by the current record context (e.g. <code>Filter(TasksData, Regarding = RecordOfTasks)</code>).</p>
+                    <div class="info-card-title"><i class="fa-solid fa-check-double"></i> Checklist Blocking
+                        Specification</div>
+                    <p>To ensure high compliance standards, the application implements a checklist blocker rule:
+                        <strong>users are prevented from marking a parent activity as completed unless all items in the
+                            sub-task Checklist (TaskList) are fully checked off.</strong>
+                    </p>
+                    <p>The checklist items populate from the <code>Task</code> table filtered by the current record
+                        context (e.g. <code>Filter(TasksData, Regarding = RecordOfTasks)</code>).</p>
                 </div>
             </section>
 
             <!-- Section 21: Data Model Reference -->
             <section id="data-schema" class="doc-section" role="tabpanel">
                 <h1>Data Model & Table Schema</h1>
-                <p>The application interacts with custom Microsoft Dataverse tables to synchronize tasks, log labor, and query localized configurations.</p>
+                <p>The application interacts with custom Microsoft Dataverse tables to synchronize tasks, log duration,
+                    and query localized configurations.</p>
 
                 <table class="schema-table" aria-label="Database Entities Reference Table">
                     <thead>
@@ -1195,15 +1503,19 @@ ClearCollect(
                     <tbody>
                         <tr>
                             <td><code>menu</code></td>
-                            <td>Reference table defining the module keys. Mapped via N-to-N relationships to the <code>systemuser</code> table to determine UI visibility.</td>
+                            <td>Reference table defining the module keys. Mapped via N-to-N relationships to the
+                                <code>systemuser</code> table to determine UI visibility.
+                            </td>
                         </tr>
                         <tr>
                             <td><code>Time Entries</code></td>
-                            <td>Transactional logging containing durations, Start Times, and End Times to capture labor hours. <strong>(Calculated Table)</strong></td>
+                            <td>Transactional logging containing durations, Start Times, and End Times to capture user
+                                hours. <strong>(Calculated Table)</strong></td>
                         </tr>
                         <tr>
                             <td><code>Languages</code> & <code>Translations</code></td>
-                            <td>Stores translation keys, values, and language settings to dynamically localize the application interface.</td>
+                            <td>Stores translation keys, values, and language settings to dynamically localize the
+                                application interface.</td>
                         </tr>
                         <tr>
                             <td><code>Site Tasks</code></td>
@@ -1215,7 +1527,8 @@ ClearCollect(
                         </tr>
                         <tr>
                             <td><code>Maintenance Jobs</code></td>
-                            <td>Operational records containing maintenance work orders, status logs, and time entries.</td>
+                            <td>Operational records containing maintenance work orders, status logs, and time entries.
+                            </td>
                         </tr>
                         <tr>
                             <td><code>Services_1</code></td>
@@ -1227,7 +1540,7 @@ ClearCollect(
                         </tr>
                         <tr>
                             <td><code>Meter Readings</code></td>
-                            <td>Saves metrics like readings value and date captured by operators.</td>
+                            <td>Saves metrics like readings value and date captured.</td>
                         </tr>
                         <tr>
                             <td><code>Inspections</code></td>
@@ -1257,9 +1570,11 @@ ClearCollect(
                         <span class="badge badge-success">Resolved</span>
                     </div>
                     <div class="qa-answer-bar">
-                        <strong>Question:</strong> How is the Power Automate flow <code>'PowerAppV2->Listrows'</code> structured? Does it pull roles directly from a custom Dataverse table or AD group memberships?
+                        <strong>Question:</strong> How is the Power Automate flow <code>'PowerAppV2->Listrows'</code>
+                        structured? Does it pull roles directly from a custom Dataverse table or AD group memberships?
                         <br><br>
-                        <strong>Answer:</strong> It fetches from a custom Dataverse table named <code>menu</code>, which has an N-to-N (many-to-many) relationship with the <code>systemuser</code> table.
+                        <strong>Answer:</strong> It fetches from a custom Dataverse table named <code>menu</code>, which
+                        has an N-to-N (many-to-many) relationship with the <code>systemuser</code> table.
                     </div>
                 </div>
 
@@ -1269,9 +1584,12 @@ ClearCollect(
                         <span class="badge badge-success">Resolved</span>
                     </div>
                     <div class="qa-answer-bar">
-                        <strong>Question:</strong> The sync button triggers <code>ShowHostInfo(HostInfo.OfflineSync)</code>. What local tables/collections are cached in the app configuration to support offline usage?
+                        <strong>Question:</strong> The sync button triggers
+                        <code>ShowHostInfo(HostInfo.OfflineSync)</code>. What local tables/collections are cached in the
+                        app configuration to support offline usage?
                         <br><br>
-                        <strong>Answer:</strong> All the tables that are used in the app are cached locally for offline mode, excluding relationship tables that represent N-to-N relationships.
+                        <strong>Answer:</strong> All the tables that are used in the app are cached locally for offline
+                        mode, excluding relationship tables that represent N-to-N relationships.
                     </div>
                 </div>
 
@@ -1281,9 +1599,12 @@ ClearCollect(
                         <span class="badge badge-success">Resolved</span>
                     </div>
                     <div class="qa-answer-bar">
-                        <strong>Question:</strong> In <code>InspectionDetailsScreen</code>, choice columns are loaded dynamically via <code>Choices('Mooring Status (Inspections)')</code>. What are the distinct choices configured in Dataverse?
+                        <strong>Question:</strong> In <code>InspectionDetailsScreen</code>, choice columns are loaded
+                        dynamically via <code>Choices('Mooring Status (Inspections)')</code>. What are the distinct
+                        choices configured in Dataverse?
                         <br><br>
-                        <strong>Answer:</strong> The choice column is configured with two options: <code>IN</code> and <code>OUT</code>.
+                        <strong>Answer:</strong> The choice column is configured with two options: <code>IN</code> and
+                        <code>OUT</code>.
                     </div>
                 </div>
 
@@ -1293,9 +1614,14 @@ ClearCollect(
                         <span class="badge badge-success">Resolved</span>
                     </div>
                     <div class="qa-answer-bar">
-                        <strong>Question:</strong> The inspection screen filters reason codes based on <code>'Type Code' = CurrentMaintanenceRecord.'Type Code'</code>. What business rule connects these two?
+                        <strong>Question:</strong> The inspection screen filters reason codes based on
+                        <code>'Type Code' = CurrentMaintanenceRecord.'Type Code'</code>. What business rule connects
+                        these two?
                         <br><br>
-                        <strong>Answer:</strong> There is no server-side business rule linking these. The reason codes reside in a lookup table. Because this is a custom status, users can modify the reason code multiple times until they mark the inspection record as completed. This logic defines the default selection filter.
+                        <strong>Answer:</strong> There is no server-side business rule linking these. The reason codes
+                        reside in a lookup table. Because this is a custom status, users can modify the reason code
+                        multiple times until they mark the inspection record as completed. This logic defines the
+                        default selection filter.
                     </div>
                 </div>
 
@@ -1305,7 +1631,8 @@ ClearCollect(
                         <span class="badge badge-success">Resolved</span>
                     </div>
                     <div class="qa-answer-bar">
-                        <strong>Question:</strong> Task Status values use integers (e.g. status code 4 represents "Completed"). What do other integer status codes represent?
+                        <strong>Question:</strong> Task Status values use integers (e.g. status code 4 represents
+                        "Completed"). What do other integer status codes represent?
                         <br><br>
                         <strong>Answer:</strong> Task status is a custom options field with four options:
                         <ul>
@@ -1319,14 +1646,17 @@ ClearCollect(
 
                 <!-- Missing Snapshots List -->
                 <h2>Snapshot Requests & Verification</h2>
-                <p>If any specific screenshots need to be added or modified, please list them below. When completed, mark them as done.</p>
+                <p>If any specific screenshots need to be added or modified, please list them below. When completed,
+                    mark them as done.</p>
                 <div class="qa-card">
                     <div class="qa-question-bar">
                         <span>Additional Snapshots Requested</span>
                         <span class="badge badge-info">Complete</span>
                     </div>
                     <div class="qa-answer-bar">
-                        All screenshots representing operations (Home, Dashboard, List views, detail modals, commenting layers, and time log logs) are fully captured and integrated inside the interactive documentation page.
+                        All screenshots representing operations (Home, Dashboard, List views, detail modals, commenting
+                        layers, and time log logs) are fully captured and integrated inside the interactive
+                        documentation page.
                     </div>
                 </div>
             </section>
@@ -1342,4 +1672,5 @@ ClearCollect(
     <!-- Client Script Interactivity -->
     <script src="app.js"></script>
 </body>
+
 </html>
