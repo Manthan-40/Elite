@@ -1,0 +1,29 @@
+ELITE SCREENS - ANALYSIS QUESTIONS & ANSWERS
+=============================================
+
+Below are the architectural questions identified during analysis and the corresponding answers provided:
+
+1. How is the Power Automate flow 'PowerAppV2->Listrows' structured? Does it pull roles directly from a custom Dataverse table or Active Directory/M365 group memberships?
+   ANSWER: It takes from a custom Dataverse table named 'menu' which has an N-to-N relationship with the 'systemuser' table.
+
+2. The sync button triggers ShowHostInfo(HostInfo.OfflineSync). What local tables/collections are cached in the app configuration to support offline usage?
+   ANSWER: All the tables that are being used in the app, excluding relationship tables which are N-to-N relationship tables.
+
+3. In InspectionDetailsScreen, choice columns are loaded dynamically via Choices('Mooring Status (Inspections)'). What are the distinct choices configured in Dataverse?
+   ANSWER: It has 2 choices: IN and OUT.
+
+4. The inspection screen filters reason codes based on 'Type Code' = CurrentMaintanenceRecord.'Type Code'. What business rule connects these two?
+   ANSWER: There is no such business rule for this here. There is a different table for reason codes which is a lookup in the inspection, acting as a kind of custom status. Until the user marks the inspection complete, they can change the record's reason code multiple times. For default selection, this filtering logic is used.
+
+5. Task Status values use integers (e.g., status 4 represents "Completed"). What do other integer status codes represent?
+   ANSWER: Task status is a custom option field with four options:
+           - New: 1
+           - In Progress: 2
+           - On Hold: 3
+           - Completed: 4
+
+=============================================
+MISSING SNAPSHOTS / REQUESTS
+-----------------------------
+If any other snapshots are needed, they will be listed here:
+- [None at this time]
