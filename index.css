@@ -453,6 +453,17 @@ li {
     box-shadow: var(--shadow-medium);
 }
 
+.chart-container {
+    background-color: var(--white);
+    border: 1px solid var(--border-light);
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 24px;
+    box-shadow: var(--shadow-soft);
+    padding: 20px;
+    transition: var(--transition-fast);
+}
+
 .screenshot-img {
     width: 100%;
     height: auto;
